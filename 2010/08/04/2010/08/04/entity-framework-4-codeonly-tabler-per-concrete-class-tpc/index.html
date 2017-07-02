@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Entity Framework 4 CodeOnly &amp;#8211; Table per concrete Class (TPC) - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="En el último post acerca de le herencia en Entity Framework 4 y Code Only, vamos a ver la estrategia de Table per concrete Class (TPC). La diferencia con las estrategias de los ejemplos anteriores: Ta">
+<meta name="keywords" content="CodeOnly,EF4,TPC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Entity Framework 4 CodeOnly &amp;#8211; Table per concrete Class (TPC)">
+<meta property="og:url" content="http://serrate.es/2010/08/04//2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc//index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="En el último post acerca de le herencia en Entity Framework 4 y Code Only, vamos a ver la estrategia de Table per concrete Class (TPC). La diferencia con las estrategias de los ejemplos anteriores: Ta">
+<meta property="og:image" content="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png">
+<meta property="og:updated_time" content="2017-06-25T10:36:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Entity Framework 4 CodeOnly &amp;#8211; Table per concrete Class (TPC)">
+<meta name="twitter:description" content="En el último post acerca de le herencia en Entity Framework 4 y Code Only, vamos a ver la estrategia de Table per concrete Class (TPC). La diferencia con las estrategias de los ejemplos anteriores: Ta">
+<meta name="twitter:image" content="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Entity Framework 4 CodeOnly &amp;#8211; Table per concrete Class (TPC)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" class="article-date">
+  <time datetime="2010-08-04T16:40:12.000Z" itemprop="datePublished">2010-08-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code-Only/">Code Only</a><span>></span><a class="article-category-link" href="/categories/Code-Only/Entity-Framework-4/">Entity Framework 4</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En el último post acerca de le herencia en Entity Framework 4 y Code Only, vamos a ver la estrategia de <strong>Table per concrete Class</strong> (TPC).</p>
+<p>La diferencia con las estrategias de los ejemplos anteriores: <a href="http://www.serrate.es/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" target="_self">Table per Hierarchy</a> y <a href="/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" target="_self">Table per Type</a> es que, en este caso, la clase base no tiene ningún tipo de representación en las base de datos y sólo tiene sentido a nivel de clases del modelo.</p>
+<p>A continuación vemos como tenemos definido una tabla por subtipo:</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-139" title="TablaTpC" src="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png" alt="TablaTpC" width="450" height="259" srcset="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png 450w, http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC-300x172.png 300w" sizes="(max-width: 450px) 100vw, 450px"></a></p>
+<p>Ahora vamos a definir los mapeos de la base de datos con nuestras clases.  </p>
+<p>Para el subtipo <strong>Book</strong>:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class BooksTpCConfiguration : EntityConfiguration&lt;Book&gt;
+{
+    public BooksTpCConfiguration()
+    {
+        this
+            .HasKey(b =&gt; b.Id)
+            .MapSingleType(
+                b =&gt; new
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Price = b.Price,
+                    Pages = b.PageNumber,
+                    Author = b.Author
+                }
+            )
+            .ToTable("BooksTpC");
+    }
+}
+</pre>
+
+<p><a id="more"></a>Para el subtipo </p>
+<p><strong>Television</strong>:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class TelevisionsTpCConfiguration : EntityConfiguration&lt;Television&gt;
+{
+    public TelevisionsTpCConfiguration()
+    {
+        this
+            .HasKey(t =&gt; t.Id)
+            .MapSingleType(
+                t =&gt; new
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Price = t.Price,
+                    Size = t.Size,
+                    Brand = t.Brand,
+                }
+            )
+            .ToTable("TelevisionsTpC");
+    }
+}
+</pre>
+
+<p> Para el subtipo <strong>Shirt</strong>:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class ShirtsTpCConfiguration : EntityConfiguration&lt;Shirt&gt;
+{
+    public ShirtsTpCConfiguration()
+    {
+        this
+            .HasKey(s =&gt; s.Id)
+            .MapSingleType(
+                s =&gt; new
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Price = s.Price,
+                    Colour = s.Colour,
+                    Size = s.Size,
+                }
+            )
+            .ToTable("ShirtsTpC");
+    }
+}
+</pre>
+
+<p>Vemos que mediante la expresión <strong>MapSingleType</strong> cada clase mapea las <strong>propiedades propias del subtipo y de la clase base.</strong></p>
+<p>Para crear las instancias a las que añadimos nuestros objetos utilizaremos una clase que herede de <strong>ObjectContext.</strong> En ella definimos sólo los subtipos:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class ModelTpCContext : ObjectContext
+{
+    public ModelTpCContext(EntityConnection connection)
+        : base(connection)
+    {
+        DefaultContainerName = "ModelTpCContext";
+    }
+
+    public IObjectSet&lt;Book&gt; Books
+    {
+        get { return base.CreateObjectSet&lt;Book&gt;(); }
+    }
+
+    public IObjectSet&lt;Television&gt; Televisions
+    {
+        get { return base.CreateObjectSet&lt;Television&gt;(); }
+    }
+
+    public IObjectSet&lt;Shirt&gt; Shirts
+    {
+        get { return base.CreateObjectSet&lt;Shirt&gt;(); }
+    }
+}
+</pre>
+
+<p> Y para terminar con el ejemplo, vemos el método que configura y persiste los 3 subtipos tratados:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public void AddProducts()
+{
+    // crear la conexión a la BBDD y crear el contexto de EF
+    SqlConnection conn = new SqlConnection("Data Source=(local);Initial Catalog=Serrate.CodeOnly;Integrated Security=True;MultipleActiveResultSets=True;");
+    var builder = new ContextBuilder&lt;ModelTpCContext&gt;();
+    // debemos añadir las 3 configuraciones que equivalen a cada tabla
+    builder.Configurations.Add(new BooksTpCConfiguration());
+    builder.Configurations.Add(new TelevisionsTpCConfiguration());
+    builder.Configurations.Add(new ShirtsTpCConfiguration());
+    var context = builder.Create(conn);
+
+    // añadimos todas las entidades a Products
+    var book = new Book()
+    {
+        Id = Guid.NewGuid(),
+        Name = "Clash of Kings",
+        Price = 60.30M,
+        PageNumber = 489,
+        Author = "George R. R. Martin"
+    };
+    context.Books.AddObject(book);
+
+    var tv = new Television()
+    {
+        Id = Guid.NewGuid(),
+        Name = "Led TV",
+        Price = 999.99M,
+        Brand = "Samsung",
+        Size = 40
+    };
+    context.Televisions.AddObject(tv);
+
+    var shirt = new Shirt()
+    {
+        Id = Guid.NewGuid(),
+        Name = "Kamtxatka Shirt",
+        Price = 20.50M,
+        Colour = 3,
+        Size = "XL"
+    };
+    context.Shirts.AddObject(shirt);
+    // guardamos los cambios
+    context.SaveChanges();
+}
+
+</pre>
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CodeOnly/">CodeOnly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EF4/">EF4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TPC/">TPC</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2010/09/19/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Introducción a Managed Extensibility Framework (MEF)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2010/07/21/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Entity Framework 4 CodeOnly – Table per Type (TPT)&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

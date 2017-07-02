@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ASP.NET MVC: Múltiples botones en el mismo formulario - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Seguramente os habréis encontrando en ocasiones en que, dentro de un mismo formulario, necesitamos alojar varios botones de acción sobre el mismo. Existen varias opciones de conseguir este objetivo, p">
+<meta name="keywords" content="ASP.NET MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASP.NET MVC: Múltiples botones en el mismo formulario">
+<meta property="og:url" content="http://serrate.es/2011/01/21//2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario//index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="Seguramente os habréis encontrando en ocasiones en que, dentro de un mismo formulario, necesitamos alojar varios botones de acción sobre el mismo. Existen varias opciones de conseguir este objetivo, p">
+<meta property="og:updated_time" content="2017-06-25T10:36:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ASP.NET MVC: Múltiples botones en el mismo formulario">
+<meta name="twitter:description" content="Seguramente os habréis encontrando en ocasiones en que, dentro de un mismo formulario, necesitamos alojar varios botones de acción sobre el mismo. Existen varias opciones de conseguir este objetivo, p">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ASP.NET MVC: Múltiples botones en el mismo formulario
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/01/21/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/" class="article-date">
+  <time datetime="2011-01-21T19:01:35.000Z" itemprop="datePublished">2011-01-21</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ASP-NET-MVC/">ASP.NET MVC</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Seguramente os habréis encontrando en ocasiones en que, dentro de un mismo formulario, necesitamos alojar varios botones de acción sobre el mismo.</p>
+<p>Existen varias opciones de conseguir este objetivo, pero mí preferida, como amante de <em>client scripting</em>, es con <strong>jQuery</strong>.</p>
+<p>A continuación mostramos la vista con un formulario definido y dos botones de <em>submit</em>:</p>
+<pre class="brush: xml; title: ; notranslate" title="">&lt;% using (Html.BeginForm()) { %&gt;
+    &lt;div&gt;
+        &lt;%= Html.LabelFor(m=&gt; m.Name) %&gt;
+        &lt;%= Html.TextBoxFor(m =&gt; m.Name) %&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;%= Html.LabelFor(m =&gt; m.Description)%&gt;
+        &lt;%= Html.TextBoxFor(m =&gt; m.Description) %&gt;
+    &lt;/div&gt;
+
+    &lt;input id="btnSave" type="submit" value="Guardar" /&gt;
+    &lt;input id="btnGetNextRow" type="submit" value="Siguiente registro" /&gt;
+&lt;% } %&gt;
+</pre>
+
+<p>Por el momento, nada nuevo. A continuación vemos como enlazamos el evento <strong>click</strong> a los botones:</p>
+<pre class="brush: jscript; title: ; notranslate" title="">&lt;script type="text/javascript"&gt;
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            var form = $(this).parent("form");
+            form.attr('action', '&lt;%= Url.RouteUrl(new { Controller = "Home", Action = "Save" }) %&gt;');
+            form.attr('method', 'post');
+        });
+
+        $("#btnGetNextRow").click(function () {
+            var form = $(this).parent("form");
+            form.attr('action', '&lt;%= Url.RouteUrl(new { Controller = "Home", Action = "GetNextRow" }) %&gt;');
+            form.attr('method', 'get');
+        });
+    });
+&lt;/script&gt;
+</pre>
+
+<p>Obtenemos una referencia al formulario con la instrucción: $(this).parent(“form”) y a continuación cambiamos los atributos <em>action</em> y <em>method</em> del formulario. De esta forma, hacemos submit a la acción que nos interesa en cada momento utilizando GET o POST según convenga.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/02/25/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          ASP.NET MVC: Componente Autocomplete de jQuery
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/01/16/2011/01/16/nhibernate-paginando-con-detachedcriteria/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NHibernate: Paginando con DetachedCriteria&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2011/01/21/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

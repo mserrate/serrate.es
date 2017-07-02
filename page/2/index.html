@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Marçal Serrate | El caso frontera">
+<meta property="og:url" content="http://serrate.es/page/2/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Marçal Serrate | El caso frontera">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer">
+      <article id="post-/2011/12/01/poor-mans-cqrs-bdd-con-mspec/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/12/01/2011/12/01/poor-mans-cqrs-bdd-con-mspec/">Poor Man&amp;#8217;s CQRS &amp;#8211; BDD con MSpec</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/12/01/2011/12/01/poor-mans-cqrs-bdd-con-mspec/" class="article-date">
+  <time datetime="2011-12-01T08:20:16.000Z" itemprop="datePublished">2011-12-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CQRS/">CQRS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.serrate.es/2011/11/22/poor-mans-cqrs/" target="_blank" rel="external">El artículo forma parte de una serie de artículos: [http://www.serrate.es/2011/11/22/poor-mans-cqrs/]</a></p>
+<p>En el proyecto de Testing se ha utilizado <strong><a href="https://github.com/machine/machine.specifications" target="_blank">Machine.Specifications (MSpec)</a></strong> para realizar <strong><a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development" target="_blank">Behavior Driven Development (BDD)</a></strong>.</p>
+<p>MSpec utiliza las cláusulas <strong>Establish/Because/It</strong> equivalente a <strong>Given/When/Then</strong> disponible en otros frameworks como SpecFlow.</p>
+<p>La forma de uso seria la siguiente:</p>
+<ul>
+<li><strong>Establish:</strong> Se usa para establecer el estado inicial.</li>
+<li><strong>Because:</strong> Definimos la acción que vamos a testear.</li>
+<li><strong>It:</strong> Comprobamos que el resultado es el esperado.</li>
+</ul>
+<p>
+        
+          <p class="article-more-link">
+            <a href="/2011/12/01/2011/12/01/poor-mans-cqrs-bdd-con-mspec/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BDD/">BDD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CQRS/">CQRS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDD/">DDD</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/11/24/poor-mans-cqrs-domain-layer/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/11/24/2011/11/24/poor-mans-cqrs-domain-layer/">Poor Man&amp;#8217;s CQRS &amp;#8211; Domain Layer</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/11/24/2011/11/24/poor-mans-cqrs-domain-layer/" class="article-date">
+  <time datetime="2011-11-24T16:22:10.000Z" itemprop="datePublished">2011-11-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CQRS/">CQRS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.serrate.es/2011/11/22/poor-mans-cqrs/" target="_blank" rel="external">El artículo forma parte de una serie de artículos: [http://www.serrate.es/2011/11/22/poor-mans-cqrs/]</a></p>
+<p>Empezaremos detallando la parte principal de la aplicación: la capa de <strong>dominio</strong>. Aunque el ejemplo que nos ocupa consta simplemente de dos míseras clases, es importante que interioricemos algunos conceptos.</p>
+<p>Diseñar un modelo de dominio es una tarea altamente compleja: definir las entidades que formaran parte de los <strong>agregados</strong>, el <strong>límite</strong> de éstos, qué entidad será el <strong>agregado raíz</strong>, distinguir <strong>value objects</strong>, etc. y, curiosamente, es la parte que menor relación tiene con CQRS.</p>
+<p>Como siempre, la recomendación principal que puedo dar es la de leerse y empaparse del libro <a href="http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215" target="_blank">Domain-Driven Design</a> de <strong>Eric Evans</strong>.</p>
+<p>
+        
+          <p class="article-more-link">
+            <a href="/2011/11/24/2011/11/24/poor-mans-cqrs-domain-layer/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CQRS/">CQRS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDD/">DDD</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/11/22/poor-mans-cqrs/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/11/22/2011/11/22/poor-mans-cqrs/">Poor Man’s CQRS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/11/22/2011/11/22/poor-mans-cqrs/" class="article-date">
+  <time datetime="2011-11-22T11:45:39.000Z" itemprop="datePublished">2011-11-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CQRS/">CQRS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[Url del proyecto: <a href="https://github.com/mserrate/PoorMansCQRS" target="_blank">https://github.com/mserrate/PoorMansCQRS</a>]</p>
+<p>Muchas veces cuando se habla de Command-Query Responsibility Segregation (CQRS) empiezan a surgir conceptos tales como: <strong>Event Sourcing</strong>, <strong>2-Phase Commit</strong>, <strong>Snapshots</strong>, <strong>mensajería asíncrona</strong>, <strong>eventual consistency</strong> y multitud más que hacen que mucha gente piense que CQRS es una arquitectura compleja y que solo se puede utilizar para desarrollar aplicaciones tipo Amazon, Twitter y Facebook (vamos, los proyectos que nos surgen cada día&#8230;).</p>
+<p>Por el contrario, soy de la opinión de que el uso de este patrón nos permite implementar de forma exitosa una aplicación basada en <strong>Domain-Driven Design</strong> (DDD). Y es que <strong>no se entiende CQRS sin DDD</strong>.</p>
+<p>Es decir, no hace falta implementar Amazon para utilizar DDD y CQRS pero tampoco vayamos a implementarlo en la web de la panadería de nuestro cuñado en Villaconejo del Monte.
+        
+          <p class="article-more-link">
+            <a href="/2011/11/22/2011/11/22/poor-mans-cqrs/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CQRS/">CQRS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/11/15/enrutamiento-con-wcf-4-y-routing-service/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/11/15/2011/11/15/enrutamiento-con-wcf-4-y-routing-service/">Enrutamiento con WCF 4 y Routing Service</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/11/15/2011/11/15/enrutamiento-con-wcf-4-y-routing-service/" class="article-date">
+  <time datetime="2011-11-15T11:44:10.000Z" itemprop="datePublished">2011-11-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En el pasado mes de Junio se publicó el artículo &#8220;Enrutamiento con WCF 4 y Routing Service&#8221; en la revista <strong>dotNetMania</strong> en el que se hablaba del patrón <strong>Intermediate Routing</strong> y de su implementación mediante <strong>WCF 4</strong>.</p>
+<p>El artículo lo podéis leer en el nuevo sitio web de <strong>dNM+</strong> en el siguiente enlace:</p>
+<p><a href="http://www.dnmplus.net/articulos/enrutamiento-con-wcf-4-y-routing-service.aspx" target="_blank">http://www.dnmplus.net/articulos/enrutamiento-con-wcf-4-y-routing-service.aspx</a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WCF/">WCF</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/06/29/asp-net-mvc-3-evento-catdotnet/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/06/29/2011/06/29/asp-net-mvc-3-evento-catdotnet/">ASP.NET MVC 3: Evento CatDotNet</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/06/29/2011/06/29/asp-net-mvc-3-evento-catdotnet/" class="article-date">
+  <time datetime="2011-06-29T14:46:28.000Z" itemprop="datePublished">2011-06-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ASP-NET-MVC/">ASP.NET MVC</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>﻿El próximo sábado 2 de Julio se realizará el evento inaugural de <a href="http://www.catdotnet.net" target="_blank">CatDotNet</a> en el cual participaré conjuntamente con los siguientes ponentes:</p>
+<ul>
+<li>José Miguel Torres que nos hablará de la gestión de dependencias con NuGet</li>
+<li>Álex Casquete con las mejoras de productividad con Entity Framework 4.1</li>
+<li>Marc Rubiño con Javascript y Ajax para desarrolladores de ASP.NET</li>
+</ul>
+<p>Mi presentación tratará de algunas de las novedades de ASP.NET MVC 3, entre ellas:</p>
+<ul>
+<li>Soporte a HTML5</li>
+<li>Data Scaffolding</li>
+<li>IDependencyResolver con Unity</li>
+<li>Testing</li>
+</ul>
+<p>Os podéis registrar en el siguiente enlance:  ﻿﻿</p>
+<p><a href="https://msevents.microsoft.com/CUI/EventDetail.aspx?EventID=1032489264&Culture=es-ES" target="_blank">https://msevents.microsoft.com/CUI/EventDetail.aspx?EventID=1032489264&amp;Culture=es-ES</a></p>
+<p style="text-align: center;"><br>  <a title="CatDotNet" href="http://www.catdotnet.net/" target="_blank"><img class="aligncenter size-full wp-image-267" title="CatDotNet" src="http://www.serrate.es/wp-content/uploads/2011/06/logo_super_peq.gif" alt="" width="350" height="70" srcset="http://www.serrate.es/wp-content/uploads/2011/06/logo_super_peq.gif 350w, http://www.serrate.es/wp-content/uploads/2011/06/logo_super_peq-300x60.gif 300w" sizes="(max-width: 350px) 100vw, 350px"></a><br></p>
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/05/05/cqrs-evento-en-secondnug/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/05/05/2011/05/05/cqrs-evento-en-secondnug/">CQRS: Evento en SecondNug</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/05/05/2011/05/05/cqrs-evento-en-secondnug/" class="article-date">
+  <time datetime="2011-05-05T11:27:49.000Z" itemprop="datePublished">2011-05-05</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CQRS/">CQRS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>El próximo día 5 de mayo voy a estar con los chicos de <a href="http://www.secondnug.com/" target="_blank">SecondNug</a> realizando un evento acerca de Command-Query Responsibility Segregation (CQRS) en el que hablaremos de:</p>
+<ul>
+<li>Domain-Driven Design</li>
+<li>Problemáticas en aplicaciones típicas n-layer</li>
+<li>CQRS y conceptos: Commands, Events, Task based UI, etc.</li>
+<li>Event Sourcing</li>
+<li>Demo</li>
+</ul>
+<p>Si queréis asistir sólo tenéis que registraros en el siguiente enlace:</p>
+<p style="text-align: center;"><br>  <a href="https://msevents.microsoft.com/CUI/WebCastEventDetails.aspx?EventID=1032486025&EventCategory=4&culture=es-ES&CountryCode=ES" target="_blank"></a><a href="https://msevents.microsoft.com/CUI/WebCastEventDetails.aspx?EventID=1032486025&EventCategory=4&culture=es-ES&CountryCode=ES" target="_blank"><img class="aligncenter size-full wp-image-260" title="Evento CQRS" src="http://www.serrate.es/wp-content/uploads/2011/05/eventoCQRS.bmp" alt="Evento CQRS"></a><br> ¡Nos oímos en el evento!<br></p>
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CQRS/">CQRS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/03/25/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/">NServiceBus: Introducción y ejemplo One-Way</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/03/25/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/" class="article-date">
+  <time datetime="2011-03-25T12:06:13.000Z" itemprop="datePublished">2011-03-25</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.serrate.es/wp-content/uploads/2011/03/consola.png" target="_blank" rel="external"></a>A raíz de algunos proyectos e inmersión en los mundos de <a href="http://en.wikipedia.org/wiki/Service-oriented_architecture" target="_blank">Service Oriented Architecture </a>(SOA) y <a href="http://en.wikipedia.org/wiki/Event-driven_architecture" target="_blank">Event-Driven Architecture</a> (EDA) he conocido este producto creado por <a href="http://www.udidahan.com/" target="_blank">Udi Dahan </a>y que podemos encontrar en: <a href="http://www.nservicebus.com/" target="_blank">http://www.nservicebus.com/</a></p>
+<p><strong>NServiceBus</strong> es una implementación de Enterprise Service Bus (ESB) para .NET y que se apoya en Microsoft Message Queue Server (MSMQ) como transporte y persistencia de colas.</p>
+<p>Enterprise Service Bus es una arquitectura que nos permite el intercambio de mensajes entre aplicaciones y servicios de manera desacoplada entre los mismos proporcionando la fiabilidad y manejo de errores que éste tipo de aplicaciones requiere.</p>
+<p>Las diferencias entre Enterprise Service Bus y Enterprise Application Integration (EAI) como BizTalk y cuando usar uno u otro daría lugar a muchas discusiones y está fuera del alcance de éste humilde artículo.</p>
+<p>NServiceBus proporciona varios patrones de mensajería OOB como <strong>One-Way</strong>, <strong>Request/Response</strong> y <strong>Publish/Subscribe</strong> aunque nos permite extenderlo según nuestras necesidades.</p>
+<h2 id="Ejemplo-con-mensajeria-One-Way"><a href="#Ejemplo-con-mensajeria-One-Way" class="headerlink" title="Ejemplo con mensajería One-Way"></a>Ejemplo con mensajería One-Way</h2><p>En este ejemplo veremos la comunicación asíncrona punto a punto. Aunque parezca a priori que podríamos conseguir los mismos resultados con netMsmqBinding y WCF, y en cierta manera así es, la verdad es que NServiceBus nos abstrae de muchas configuraciones que deberíamos realizar a mano: creación de las colas en MSMQ, habilitar permisos necesarios, etc.</p>
+<p>Primero vamos a crear el proyecto <strong>Messages</strong> (Class library) con una referencia a la librería NServiceBus.dll. A continuación definiremos nuestro mensaje:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">namespace Messages
+{
+    /// &lt;summary&gt;
+    /// Esta clase será enviada por NServiceBus
+    /// &lt;/summary&gt;
+    public class MyMessage : IMessage
+    {
+        public string SomeString { get; set; }
+    }
+}
+</pre>
+
+<p>La interface <strong>IMessage</strong> no obliga a implementar ningún método, simplemente se usa como marcador para NServiceBus.</p>
+        
+          <p class="article-more-link">
+            <a href="/2011/03/25/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/02/25/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/">ASP.NET MVC: Componente Autocomplete de jQuery</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/02/25/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/" class="article-date">
+  <time datetime="2011-02-25T13:21:17.000Z" itemprop="datePublished">2011-02-25</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ASP-NET-MVC/">ASP.NET MVC</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En el artículo de hoy vamos a ver qué fácil es alimentar mediante Ajax y objetos <strong>JSON</strong> componentes jQuery desde <strong>ASP.NET MVC</strong>.</p>
+<p>Para empezar, vamos a usar la CDN de google para importar las librerías que necesitamos: jQuery y jQuery UI más los ficheros de estilos para jQuery UI:</p>
+<pre class="brush: xml; light: true; title: ; notranslate" title="">http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js
+http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js
+http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css
+</pre>
+
+<p>Seguidamente definimos en nuestra vista un label y una caja de texto:</p>
+<pre class="brush: xml; light: true; title: ; notranslate" title="">&lt;label for="txtTitulos"&gt;Titulos: &lt;/label&gt;&lt;input type="text" id="txtTitulos" /&gt;
+</pre>
+
+<p>El código cliente para enlazar la extensión de <strong>jQuery</strong> a la caja de texto es la siguiente:</p>
+<pre class="brush: jscript; title: ; notranslate" title="">&lt;script type="text/javascript"&gt;
+    $(document).ready(function () {
+        $("#txtTitulos").autocomplete({
+            minLength: 3,
+            source: getData
+        });
+    });
+
+    function getData(request, response) {
+        $.ajax({
+            url: '/Home/GetData',
+            type: 'GET',
+            dataType: 'json',
+            data: { words: request.term },
+            success: function (data) {
+                response(data);
+            }
+        });
+    }
+&lt;/script&gt;
+</pre>
+
+<p>Como podemos ver, inicializamos la opción source con nuestro propio callback getData. En que realizamos la consulta a la action GetData del controller Home. Para más opciones y eventos del componente autocomplete mirad la documentación en la página de <a href="http://jqueryui.com/demos/autocomplete/" target="_blank">jQuery UI</a>.</p>
+<p>Finalmente nuestra action GetData queda de la siguiente manera:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public ActionResult GetData(string words)
+{
+    var mySource = GetData();
+
+    var result = from s in mySource
+                    where s.Title.Text.Contains(words)
+                    select s.Title.Text;
+
+    return Json(result, JsonRequestBehavior.AllowGet);
+}
+</pre>
+
+<p>Si os fijáis en el segundo parámetro de Json, indicamos que admitimos peticiones de tipo GET. Esto se debe indicar para evitar problemas de seguridad. Para más información consultad este post de <a href="http://haacked.com/archive/2009/06/25/json-hijacking.aspx" target="_blank">Phil Haack</a>.</p>
+<p>Los datos de ejemplo los he sacado del rss de la página de ASP.NET. Os dejo el código para que no es creáis que miento:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">private IEnumerable&lt;SyndicationItem&gt; GetData()
+{
+    string feed = "http://www.asp.net/rss/news";
+
+    var req = WebRequest.Create(feed);
+
+    using (var reader = XmlReader.Create(req.GetResponse().GetResponseStream()))
+    {
+        var rssData = SyndicationFeed.Load(reader);
+        return rssData.Items;
+    }
+}
+</pre>
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/01/21/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/">ASP.NET MVC: Múltiples botones en el mismo formulario</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/01/21/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/" class="article-date">
+  <time datetime="2011-01-21T19:01:35.000Z" itemprop="datePublished">2011-01-21</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ASP-NET-MVC/">ASP.NET MVC</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Seguramente os habréis encontrando en ocasiones en que, dentro de un mismo formulario, necesitamos alojar varios botones de acción sobre el mismo.</p>
+<p>Existen varias opciones de conseguir este objetivo, pero mí preferida, como amante de <em>client scripting</em>, es con <strong>jQuery</strong>.</p>
+<p>A continuación mostramos la vista con un formulario definido y dos botones de <em>submit</em>:</p>
+<pre class="brush: xml; title: ; notranslate" title="">&lt;% using (Html.BeginForm()) { %&gt;
+    &lt;div&gt;
+        &lt;%= Html.LabelFor(m=&gt; m.Name) %&gt;
+        &lt;%= Html.TextBoxFor(m =&gt; m.Name) %&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;%= Html.LabelFor(m =&gt; m.Description)%&gt;
+        &lt;%= Html.TextBoxFor(m =&gt; m.Description) %&gt;
+    &lt;/div&gt;
+
+    &lt;input id="btnSave" type="submit" value="Guardar" /&gt;
+    &lt;input id="btnGetNextRow" type="submit" value="Siguiente registro" /&gt;
+&lt;% } %&gt;
+</pre>
+
+<p>Por el momento, nada nuevo. A continuación vemos como enlazamos el evento <strong>click</strong> a los botones:</p>
+<pre class="brush: jscript; title: ; notranslate" title="">&lt;script type="text/javascript"&gt;
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            var form = $(this).parent("form");
+            form.attr('action', '&lt;%= Url.RouteUrl(new { Controller = "Home", Action = "Save" }) %&gt;');
+            form.attr('method', 'post');
+        });
+
+        $("#btnGetNextRow").click(function () {
+            var form = $(this).parent("form");
+            form.attr('action', '&lt;%= Url.RouteUrl(new { Controller = "Home", Action = "GetNextRow" }) %&gt;');
+            form.attr('method', 'get');
+        });
+    });
+&lt;/script&gt;
+</pre>
+
+<p>Obtenemos una referencia al formulario con la instrucción: $(this).parent(“form”) y a continuación cambiamos los atributos <em>action</em> y <em>method</em> del formulario. De esta forma, hacemos submit a la acción que nos interesa en cada momento utilizando GET o POST según convenga.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2011/01/16/nhibernate-paginando-con-detachedcriteria/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2011/01/16/2011/01/16/nhibernate-paginando-con-detachedcriteria/">NHibernate: Paginando con DetachedCriteria</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/01/16/2011/01/16/nhibernate-paginando-con-detachedcriteria/" class="article-date">
+  <time datetime="2011-01-16T13:52:50.000Z" itemprop="datePublished">2011-01-16</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/NHibernate/">NHibernate</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>El propósito de este post es ver cómo podemos paginar de forma óptima en servidor mediante el objeto <strong>DetachedCriteria</strong>. El objetivo es evitar que nuestros controles de presentación hagan el trabajo sucio paginando en memoria los resultados al obtener todos los elementos de la base de datos en cada petición.</p>
+<p>Por trivial que parezca, para poder mostrar los resultados de forma amigable al usuario en, por ejemplo un grid, la consulta debe devolver los elementos de la página en cuestión y el número total de elementos. Para ello se requieren dos consultas, una para los elementos y otra para el total, pero no suena muy práctico realizar dos consultas separadamente no? La gracia aquí está en agrupar las dos consultas en una y así optimizar el rendimiento. </p>
+<p><strong>Nota</strong>: En caso de utilizar directamente un objeto de tipo ICriteria podríamos hacer uso directamente de las clausulas Future<t>  y FutureValue<t> que hacen internamente hacen uso de Multi Queries como haremos aquí. Más información en éste <a href="http://ayende.com/Blog/archive/2009/04/27/nhibernate-futures.aspx" target="_blank">post</a> de Ayende. </t></t></p>
+<p>Antes de nada… Que es DetachedCriteria? Pues no deja de ser un objeto criteria que definimos sin tener acceso a ISession. Esto nos permite definir nuestras consultas y poderlas ejecutar más tarde en cualquier otra parte dentro de un contexto de ISession. </p>
+<p>A continuación vemos una declaración típica para DetachedCriteria: </p>
+<pre class="brush: csharp; title: ; notranslate" title="">// Creamos el objeto DetachedCriteria
+var detachedCriteria = DetachedCriteria.For&lt;Customer&gt;("c");
+
+// Agregamos filtros a la consulta
+if (!string.IsNullOrEmpty(criteria.Name)
+    && !string.IsNullOrWhiteSpace(criteria.Name))
+{
+    detachedCriteria.Add(Expression.Like("Name", criteria.Name, MatchMode.Anywhere));
+}
+</pre>
+
+<p>Más adelante, en un contexto de ISession, tenemos el código para la paginación. Vemos los comentarios en cada línea: </p>
+<pre class="brush: csharp; title: ; notranslate" title="">public PagedList&lt;T&gt; FindPaged(DetachedCriteria criteria, int startIndex, int pageSize)
+{
+    using (var session = GetSession())
+    {
+        // Clonamos nuestro DetachedCriteria
+        DetachedCriteria itemsCriteria = CriteriaTransformer.Clone(criteria);
+        // Especificamos los parámetros de paginación:
+        // 1) El índice del primer elemento a obtener
+        itemsCriteria.SetFirstResult(startIndex * pageSize);
+        // 2) El número máximo de resultados
+        itemsCriteria.SetMaxResults(pageSize);
+
+        // Transformamos nuestra consulta original para que nos devuelva el número de elementos
+        DetachedCriteria countCriteria = CriteriaTransformer.TransformToRowCount(criteria);
+
+        // Creamos un objeto MultiCriteria para agrupar las dos consultas
+        IMultiCriteria multiCriteria = session.CreateMultiCriteria();
+        multiCriteria.Add(itemsCriteria);
+        multiCriteria.Add(countCriteria);
+        IList multiResult = multiCriteria.List();
+
+        // En posición 0 de la lista tenemos los elementos paginados
+        IList pagedElementsUntyped = multiResult[0] as IList;
+        // Con la extensión Cast&lt;T&gt; obtenemos la lista genérica de resultados
+        IEnumerable&lt;T&gt; pagedElements = pagedElementsUntyped.Cast&lt;T&gt;();
+
+        // En posición 1 de la lista tenemos el total de elementos
+        int totalCount = Convert.ToInt32(((IList)multiResult[1])[0]);
+
+        // Finalmente devolvemos la clase PagedList que encapsula los dos resultados
+        return new PagedList&lt;T&gt;(pagedElements, totalCount);
+    }
+}
+</pre>
+
+<p>La clase <strong>PagedList<t></t></strong> es simplemente un contenedor de los resultados: </p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class PagedList&lt;T&gt;
+{
+    public IEnumerable&lt;T&gt; Items { get; protected set; }
+
+    public int TotalItems { get; protected set; }
+
+    public PagedList(IEnumerable&lt;T&gt; items, int totalItems)
+    {
+        this.Items = items;
+        this.TotalItems = totalItems;
+    }
+}
+</pre>
+
+
+
+<p>A continuación mostramos como se termina haciendo la consulta a la base de datos meditante SQL Profiler: </p>
+<pre class="brush: sql; title: ; notranslate" title="">exec sp_executesql N'SELECT top 5 this_.Id as CU1_0_0_, this_.Name as CU2_0_0_ FROM Customers this_ WHERE this_.Name like @p0;
+SELECT count(*) as y0_ FROM Customers this_ WHERE this_.Name like @p1;
+',N'@p0 nvarchar(6),@p1 nvarchar(6)',@p0=N'%name%',@p1=N'%name%' 
+</pre>
+
+<p>En este pequeño post hemos visto como con IMultiCriteria y NHibernate podemos hacer paginaciones optimizadas en servidor para que nuestros controles de presentación no tengan que hacer los cálculos en memoria obteniendo todos los datos de la base de datos en cada petición.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NHibernate/">NHibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ORM/">ORM</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <nav id="page-nav">
+        <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      </nav>
+    </section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

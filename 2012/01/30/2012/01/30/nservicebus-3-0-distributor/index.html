@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>NServiceBus 3.0 &amp;#8211; Distributor - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="En las últimas entradas estamos repasando las novedades de NServiceBus 3.0 que ya está en la Release Candidate 2. En esta entrada veremos una funcionalidad que ya existía en versiones anteriores pero">
+<meta name="keywords" content="NServiceBus,SOA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NServiceBus 3.0 &amp;#8211; Distributor">
+<meta property="og:url" content="http://serrate.es/2012/01/30//2012/01/30/nservicebus-3-0-distributor//index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="En las últimas entradas estamos repasando las novedades de NServiceBus 3.0 que ya está en la Release Candidate 2. En esta entrada veremos una funcionalidad que ya existía en versiones anteriores pero">
+<meta property="og:image" content="http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png">
+<meta property="og:image" content="http://www.serrate.es/wp-content/uploads/2012/01/distributor2.png">
+<meta property="og:updated_time" content="2017-06-25T10:36:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NServiceBus 3.0 &amp;#8211; Distributor">
+<meta name="twitter:description" content="En las últimas entradas estamos repasando las novedades de NServiceBus 3.0 que ya está en la Release Candidate 2. En esta entrada veremos una funcionalidad que ya existía en versiones anteriores pero">
+<meta name="twitter:image" content="http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-/2012/01/30/nservicebus-3-0-distributor/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NServiceBus 3.0 &amp;#8211; Distributor
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/01/30/2012/01/30/nservicebus-3-0-distributor/" class="article-date">
+  <time datetime="2012-01-30T21:15:44.000Z" itemprop="datePublished">2012-01-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En las últimas entradas estamos repasando las novedades de NServiceBus 3.0 que ya está en la <a href="https://github.com/downloads/NServiceBus/NServiceBus/NServiceBus.3.0.0-rc2.zip" target="_blank">Release Candidate 2</a>. En esta entrada veremos una funcionalidad que ya existía en versiones anteriores pero que se ha rehecho completamente.</p>
+<p>Distributor nos permite balancear la carga entre varios nodos a partir de un nodo maestro. La configuración del nodo maestro es muy sencilla a través de los profiles de NServiceBus, simplemente debemos añadir el argumento <strong>NServiceBus.Master</strong> en el Host. Para asegurar la alta disponibilidad del nodo maestro es recomendable que se ejecute en un cluster.</p>
+<p>Para configurar los nodos worker, añadiremos a su vez el argumento <strong>NServiceBus.Worker</strong> para establecer este comportamiento.</p>
+<p>El funcionamiento o flujo de trabajo es el siguiente:</p>
+<ol>
+<li>Los nodos worker envían un mensaje a <strong>[endpoint].distributor.control</strong> cada vez que están libres.</li>
+<li>El nodo Master procesa la cola guardando todos los nodos workers disponibles en la cola <strong>[endpoint].distributor.storage</strong>.</li>
+<li>Cuando el nodo Master recibe un mensaje utiliza el primer worker de la lista de <strong>[endpoint].distributor.storage</strong> para enviarle el mensaje y que lo procese.<a id="more"></a></li>
+</ol>
+<p>Imaginemos el siguiente escenario, tenemos configurado un nodo como maestro y tres nodos como workers uno de los cuales no está disponible, los dos envían un mensaje al nodo maestro diciendo que están disponibles para procesar mensajes:</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-396" title="Distributor1" src="http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png" alt="Distributor 1" width="547" height="352" srcset="http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png 547w, http://www.serrate.es/wp-content/uploads/2012/01/distributor1-300x193.png 300w" sizes="(max-width: 547px) 100vw, 547px"></a></p>
+<p>Cuando se reciben mensajes, el nodo maestro reparte en los nodos disponibles existentes:</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2012/01/distributor2.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-400" title="Distributor2" src="http://www.serrate.es/wp-content/uploads/2012/01/distributor2.png" alt="Distributor 2" width="547" height="377" srcset="http://www.serrate.es/wp-content/uploads/2012/01/distributor2.png 547w, http://www.serrate.es/wp-content/uploads/2012/01/distributor2-300x206.png 300w" sizes="(max-width: 547px) 100vw, 547px"></a></p>
+<p>Gracias al distributor podemos ofrecer de forma muy sencilla alta disponibilidad en los nodos de nuestra aplicación.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2012/04/18/2012/04/18/iasa-spain-evento-sobre-sistemas-distribuidos-con-nservicebus-en-madrid-y-barcelona/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          IASA-Spain: Evento sobre Sistemas Distribuidos con NServiceBus en Madrid y Barcelona
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2012/01/19/2012/01/19/nservicebus-3-0-data-bus/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NServiceBus 3.0 &amp;#8211; Data Bus&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2012/01/30/2012/01/30/nservicebus-3-0-distributor/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

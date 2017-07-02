@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Marçal Serrate | El caso frontera">
+<meta property="og:url" content="http://serrate.es/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Marçal Serrate | El caso frontera">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer">
+      <article id="post-/2015/12/03/big-data-arquitectura-lambda/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/03/2015/12/03/big-data-arquitectura-lambda/">Big Data: arquitectura lambda</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/03/2015/12/03/big-data-arquitectura-lambda/" class="article-date">
+  <time datetime="2015-12-03T22:51:16.000Z" itemprop="datePublished">2015-12-03</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Big-Data/">Big Data</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Actualmente llevo varios años trabajando con sistemas distribuidos y arquitecturas orientadas a eventos, desde el malentendido <a href="http://www.serrate.es/tag/soa/" target="_blank">SOA</a> (o su versión refurbished como son los <a href="http://udidahan.com/2014/03/31/on-that-microservices-thing/" target="_blank">Microservices</a>), hasta <a href="http://www.serrate.es/2015/02/18/sesion-en-la-dotnetspain-conference/" target="_blank">Event Sourcing</a> (indirectamente enlazado con <a href="http://www.serrate.es/category/arquitectura/cqrs/" target="_blank">CQRS</a>).</p>
+<p>Muchos de los conceptos vinculados con eventos como <strong>inmutabilidad</strong>, <strong>perpetuidad</strong>, <strong>idempotencia</strong>… son igualmente validos para realizar <em>stream processing</em> o flujo continuo de eventos. Si a esto le sumamos el proceso por lotes o <em>batch processing</em>, entramos en el terreno de lo que muchos llaman Big Data.</p>
+<h3 id="Big-Data"><a href="#Big-Data" class="headerlink" title="Big Data"></a>Big Data</h3><p>Cuando pensamos en big data lo primero que nos viene a la cabeza es <strong>Hadoop</strong> para ejecutar procesos por lotes. Tenemos que pensar que Hadoop ofrece una gran capacidad para procesar una cantidad indecente de datos, pero a costa de una alta latencia en la respuesta. Aunque esta latencia puede ser de sobras aceptable para muchos casos de uso, no lo es para otros que tienen la necesidad de procesar una gran cantidad de datos en tiempo (casi) real.</p>
+<p>Ahí es donde entra en juego lo que muchos llaman <a href="http://nathanmarz.com/blog/how-to-beat-the-cap-theorem.html" target="_blank">lambda architecture</a> (Nathan Marz, ex-twitter).</p>
+<p>
+        
+          <p class="article-more-link">
+            <a href="/2015/12/03/2015/12/03/big-data-arquitectura-lambda/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Apache-Storm/">Apache Storm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Big-Data/">Big Data</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2015/05/18/construccion-de-actores-en-akka-net/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/18/2015/05/18/construccion-de-actores-en-akka-net/">Construcción de actores en Akka.net</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/05/18/2015/05/18/construccion-de-actores-en-akka-net/" class="article-date">
+  <time datetime="2015-05-18T10:46:39.000Z" itemprop="datePublished">2015-05-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Actor-Model/">Actor Model</a><span>></span><a class="article-category-link" href="/categories/Actor-Model/Arquitectura/">Arquitectura</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>El modelo de actores se caracteriza por establecer un modelo de computación basado en el <a href="http://www.reactivemanifesto.org/" target="_blank">Reactive Manifesto</a> que nos permite construir:</p>
+<ul>
+<li>Sistemas altamente concurrentes</li>
+<li>Sistemas escalables tanto horizontalmente como verticalmente</li>
+<li>Sistemas fiables y tolerantes a errores</li>
+</ul>
+<p>Para empezar vamos a ver como se define un actor ya que tenemos 3 formas distintas dependiendo de nuestras necesidades. Los actores en Akka.net hacen un uso extensivo de <em>pattern matching</em> para seleccionar cómo se van a gestionar los mensajes dependiendo de su tipo o valor.</p>
+<p>
+        
+          <p class="article-more-link">
+            <a href="/2015/05/18/2015/05/18/construccion-de-actores-en-akka-net/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AkkaDotNet/">AkkaDotNet</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2015/02/18/sesion-en-la-dotnetspain-conference/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/02/18/2015/02/18/sesion-en-la-dotnetspain-conference/">Sesión en la dotNetSpain Conference</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/02/18/2015/02/18/sesion-en-la-dotnetspain-conference/" class="article-date">
+  <time datetime="2015-02-18T15:13:43.000Z" itemprop="datePublished">2015-02-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Arquitectura/">Arquitectura</a><span>></span><a class="article-category-link" href="/categories/Arquitectura/CQRS/">CQRS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.desarrollaconmicrosoft.com/Dotnetspain2015/Agenda?day=27" target="_blank"><img class="aligncenter  wp-image-436" src="http://www.serrate.es/wp-content/uploads/2015/02/unnamed.jpg" alt="Microsoft dotNetSpain Conference" width="549" height="61" srcset="http://www.serrate.es/wp-content/uploads/2015/02/unnamed.jpg 639w, http://www.serrate.es/wp-content/uploads/2015/02/unnamed-300x33.jpg 300w" sizes="(max-width: 549px) 100vw, 549px"></a></p>
+<p>El próximo viernes 27 Febrero voy a estar en la dotNetSpain Conference hablando sobre Complex Event Processing, Inmutabilidad y Proyecciones con <a href="http://geteventstore.com" target="_blank">EventStore</a>.</p>
+<p>Aquí os dejo el detalle de la charla:</p>
+<blockquote>
+<p>En esta sesión veremos cómo tomar decisiones a partir del procesamiento y correlación de eventos, la importancia de la inmutabilidad y aplicar proyecciones de datos desde .NET.</p>
+<p>Almacenando nuestros datos como una serie de eventos inmutables en Event Store veremos cómo aplicar proyecciones capaces de reaccionar a eventos, procesarlos mediante CEP (Complex Event Processing) y generar nuevos eventos cuando ocurran combinaciones de ellos.</p>
+<p>Veremos también como aplicar Temporal queries, algo que tiende a ser complejo en SQL por el número de subconsultas, y finalmente como generar índices de eventos. Todo esto desde las diferentes APIs de las que disponemos en .NET</p>
+</blockquote>
+<p>Nos vemos ahí!!</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CEP/">CEP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EventSourcing/">EventSourcing</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2012/11/05/webcast-sobre-ddd-soa-y-cqrs-con-nservicebus/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/11/05/2012/11/05/webcast-sobre-ddd-soa-y-cqrs-con-nservicebus/">Webcast sobre DDD, SOA y CQRS con NServiceBus</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/11/05/2012/11/05/webcast-sobre-ddd-soa-y-cqrs-con-nservicebus/" class="article-date">
+  <time datetime="2012-11-05T10:57:25.000Z" itemprop="datePublished">2012-11-05</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Mañana voy a estar con SecondNug dando una charla de arquitectura distribuida con SOA, DDD y CQRS con NServiceBus.</p>
+<p>En esta charla hablaremos del diseño estratégico con DDD su relación con SOA y veremos un ejemplo de como modelar lógica de dominio mediante las Sagas en NServiceBus.</p>
+<p>A continuación podéis ver el enlace de registro:</p>
+<p><a href="https://msevents.microsoft.com/CUI/EventDetail.aspx?EventID=1032535739&Culture=es-ES&community=0" target="_blank"><img class="aligncenter" alt="" src="https://mseventsww.microsoft.com/BannerImages/567e02dc-4da6-42a6-b02f-74f06c434dc7.jpg"></a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDD/">DDD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2012/09/11/master-en-arquitectura-distribuida/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/09/11/2012/09/11/master-en-arquitectura-distribuida/">Máster en arquitectura distribuida</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/09/11/2012/09/11/master-en-arquitectura-distribuida/" class="article-date">
+  <time datetime="2012-09-11T20:24:13.000Z" itemprop="datePublished">2012-09-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Arquitectura/">Arquitectura</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>El próximo 26 de Noviembre (Barcelona) y 10 de Diciembre (Madrid) voy a realizar un máster de 4 días sobre arquitectura distribuida, en el que se van a tratar temas como:</p>
+<ul>
+<li><strong>Domain Driven Design / SOA</strong></li>
+<li><strong>CQRS</strong></li>
+<li>Mensajería con <strong>NServiceBus</strong>.</li>
+</ul>
+<p>Es un curso creado por <strong>Udi Dahan</strong> y que se va a realizar por primera vez en España después de varios años de éxito en Londres y USA.</p>
+<p>Para ver temario, fechas y precios, podéis consultar la siguiente web: <a href="http://masterad.techdencias.net" target="_blank" rel="external">http://masterad.techdencias.net</a></p>
+<p><strong>Colaboran</strong>:</p>
+<p><span style="font-family: Helvetica, sans-serif; font-size: medium;"><strong> </strong></span><a title="IASA-Spain" href="http://www.iasaglobal.org/iasa/Spain_Chapter.asp" target="_blank"><strong><img title="IASA-Spain" src="http://www.iasaglobal.org/images/iasa/IASA%20Logo.jpg" alt="IASA-Spain" width="146" height="49"></strong></a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CQRS/">CQRS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDD/">DDD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2012/08/22/nuevo-blog-en-ingles/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/08/22/2012/08/22/nuevo-blog-en-ingles/">Nuevo blog en inglés</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/08/22/2012/08/22/nuevo-blog-en-ingles/" class="article-date">
+  <time datetime="2012-08-22T14:56:57.000Z" itemprop="datePublished">2012-08-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Arquitectura/">Arquitectura</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Aparte de este blog que continuaré actualizando, he creado otro en inglés que podéis encontrar en:</p>
+<p><a href="http://www.serrate.net" target="_blank" rel="external">http://www.serrate.net</a></p>
+<p>Donde hablaré de temas como: SOA, DDD, NoSQL, BigData y todo lo que vaya descubriendo y pueda ser de interés.</p>
+<p>Nos leemos!!</p>
+
+      
+    </div>
+    
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2012/04/18/iasa-spain-evento-sobre-sistemas-distribuidos-con-nservicebus-en-madrid-y-barcelona/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/04/18/2012/04/18/iasa-spain-evento-sobre-sistemas-distribuidos-con-nservicebus-en-madrid-y-barcelona/">IASA-Spain: Evento sobre Sistemas Distribuidos con NServiceBus en Madrid y Barcelona</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/04/18/2012/04/18/iasa-spain-evento-sobre-sistemas-distribuidos-con-nservicebus-en-madrid-y-barcelona/" class="article-date">
+  <time datetime="2012-04-18T10:06:42.000Z" itemprop="datePublished">2012-04-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Arquitectura/">Arquitectura</a><span>></span><a class="article-category-link" href="/categories/Arquitectura/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1.jpg" target="_blank" rel="external"><img class="aligncenter size-full wp-image-412" title="IASA" src="http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1.jpg" alt="" width="357" height="90" srcset="http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1.jpg 357w, http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1-300x75.jpg 300w" sizes="(max-width: 357px) 100vw, 357px"></a> <a href="http://www.serrate.es/wp-content/uploads/2012/04/image002.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-413" title="NServiceBus" src="http://www.serrate.es/wp-content/uploads/2012/04/image002.png" alt="" width="330" height="77" srcset="http://www.serrate.es/wp-content/uploads/2012/04/image002.png 330w, http://www.serrate.es/wp-content/uploads/2012/04/image002-300x70.png 300w" sizes="(max-width: 330px) 100vw, 330px"></a></p>
+<p>El próximo jueves <strong>26 de Abril a las 16h</strong> se realizará un evento en Madrid sobre Sistemas distribuidos con <strong>NServiceBus</strong>.</p>
+<p>El enlace de registro para el evento en Madrid es: <a href="http://nservicebusiasamad.eventbrite.com" target="_blank">http://nservicebusiasamad.eventbrite.com</a></p>
+<p>El jueves <strong>3 de Mayo a las 16h</strong> se repetirá el evento en Barcelona añadiendo un track sobre arquitectura SOA con <strong>RabbitMQ y WebSockets</strong> de la mano de Braulio Megías.</p>
+<p>El enlace de registro para el evento en Barcelona es: <a href="http://messagingiasabcn.eventbrite.com" target="_blank">http://messagingiasabcn.eventbrite.com</a></p>
+<p><strong>Descripción del evento</strong></p>
+<p>En este evento presentaremos las particularidades de los <strong>Enterprise Service Bus</strong> (ESB) en comparación con las arquitecturas tipo Broker. En concreto, nos centraremos en las características de <strong>NServiceBus</strong> y cómo puede ayudarnos a diseñar sistemas distribuidos <strong>SOA</strong> de forma robusta, fiable y escalable.</p>
+<p>Finalmente veremos de forma teórica y práctica los patrones de mensajería que incluye NServiceBus: <strong>Store &amp; Forward</strong>, <strong>Request/Reply</strong> y <strong>Publish/Subscribe</strong>.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IASA/">IASA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2012/01/30/nservicebus-3-0-distributor/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/01/30/2012/01/30/nservicebus-3-0-distributor/">NServiceBus 3.0 &amp;#8211; Distributor</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/01/30/2012/01/30/nservicebus-3-0-distributor/" class="article-date">
+  <time datetime="2012-01-30T21:15:44.000Z" itemprop="datePublished">2012-01-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En las últimas entradas estamos repasando las novedades de NServiceBus 3.0 que ya está en la <a href="https://github.com/downloads/NServiceBus/NServiceBus/NServiceBus.3.0.0-rc2.zip" target="_blank">Release Candidate 2</a>. En esta entrada veremos una funcionalidad que ya existía en versiones anteriores pero que se ha rehecho completamente.</p>
+<p>Distributor nos permite balancear la carga entre varios nodos a partir de un nodo maestro. La configuración del nodo maestro es muy sencilla a través de los profiles de NServiceBus, simplemente debemos añadir el argumento <strong>NServiceBus.Master</strong> en el Host. Para asegurar la alta disponibilidad del nodo maestro es recomendable que se ejecute en un cluster.</p>
+<p>Para configurar los nodos worker, añadiremos a su vez el argumento <strong>NServiceBus.Worker</strong> para establecer este comportamiento.</p>
+<p>El funcionamiento o flujo de trabajo es el siguiente:</p>
+<ol>
+<li>Los nodos worker envían un mensaje a <strong>[endpoint].distributor.control</strong> cada vez que están libres.</li>
+<li>El nodo Master procesa la cola guardando todos los nodos workers disponibles en la cola <strong>[endpoint].distributor.storage</strong>.</li>
+<li>Cuando el nodo Master recibe un mensaje utiliza el primer worker de la lista de <strong>[endpoint].distributor.storage</strong> para enviarle el mensaje y que lo procese.
+        
+          <p class="article-more-link">
+            <a href="/2012/01/30/2012/01/30/nservicebus-3-0-distributor/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2012/01/19/nservicebus-3-0-data-bus/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/01/19/2012/01/19/nservicebus-3-0-data-bus/">NServiceBus 3.0 &amp;#8211; Data Bus</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/01/19/2012/01/19/nservicebus-3-0-data-bus/" class="article-date">
+  <time datetime="2012-01-19T17:02:23.000Z" itemprop="datePublished">2012-01-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Siempre que usemos algún sistema de mensajería tenemos que adaptarnos al límite de tamaño del mensaje que el sistema es capaz de enviar. Este límite varía dependiendo de la tecnología usada.</p>
+<p>En la mayoría de sistemas <em>on-premise</em> no hay mucho problema ya que el tamaño acostumbra a ser suficiente para la mayoría de casos. Por ejemplo, en MSMQ &#8211; el transporte por defecto en NServiceBus – el límite es de <strong>4MB</strong>.</p>
+<p>En sistemas en la nube este límite es notablemente inferior. Algunos ejemplos:</p>
+<ul>
+<li>Azure Queues: 8KB</li>
+<li>Azure Service Bus Queues: 64KB</li>
+<li>Amazon SQS: 64KB</li>
+</ul>
+<p>En aquellos casos en los que se requiera un límite mayor ya sea porqué usamos <strong>NServiceBus en Azure</strong> o bien porqué queremos enviar algún dato de gran tamaño como una imagen o video, podemos hacer uso de la propiedad <strong>DataBusProperty<t></t></strong>.
+        
+          <p class="article-more-link">
+            <a href="/2012/01/19/2012/01/19/nservicebus-3-0-data-bus/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2012/01/11/nservicebus-3-0-message-mutators/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/01/11/2012/01/11/nservicebus-3-0-message-mutators/">NServiceBus 3.0 &amp;#8211; Message Mutators</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/01/11/2012/01/11/nservicebus-3-0-message-mutators/" class="article-date">
+  <time datetime="2012-01-11T17:55:57.000Z" itemprop="datePublished">2012-01-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Con la entrada del nuevo año ya falta menos para tener la versión definitiva de NServiceBus 3.0. Esta versión traerá un gran número de nuevas funcionalidades. Entre ellas:</p>
+<ul>
+<li>Integración de <strong>RavenDB</strong> para la persistencia de Sagas y almacenamiento de la información de subscripciones.</li>
+<li>Soporte para <strong>Azure</strong>.</li>
+<li>Transportar grandes cantidades de datos gracias al <strong>DataBus</strong>.</li>
+<li>Una configuración mucho más sencilla y <strong>no intrusiva</strong>.</li>
+</ul>
+<p>Podéis leer un resumen de estas funcionalidades y descargar la beta desde aquí: <a href="http://www.nservicebus.com/NServiceBusV3NewFeatures.aspx" target="_blank">http://www.nservicebus.com/NServiceBusV3NewFeatures.aspx</a></p>
+<p>En este post hablaremos de los <strong>MessageMutators</strong>, una nueva funcionalidad que actúa como interceptores de los mensajes al llegar y/o al salir de nuestro endpoint. Así, podemos ejecutar transformaciones a nuestros mensajes de forma dinámica.
+        
+          <p class="article-more-link">
+            <a href="/2012/01/11/2012/01/11/nservicebus-3-0-message-mutators/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <nav id="page-nav">
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      </nav>
+    </section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

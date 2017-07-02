@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Entity Framework 4 CodeOnly - Introducción - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Entity Framework 4.0 nos ofrece varias formas de generar nuestro modelo, la primera, y que ya existía en la primera versión del producto, era generar el modelo a partir de la base de datos. Esto nos o">
+<meta name="keywords" content="CodeOnly,EF4">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Entity Framework 4 CodeOnly - Introducción">
+<meta property="og:url" content="http://serrate.es/2010/07/19/entity-framework-4-codeonly-introduccion/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="Entity Framework 4.0 nos ofrece varias formas de generar nuestro modelo, la primera, y que ya existía en la primera versión del producto, era generar el modelo a partir de la base de datos. Esto nos o">
+<meta property="og:image" content="http://serrate.es/uploads/2010/07/Diagrama-de-clases.png">
+<meta property="og:updated_time" content="2017-07-02T19:04:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Entity Framework 4 CodeOnly - Introducción">
+<meta name="twitter:description" content="Entity Framework 4.0 nos ofrece varias formas de generar nuestro modelo, la primera, y que ya existía en la primera versión del producto, era generar el modelo a partir de la base de datos. Esto nos o">
+<meta name="twitter:image" content="http://serrate.es/uploads/2010/07/Diagrama-de-clases.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-entity-framework-4-codeonly-introduccion" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Entity Framework 4 CodeOnly - Introducción
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/07/19/entity-framework-4-codeonly-introduccion/" class="article-date">
+  <time datetime="2010-07-19T16:07:45.000Z" itemprop="datePublished">2010-07-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code-Only/">Code Only</a><span>></span><a class="article-category-link" href="/categories/Code-Only/Entity-Framework-4/">Entity Framework 4</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Entity Framework 4.0 nos ofrece varias formas de generar nuestro modelo, la primera, y que ya existía en la primera versión del producto, era generar el modelo <strong>a partir de la base de datos</strong>. Esto nos obligaba a empezar diseñando la base de datos para luego generar nuestras clases, lo cual no es lo deseable.</p>
+<p>Una segunda opción es el llamado <strong>model-first</strong>, en que primero diseñamos nuestras clases del dominio y a partir de plantillas T4 y WF &#8211; ya sea las plantillas que trae por defecto o unas creadas por nosotros mismos – nos permite generar el script para crear la base de datos. Esta opción, aun siendo mejor que la anterior no da lugar a mucho juego.</p>
+<p>Si realmente lo que queremos es total flexibilidad y no usar ni el diseñador ni pelearnos con el xml del fichero <em>.<strong>edmx</strong>, podemos obtener la funcionalidad que necesitamos mediante el uso de la librería <strong>Microsoft.Data.Entity.CTP</strong> y disponible <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=4e094902-aeff-4ee2-a12d-5881d4b0dd3e&displayLang=en" target="_blank">aquí</a>. Como podéis deducir por el nombre aun se encuentra en fase CTP pero ya podemos realizar bastantes cosas interesantes. Para los que hayan trabajado con <strong>nHibernate,</strong> CodeOnly es la alternativa a <em>*Fluent nHibernate</em></em>.</p>
+<a id="more"></a>A continuación vemos un ejemplo sencillo de cómo se usaría CodeOnly para mapear una clase Student y su relación con otra clase Group:<br><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">public class Student</div><div class="line">&#123;</div><div class="line">    public int Id &#123; get; set; &#125;</div><div class="line">    public string Name &#123; get; set; &#125;</div><div class="line">    public int GroupId &#123; get; set; &#125;</div><div class="line">    public Group Group &#123; get; set; &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Group</div><div class="line">&#123;</div><div class="line">    public int Id &#123; get; set; &#125;</div><div class="line">    public ICollection&amp;lt;Student&amp;gt; Students &#123; get; set; &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class CodeOnlyConfiguration : EntityConfiguration&amp;lt;Student&amp;gt;</div><div class="line">&#123;</div><div class="line">    public CodeOnlyConfiguration()</div><div class="line">    &#123;</div><div class="line">        // indicamos la clave primária</div><div class="line">        HasKey(s =&amp;gt; s.Id);</div><div class="line">        Property(s =&amp;gt; s.Id).IsIdentity();</div><div class="line">        // indicamos que el nombre es requerido y long. max.</div><div class="line">        Property(s =&amp;gt; s.Name).HasMaxLength(125).IsRequired();</div><div class="line">        // la relación con su constraint</div><div class="line">        Relationship(s =&amp;gt; s.Group)</div><div class="line">            .FromProperty(g =&amp;gt; g.Students)</div><div class="line">            .HasConstraint((s, g) =&amp;gt; s.GroupId == g.Id);</div><div class="line">        // mapeo con la tabla de la BBDD</div><div class="line">        MapSingleType(s =&amp;gt;</div><div class="line">            new</div><div class="line">            &#123;</div><div class="line">                ID = s.Id,</div><div class="line">                StudentName = s.Name,</div><div class="line">                Group_ID = s.GroupId</div><div class="line">            &#125;)</div><div class="line">            .ToTable("dbo.Students");</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Ejemplos-con-la-herencia"><a href="#Ejemplos-con-la-herencia" class="headerlink" title="Ejemplos con la herencia"></a>Ejemplos con la herencia</h3><p>Vamos a mostrar varios ejemplos en que usamos los diferentes tipos de herencia soportados por EF4: Table per Hierarchy (TPH),Table per Type (TPT) y Table per Concrete Class (TPC).</p>
+<p>Nuestras clases del dominio serán las mismas para los tres ejemplos y representan una herencia muy simple – no creo que haga falta explicarlas 🙂 -:</p>
+<img src="/uploads/2010/07/Diagrama-de-clases.png" width="450" height="281" title="Diagrama de clases" alt="Diagrama de clases">
+<p>Por comodidad, añado los enlaces a los posts relacionados:</p>
+<ol>
+<li><a href="/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" target="_self">Table per Hierarchy (TPH)</a></li>
+<li><a href="/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" target="_self">Table per Type (TPT)</a></li>
+<li>Table per concrete Class (TPC)</li>
+</ol>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CodeOnly/">CodeOnly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EF4/">EF4</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2010/07/19/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Entity Framework 4 CodeOnly &amp;#8211; Table per Hierarchy (TPH)
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2010/07/19/entity-framework-4-codeonly-introduccion/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

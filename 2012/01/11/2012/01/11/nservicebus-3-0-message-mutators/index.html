@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>NServiceBus 3.0 &amp;#8211; Message Mutators - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Con la entrada del nuevo año ya falta menos para tener la versión definitiva de NServiceBus 3.0. Esta versión traerá un gran número de nuevas funcionalidades. Entre ellas:  Integración de RavenDB para">
+<meta name="keywords" content="NServiceBus,SOA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NServiceBus 3.0 &amp;#8211; Message Mutators">
+<meta property="og:url" content="http://serrate.es/2012/01/11//2012/01/11/nservicebus-3-0-message-mutators//index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="Con la entrada del nuevo año ya falta menos para tener la versión definitiva de NServiceBus 3.0. Esta versión traerá un gran número de nuevas funcionalidades. Entre ellas:  Integración de RavenDB para">
+<meta property="og:image" content="http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png">
+<meta property="og:updated_time" content="2017-06-25T10:36:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NServiceBus 3.0 &amp;#8211; Message Mutators">
+<meta name="twitter:description" content="Con la entrada del nuevo año ya falta menos para tener la versión definitiva de NServiceBus 3.0. Esta versión traerá un gran número de nuevas funcionalidades. Entre ellas:  Integración de RavenDB para">
+<meta name="twitter:image" content="http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-/2012/01/11/nservicebus-3-0-message-mutators/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NServiceBus 3.0 &amp;#8211; Message Mutators
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/01/11/2012/01/11/nservicebus-3-0-message-mutators/" class="article-date">
+  <time datetime="2012-01-11T17:55:57.000Z" itemprop="datePublished">2012-01-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Con la entrada del nuevo año ya falta menos para tener la versión definitiva de NServiceBus 3.0. Esta versión traerá un gran número de nuevas funcionalidades. Entre ellas:</p>
+<ul>
+<li>Integración de <strong>RavenDB</strong> para la persistencia de Sagas y almacenamiento de la información de subscripciones.</li>
+<li>Soporte para <strong>Azure</strong>.</li>
+<li>Transportar grandes cantidades de datos gracias al <strong>DataBus</strong>.</li>
+<li>Una configuración mucho más sencilla y <strong>no intrusiva</strong>.</li>
+</ul>
+<p>Podéis leer un resumen de estas funcionalidades y descargar la beta desde aquí: <a href="http://www.nservicebus.com/NServiceBusV3NewFeatures.aspx" target="_blank">http://www.nservicebus.com/NServiceBusV3NewFeatures.aspx</a></p>
+<p>En este post hablaremos de los <strong>MessageMutators</strong>, una nueva funcionalidad que actúa como interceptores de los mensajes al llegar y/o al salir de nuestro endpoint. Así, podemos ejecutar transformaciones a nuestros mensajes de forma dinámica.<a id="more"></a></p>
+<p>Tenemos dos tipos de MessageMutators:</p>
+<ul>
+<li><strong>IMessageMutator:</strong> Esta interfaz nos permite ejecutar cualquier acción sobre un mensaje en concreto.</li>
+<li><strong>IMutateTransportMessages:</strong> Esta interfaz se diferencia de la anterior en que aplicamos las acciones sobre un TransportMessage, este puede contener múltiples mensajes. Realmente, estos conceptos son más difíciles de explicar que de implementar. Por eso, vamos a amenizar el artículo mediante un ejemplo.</li>
+</ul>
+<p>Tenemos el siguiente mensaje, muy simple:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class SampleMessage : IMessage
+{
+    public string MyProperty { get; set; }
+    public int MyNumber { get; set; }
+}
+</pre>
+
+<p>Utilizaremos un interceptor para encriptar los mensajes antes de salir del endpoint y desencriptarlos al entrar:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class TransportEncryptionMutator : IMutateTransportMessages
+{
+    public void MutateIncoming(TransportMessage transportMessage)
+    {
+        var decrypt = EncryptionHelper.Decrypt(transportMessage.Body);
+
+        transportMessage.Body = decrypt;
+    }
+
+    public void MutateOutgoing(object[] messages, TransportMessage transportMessage)
+    {
+        var encrypt = EncryptionHelper.Encrypt(transportMessage.Body);
+
+        transportMessage.Body = encrypt;
+    }
+}
+</pre>
+
+<p>Y finalmente lo registramos mediante el contenedor de IoC de NServiceBus.</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class Initialization : IWantCustomInitialization
+{
+    public void Init()
+    {
+        Configure.Instance.Configurer
+         .ConfigureComponent&lt;TransportEncryptionMutator&gt;(
+            DependencyLifecycle.InstancePerCall);
+    }
+}
+</pre>
+
+<p>Ahora solo falta referenciarlo desde los proyectos cliente y servidor y cuando enviemos un mensaje, estos serán encriptados al enviar y desencriptados al recibir.</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-358" title="Message Mutators" src="http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png" alt="" width="597" height="342" srcset="http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png 597w, http://www.serrate.es/wp-content/uploads/2012/01/messagemutators-300x171.png 300w" sizes="(max-width: 597px) 100vw, 597px"></a></p>
+<p>Tal y como podemos ver en la imagen: sin aplicar el MessageMutator y aplicándolo.</p>
+<p>El ejemplo puede descargarse de: <a href="https://github.com/mserrate/NServiceBus.Samples" target="_blank">https://github.com/mserrate/NServiceBus.Samples</a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2012/01/19/2012/01/19/nservicebus-3-0-data-bus/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          NServiceBus 3.0 &amp;#8211; Data Bus
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/12/01/2011/12/01/poor-mans-cqrs-bdd-con-mspec/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Poor Man&amp;#8217;s CQRS &amp;#8211; BDD con MSpec&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2012/01/11/2012/01/11/nservicebus-3-0-message-mutators/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

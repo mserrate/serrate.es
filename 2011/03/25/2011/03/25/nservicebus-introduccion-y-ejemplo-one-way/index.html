@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>NServiceBus: Introducción y ejemplo One-Way - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="A raíz de algunos proyectos e inmersión en los mundos de Service Oriented Architecture (SOA) y Event-Driven Architecture (EDA) he conocido este producto creado por Udi Dahan y que podemos encontrar en">
+<meta name="keywords" content="NServiceBus,SOA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NServiceBus: Introducción y ejemplo One-Way">
+<meta property="og:url" content="http://serrate.es/2011/03/25//2011/03/25/nservicebus-introduccion-y-ejemplo-one-way//index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="A raíz de algunos proyectos e inmersión en los mundos de Service Oriented Architecture (SOA) y Event-Driven Architecture (EDA) he conocido este producto creado por Udi Dahan y que podemos encontrar en">
+<meta property="og:image" content="http://www.serrate.es/wp-content/uploads/2011/03/projectConfig.png">
+<meta property="og:image" content="http://www.serrate.es/wp-content/uploads/2011/03/consola.png">
+<meta property="og:image" content="http://www.serrate.es/wp-content/uploads/2011/03/no-available.png">
+<meta property="og:updated_time" content="2017-06-25T10:36:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NServiceBus: Introducción y ejemplo One-Way">
+<meta name="twitter:description" content="A raíz de algunos proyectos e inmersión en los mundos de Service Oriented Architecture (SOA) y Event-Driven Architecture (EDA) he conocido este producto creado por Udi Dahan y que podemos encontrar en">
+<meta name="twitter:image" content="http://www.serrate.es/wp-content/uploads/2011/03/projectConfig.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NServiceBus: Introducción y ejemplo One-Way
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/03/25/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/" class="article-date">
+  <time datetime="2011-03-25T12:06:13.000Z" itemprop="datePublished">2011-03-25</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.serrate.es/wp-content/uploads/2011/03/consola.png" target="_blank" rel="external"></a>A raíz de algunos proyectos e inmersión en los mundos de <a href="http://en.wikipedia.org/wiki/Service-oriented_architecture" target="_blank">Service Oriented Architecture </a>(SOA) y <a href="http://en.wikipedia.org/wiki/Event-driven_architecture" target="_blank">Event-Driven Architecture</a> (EDA) he conocido este producto creado por <a href="http://www.udidahan.com/" target="_blank">Udi Dahan </a>y que podemos encontrar en: <a href="http://www.nservicebus.com/" target="_blank">http://www.nservicebus.com/</a></p>
+<p><strong>NServiceBus</strong> es una implementación de Enterprise Service Bus (ESB) para .NET y que se apoya en Microsoft Message Queue Server (MSMQ) como transporte y persistencia de colas.</p>
+<p>Enterprise Service Bus es una arquitectura que nos permite el intercambio de mensajes entre aplicaciones y servicios de manera desacoplada entre los mismos proporcionando la fiabilidad y manejo de errores que éste tipo de aplicaciones requiere.</p>
+<p>Las diferencias entre Enterprise Service Bus y Enterprise Application Integration (EAI) como BizTalk y cuando usar uno u otro daría lugar a muchas discusiones y está fuera del alcance de éste humilde artículo.</p>
+<p>NServiceBus proporciona varios patrones de mensajería OOB como <strong>One-Way</strong>, <strong>Request/Response</strong> y <strong>Publish/Subscribe</strong> aunque nos permite extenderlo según nuestras necesidades.</p>
+<h2 id="Ejemplo-con-mensajeria-One-Way"><a href="#Ejemplo-con-mensajeria-One-Way" class="headerlink" title="Ejemplo con mensajería One-Way"></a>Ejemplo con mensajería One-Way</h2><p>En este ejemplo veremos la comunicación asíncrona punto a punto. Aunque parezca a priori que podríamos conseguir los mismos resultados con netMsmqBinding y WCF, y en cierta manera así es, la verdad es que NServiceBus nos abstrae de muchas configuraciones que deberíamos realizar a mano: creación de las colas en MSMQ, habilitar permisos necesarios, etc.</p>
+<p>Primero vamos a crear el proyecto <strong>Messages</strong> (Class library) con una referencia a la librería NServiceBus.dll. A continuación definiremos nuestro mensaje:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">namespace Messages
+{
+    /// &lt;summary&gt;
+    /// Esta clase será enviada por NServiceBus
+    /// &lt;/summary&gt;
+    public class MyMessage : IMessage
+    {
+        public string SomeString { get; set; }
+    }
+}
+</pre>
+
+<p>La interface <strong>IMessage</strong> no obliga a implementar ningún método, simplemente se usa como marcador para NServiceBus.</p>
+<a id="more"></a>
+<p>A continuación crearemos el proyecto <strong>Client</strong> (Class library) con referencias a NServiceBus.dll, NServiceBus.Core.dll, NServiceBus.Host.exe, log4net.dll y a nuestro proyecto <strong>Messages</strong>.</p>
+<p>En éste proyecto crearemos una clase de nombre <strong>EndpointConfig</strong>:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">namespace Client
+{
+    /// &lt;summary&gt;
+    /// Configuramos el endpoint como cliente
+    /// &lt;/summary&gt;
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Client
+    {
+    }
+}
+</pre>
+
+<p>Tenemos dos interfaces más que actúan como marcadores:</p>
+<ul>
+<li><strong>IConfigureThisEndpoint</strong> El proceso NServiceBus.Host.exe buscará en el directorio de ejecución la clase que implementa ésta interface para saber qué tipo de endpoint es.</li>
+<li><strong>AsA_Client</strong> indica al mismo proceso que el endpoint será de tipo cliente.</li>
+</ul>
+<p>Creamos ahora una clase llamada <strong>ClientEndpoint</strong>:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">namespace Client
+{
+    /// &lt;summary&gt;
+    /// Clase que se ejecuta al inicio
+    /// &lt;/summary&gt;
+    public class ClientEndpoint : IWantToRunAtStartup
+    {
+        /// &lt;summary&gt;
+        /// Inyectado por defecto mediante Spring
+        /// &lt;/summary&gt;
+        public IBus Bus { get; set; }
+
+        public void Run()
+        {
+            Console.WriteLine("--- Escribe \"exit\" para salir de la aplicación. ---");
+            Console.WriteLine("--- Pulsa ENTER para enviar el mensaje. ---");
+
+            var mensaje = Console.ReadLine();
+
+            while (mensaje != "exit")
+            {
+                // enviamos el mensaje
+                Bus.Send&lt;MyMessage&gt;(m =&gt; { m.SomeString = mensaje; });
+
+                mensaje = Console.ReadLine();
+            }
+        }
+
+        public void Stop()
+        {
+        }
+    }
+}
+</pre>
+
+<p>Con la interfaz <strong>IWantToRunAtStartup</strong> indicamos que la clase se ejecuta al inicio, y en el método Run() realizamos el envío del mensaje mediante Bus.Send<imessage>(Action<imessage>)</imessage></imessage></p>
+<p>Podemos ver que la propiedad IBus se inyecta mediante el contenedor Spring que utiliza por defecto NServiceBus, aunque también podemos configurar y usar el framework que más nos guste (Unity, Castle, etc).</p>
+<p>Finalmente, creamos en nuestro fichero <strong>App.config</strong> las configuraciones siguientes:</p>
+<pre class="brush: xml; title: ; notranslate" title="">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;configuration&gt;
+  &lt;configSections&gt;
+    &lt;section name="MsmqTransportConfig" type="NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core" /&gt;
+    &lt;section name="UnicastBusConfig" type="NServiceBus.Config.UnicastBusConfig, NServiceBus.Core" /&gt;
+  &lt;/configSections&gt;
+
+  &lt;MsmqTransportConfig
+    InputQueue="SerrateSendingQueue"
+    ErrorQueue="SerrateError"
+    NumberOfWorkerThreads="1"
+    MaxRetries="5"
+  /&gt;
+
+  &lt;UnicastBusConfig&gt;
+    &lt;MessageEndpointMappings&gt;
+      &lt;add Messages="Messages" Endpoint="SerrateReceivingQueue" /&gt;
+    &lt;/MessageEndpointMappings&gt;
+  &lt;/UnicastBusConfig&gt;
+
+&lt;/configuration&gt;
+</pre>
+
+<p>En las <strong>configSections</strong> definimos las dos secciones que utilizamos más abajo.</p>
+<p>En <strong>MsmqTransportConfig</strong> configuramos las colas de entrada y error respectivamente. También configuramos el número máximo de reintentos cuando exista cualquier excepción en el envío antes de enviar el mensaje a la cola de error.</p>
+<p>En <strong>UnicastBusConfig</strong> configuramos el ensamblado donde se encuentra las clases que implementan IMessage y el endpoint del servidor.</p>
+<p>Para la parte de servidor, creamos el proyecto <strong>Server</strong> (Class library) con referencias a NServiceBus.dll, NServiceBus.Core.dll, NServiceBus.Host.exe, log4net.dll y a nuestro proyecto <strong>Messages</strong>.</p>
+<p>De la misma manera, crearemos una clase de nombre <strong>EndpointConfig</strong>:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">namespace Server
+{
+    /// &lt;summary&gt;
+    /// Configuramos el endpoint como servidor
+    /// &lt;/summary&gt;
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server
+    {
+    }
+}
+</pre>
+
+<p>Esta vez, utilizamos la interface <strong>AsA_Server</strong> para indicar que el endpoint es de tipo servidor.</p>
+<p>Posteriormente, creamos una clase <strong>MyMessageHandler</strong> para procesar los mensajes recibidos:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">namespace Server
+{
+    /// &lt;summary&gt;
+    /// Procesa los mensajes recibidos
+    /// &lt;/summary&gt;
+    public class MyMessageHandler : IHandleMessages&lt;MyMessage&gt;
+    {
+        public void Handle(MyMessage message)
+        {
+            if (message.SomeString == "error")
+            {
+                throw new Exception("error grave");
+            }
+
+            Console.WriteLine(string.Format("Se ha recibido el siguiente mensaje: {0}", message.SomeString));
+        }
+    }
+}
+</pre>
+
+<p>Finalmente, la configuración será parecida a la parte cliente exceptuando la parte de UnicastBusConfig:</p>
+<pre class="brush: xml; title: ; notranslate" title="">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;configuration&gt;
+  &lt;configSections&gt;
+    &lt;section name="MsmqTransportConfig" type="NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core" /&gt;
+    &lt;section name="UnicastBusConfig" type="NServiceBus.Config.UnicastBusConfig, NServiceBus.Core" /&gt;
+  &lt;/configSections&gt;
+
+  &lt;MsmqTransportConfig
+    InputQueue="SerrateReceivingQueue"
+    ErrorQueue="SerrateError"
+    NumberOfWorkerThreads="1"
+    MaxRetries="5"
+  /&gt;
+
+  &lt;UnicastBusConfig&gt;
+    &lt;MessageEndpointMappings&gt;
+    &lt;/MessageEndpointMappings&gt;
+  &lt;/UnicastBusConfig&gt;
+&lt;/configuration&gt;
+</pre>
+
+<h2 id="Ejecucion-del-ejemplo"><a href="#Ejecucion-del-ejemplo" class="headerlink" title="Ejecución del ejemplo"></a>Ejecución del ejemplo</h2><p>Como los proyectos Client y Server son de tipo class library para ejecutarlos deberemos seleccionar la pestaña Debug de la configuración del proyecto y en “Start External Program” seleccionar NServiceBus.Host.exe.</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2011/03/projectConfig.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-245" title="projectConfig" src="http://www.serrate.es/wp-content/uploads/2011/03/projectConfig.png" alt="" width="547" height="129"></a></p>
+<p>A continuación ejecutamos el servidor y el cliente y al enviar un mensaje veremos como el servidor lo recibe sin problema:</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2011/03/consola.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-243" title="consola" src="http://www.serrate.es/wp-content/uploads/2011/03/consola.png" alt="" width="502" height="401"></a></p>
+<p>Posteriormente podemos hacer la prueba de parar el servidor y al enviar un mensaje, ésta quedará encolada en MSMQ de la siguiente forma:</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2011/03/no-available.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-244" title="no available" src="http://www.serrate.es/wp-content/uploads/2011/03/no-available.png" alt="" width="363" height="84" srcset="http://www.serrate.es/wp-content/uploads/2011/03/no-available.png 363w, http://www.serrate.es/wp-content/uploads/2011/03/no-available-300x69.png 300w" sizes="(max-width: 363px) 100vw, 363px"></a></p>
+<p>Posteriormente, si abrimos el servidor, el mensaje será entregado sin problema alguno.</p>
+<p>Si en el servidor se produce una excepción, después de los 5 intentos establecidos, el mensaje pasará a la cola de error. Ahí se deberá de hacer la acción requerida para establecer el servicio y desencolar el mensaje de la cola de error.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/05/05/2011/05/05/cqrs-evento-en-secondnug/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          CQRS: Evento en SecondNug
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/02/25/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ASP.NET MVC: Componente Autocomplete de jQuery&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2011/03/25/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

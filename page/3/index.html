@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Marçal Serrate | El caso frontera">
+<meta property="og:url" content="http://serrate.es/page/3/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Marçal Serrate | El caso frontera">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer">
+      <article id="post-/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/09/19/2010/09/19/introduccion-a-managed-extensibility-framework-mef/">Introducción a Managed Extensibility Framework (MEF)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/09/19/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" class="article-date">
+  <time datetime="2010-09-19T19:10:17.000Z" itemprop="datePublished">2010-09-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Managed-Extensibility-Framework/">Managed Extensibility Framework</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Que-es-MEF-y-que-te-aporta"><a href="#Que-es-MEF-y-que-te-aporta" class="headerlink" title="Qué es MEF y que te aporta"></a>Qué es MEF y que te aporta</h2><p>MEF es una tecnología que permite desarrollar aplicaciones extensibles. La gran ventaja que nos ofrece MEF es que no necesitamos diseñar la aplicación conociendo qué extensiones formaran parte de ella ni la implementación interna de las propias extensiones.</p>
+<p>Por extensible nos referimos a que nuestra aplicación puede estar en producción y de forma dinámica añadir, reemplazar, eliminar las extensiones que tenemos sin necesidad ni de recompilar ni reiniciar la aplicación.</p>
+<p>MEF viene con .NET Framework 4 en la librería: **System.ComponentModel.Composition.</p>
+<p>** </p>
+<h2 id="MEF-vs-IoC-Container"><a href="#MEF-vs-IoC-Container" class="headerlink" title="MEF vs IoC Container"></a>MEF vs IoC Container</h2><p>Aunque pueda parecer que MEF e IoC  ofrecen la misma funcionalidad la diferencia consiste en que tratan de resolver problemas distintos.  </p>
+<p>El objetivo básico de un framework de IoC es el de ofrecer <strong>desacoplamiento</strong> entre componentes y nos resuelve dependencias que <span style="text-decoration: underline;">conocemos</span>. Esto nos permite que nuestra aplicación sea modular y testeable.</p>
+<p>En cambio, en MEF, el principal objetivo es la <strong>extensibilidad</strong>: el desacoplamiento es una consecuencia. Sabemos que las extensiones que se vayan a implementar cumplirán un contrato pero no sabremos si sólo habrá una extensión, muchas o ninguna.</p>
+<h2 id="Ejemplo-Extension-IHelloWorld"><a href="#Ejemplo-Extension-IHelloWorld" class="headerlink" title="Ejemplo: Extensión IHelloWorld"></a>Ejemplo: Extensión IHelloWorld</h2><p>
+        
+          <p class="article-more-link">
+            <a href="/2010/09/19/2010/09/19/introduccion-a-managed-extensibility-framework-mef/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IoC/">IoC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Managed-Extensibility-Framework/">Managed Extensibility Framework</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/">Entity Framework 4 CodeOnly &amp;#8211; Table per concrete Class (TPC)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" class="article-date">
+  <time datetime="2010-08-04T16:40:12.000Z" itemprop="datePublished">2010-08-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code-Only/">Code Only</a><span>></span><a class="article-category-link" href="/categories/Code-Only/Entity-Framework-4/">Entity Framework 4</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En el último post acerca de le herencia en Entity Framework 4 y Code Only, vamos a ver la estrategia de <strong>Table per concrete Class</strong> (TPC).</p>
+<p>La diferencia con las estrategias de los ejemplos anteriores: <a href="http://www.serrate.es/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" target="_self">Table per Hierarchy</a> y <a href="/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" target="_self">Table per Type</a> es que, en este caso, la clase base no tiene ningún tipo de representación en las base de datos y sólo tiene sentido a nivel de clases del modelo.</p>
+<p>A continuación vemos como tenemos definido una tabla por subtipo:</p>
+<p><a href="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-139" title="TablaTpC" src="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png" alt="TablaTpC" width="450" height="259" srcset="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png 450w, http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC-300x172.png 300w" sizes="(max-width: 450px) 100vw, 450px"></a></p>
+<p>Ahora vamos a definir los mapeos de la base de datos con nuestras clases.  </p>
+<p>Para el subtipo <strong>Book</strong>:</p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class BooksTpCConfiguration : EntityConfiguration&lt;Book&gt;
+{
+    public BooksTpCConfiguration()
+    {
+        this
+            .HasKey(b =&gt; b.Id)
+            .MapSingleType(
+                b =&gt; new
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Price = b.Price,
+                    Pages = b.PageNumber,
+                    Author = b.Author
+                }
+            )
+            .ToTable("BooksTpC");
+    }
+}
+</pre>
+
+<p>
+        
+          <p class="article-more-link">
+            <a href="/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CodeOnly/">CodeOnly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EF4/">EF4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TPC/">TPC</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/07/21/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/">Entity Framework 4 CodeOnly – Table per Type (TPT)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/07/21/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" class="article-date">
+  <time datetime="2010-07-20T22:17:03.000Z" itemprop="datePublished">2010-07-21</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code-Only/">Code Only</a><span>></span><a class="article-category-link" href="/categories/Code-Only/Entity-Framework-4/">Entity Framework 4</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En el <a href="/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" target="_self">post anterior</a> vimos el tipo de herencia Table per Hierarchy (TPH).  </p>
+<p>Ahora vamos a ver el tipo de herencia en que el tipo base se guarda en una tabla compartida, es lo que llamamos <strong>Table per Type</strong> (TPT).  </p>
+<p>En el ejemplo que estamos siguiendo (<a href="/2010/07/19/entity-framework-4-codeonly-introduccion/" target="_self">intro</a>), nuestra clase base Product se guardará en la tabla ProductsTpT que tiene las propiedades de la propia clase base y luego tendremos una tabla por cada subtipo: ShirtsTpT, BooksTpT y TelevisionsTpT como podemos ver a continuación:  </p>
+<p style="text-align: center;"><br>  <a href="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT.png" target="_blank" rel="external"><img class="size-full wp-image-114 aligncenter" title="TablaTpT" src="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT.png" alt="TablaTpT" width="450" height="177" srcset="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT.png 450w, http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT-300x118.png 300w" sizes="(max-width: 450px) 100vw, 450px"></a><br></p>
+
+<p>Ahora vamos a definir los mapeos de la base de datos con nuestras clases.  </p>
+<p>Para la <strong>clase base</strong> Product:  </p>
+<pre class="brush: csharp; title: ; notranslate" title="">public class ProductsTpTConfiguration : EntityConfiguration&lt;Product&gt;
+{
+    public ProductsTpTConfiguration()
+    {
+        this
+
+            .HasKey(p =&gt; p.Id)
+            .MapHierarchy(
+                p =&gt; new
+                {
+                    ProductId = p.Id,
+                    ProductName = p.Name,
+                    ProductPrice = p.Price
+                }
+            )
+            .ToTable("ProductsTpT");
+    }
+}
+
+</pre>
+        
+          <p class="article-more-link">
+            <a href="/2010/07/21/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CodeOnly/">CodeOnly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EF4/">EF4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TPT/">TPT</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/07/19/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/">Entity Framework 4 CodeOnly &amp;#8211; Table per Hierarchy (TPH)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/07/19/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" class="article-date">
+  <time datetime="2010-07-19T16:21:07.000Z" itemprop="datePublished">2010-07-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code-Only/">Code Only</a><span>></span><a class="article-category-link" href="/categories/Code-Only/Entity-Framework-4/">Entity Framework 4</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En mi <a href="/2010/07/19/entity-framework-4-codeonly-introduccion/" target="_self">post anterior</a> hice una introducción a EF4 CodeOnly. A continuación entraremos en detalle con el tipo de herencia de TPH:</p>
+<p>En TPH, utilizamos una tabla para guardar todos los datos de la jerarquía y mediante una columna que actúa como discriminador determinamos el tipo concreto de la fila y que columnas debemos leer.</p>
+<p>La tabla de la base de datos es la siguiente:</p>
+<p style="text-align: center;"><br>  <a href="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH.png" target="_blank" rel="external"><img class="size-full wp-image-116 aligncenter" title="TablaTpH" src="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH.png" alt="TablaTpH" width="310" height="270" srcset="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH.png 310w, http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH-300x261.png 300w" sizes="(max-width: 310px) 100vw, 310px"></a><br></p>
+
+<p style="text-align: left;"><br>  La columna que actúa como <strong>discriminador</strong> es ProductType y será ‘S’ para el tipo Shirt, ‘T’ para Television y ‘B’ para Book.<br></p>
+
+<p>
+        
+          <p class="article-more-link">
+            <a href="/2010/07/19/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CodeOnly/">CodeOnly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EF4/">EF4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TPH/">TPH</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <article id="post-entity-framework-4-codeonly-introduccion" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/07/19/entity-framework-4-codeonly-introduccion/">Entity Framework 4 CodeOnly - Introducción</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/07/19/entity-framework-4-codeonly-introduccion/" class="article-date">
+  <time datetime="2010-07-19T16:07:45.000Z" itemprop="datePublished">2010-07-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code-Only/">Code Only</a><span>></span><a class="article-category-link" href="/categories/Code-Only/Entity-Framework-4/">Entity Framework 4</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Entity Framework 4.0 nos ofrece varias formas de generar nuestro modelo, la primera, y que ya existía en la primera versión del producto, era generar el modelo <strong>a partir de la base de datos</strong>. Esto nos obligaba a empezar diseñando la base de datos para luego generar nuestras clases, lo cual no es lo deseable.</p>
+<p>Una segunda opción es el llamado <strong>model-first</strong>, en que primero diseñamos nuestras clases del dominio y a partir de plantillas T4 y WF &#8211; ya sea las plantillas que trae por defecto o unas creadas por nosotros mismos – nos permite generar el script para crear la base de datos. Esta opción, aun siendo mejor que la anterior no da lugar a mucho juego.</p>
+<p>Si realmente lo que queremos es total flexibilidad y no usar ni el diseñador ni pelearnos con el xml del fichero <em>.<strong>edmx</strong>, podemos obtener la funcionalidad que necesitamos mediante el uso de la librería <strong>Microsoft.Data.Entity.CTP</strong> y disponible <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=4e094902-aeff-4ee2-a12d-5881d4b0dd3e&displayLang=en" target="_blank">aquí</a>. Como podéis deducir por el nombre aun se encuentra en fase CTP pero ya podemos realizar bastantes cosas interesantes. Para los que hayan trabajado con <strong>nHibernate,</strong> CodeOnly es la alternativa a <em>*Fluent nHibernate</em></em>.</p>
+        
+          <p class="article-more-link">
+            <a href="/2010/07/19/entity-framework-4-codeonly-introduccion/#more">Ver Más</a>
+          </p>
+        
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CodeOnly/">CodeOnly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EF4/">EF4</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+    
+      <nav id="page-nav">
+        <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+      </nav>
+    </section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>
