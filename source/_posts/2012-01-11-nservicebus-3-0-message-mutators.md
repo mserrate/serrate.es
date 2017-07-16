@@ -1,15 +1,6 @@
 ---
-id: 350
-title: 'NServiceBus 3.0 &#8211; Message Mutators'
+title: 'NServiceBus 3.0 - Message Mutators'
 date: 2012-01-11T18:55:57+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=350
-permalink: /2012/01/11/nservicebus-3-0-message-mutators/
-shareaholic_disable_share_buttons:
-  - "0"
-shareaholic_disable_open_graph_tags:
-  - "0"
 categories:
   - SOA
 tags:
@@ -34,16 +25,18 @@ Tenemos dos tipos de MessageMutators:
 
 Tenemos el siguiente mensaje, muy simple:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class SampleMessage : IMessage
+{% codeblock lang:csharp %}
+public class SampleMessage : IMessage
 {
     public string MyProperty { get; set; }
     public int MyNumber { get; set; }
 }
-</pre>
+{% endcodeblock %}
 
 Utilizaremos un interceptor para encriptar los mensajes antes de salir del endpoint y desencriptarlos al entrar:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class TransportEncryptionMutator : IMutateTransportMessages
+{% codeblock lang:csharp %}
+public class TransportEncryptionMutator : IMutateTransportMessages
 {
     public void MutateIncoming(TransportMessage transportMessage)
     {
@@ -59,24 +52,25 @@ Utilizaremos un interceptor para encriptar los mensajes antes de salir del endpo
         transportMessage.Body = encrypt;
     }
 }
-</pre>
+{% endcodeblock %}
 
 Y finalmente lo registramos mediante el contenedor de IoC de NServiceBus.
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class Initialization : IWantCustomInitialization
+{% codeblock lang:csharp %}
+public class Initialization : IWantCustomInitialization
 {
     public void Init()
     {
         Configure.Instance.Configurer
-         .ConfigureComponent&lt;TransportEncryptionMutator&gt;(
+         .ConfigureComponent<TransportEncryptionMutator>(
             DependencyLifecycle.InstancePerCall);
     }
 }
-</pre>
+{% endcodeblock %}
 
 Ahora solo falta referenciarlo desde los proyectos cliente y servidor y cuando enviemos un mensaje, estos serán encriptados al enviar y desencriptados al recibir.
 
-[<img class="aligncenter size-full wp-image-358" title="Message Mutators" src="http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png" alt="" width="597" height="342" srcset="http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png 597w, http://www.serrate.es/wp-content/uploads/2012/01/messagemutators-300x171.png 300w" sizes="(max-width: 597px) 100vw, 597px" />](http://www.serrate.es/wp-content/uploads/2012/01/messagemutators.png)
+{% img /uploads/2012/01/messagemutators.png 597 342 '"Message Mutators"' '"Message Mutators"' %}
 
 Tal y como podemos ver en la imagen: sin aplicar el MessageMutator y aplicándolo.
 

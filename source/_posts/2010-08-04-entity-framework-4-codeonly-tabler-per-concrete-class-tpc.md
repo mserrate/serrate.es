@@ -1,11 +1,6 @@
 ---
-id: 133
-title: 'Entity Framework 4 CodeOnly &#8211; Table per concrete Class (TPC)'
+title: 'Entity Framework 4 CodeOnly - Table per concrete Class (TPC)'
 date: 2010-08-04T18:40:12+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=133
-permalink: /2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/
 categories:
   - Code Only
   - Entity Framework 4
@@ -20,20 +15,21 @@ La diferencia con las estrategias de los ejemplos anteriores: <a href="http://ww
 
 A continuación vemos como tenemos definido una tabla por subtipo:
 
-[<img class="aligncenter size-full wp-image-139" title="TablaTpC" src="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png" alt="TablaTpC" width="450" height="259" srcset="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png 450w, http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC-300x172.png 300w" sizes="(max-width: 450px) 100vw, 450px" />](http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png)
+  {% img /uploads/2010/08/TablaTpC.png 450 259 '"TablaTpC"' '"TablaTpC"' %}
 
 Ahora vamos a definir los mapeos de la base de datos con nuestras clases.  
 
 Para el subtipo **Book**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class BooksTpCConfiguration : EntityConfiguration&lt;Book&gt;
+{% codeblock lang:csharp %}
+public class BooksTpCConfiguration : EntityConfiguration<Book>
 {
     public BooksTpCConfiguration()
     {
         this
-            .HasKey(b =&gt; b.Id)
+            .HasKey(b => b.Id)
             .MapSingleType(
-                b =&gt; new
+                b => new
                 {
                     Id = b.Id,
                     Name = b.Name,
@@ -45,20 +41,21 @@ Para el subtipo **Book**:
             .ToTable("BooksTpC");
     }
 }
-</pre>
+{% endcodeblock %}
 
 <!--more-->Para el subtipo 
 
 **Television**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class TelevisionsTpCConfiguration : EntityConfiguration&lt;Television&gt;
+{% codeblock lang:csharp %}
+public class TelevisionsTpCConfiguration : EntityConfiguration<Television>
 {
     public TelevisionsTpCConfiguration()
     {
         this
-            .HasKey(t =&gt; t.Id)
+            .HasKey(t => t.Id)
             .MapSingleType(
-                t =&gt; new
+                t => new
                 {
                     Id = t.Id,
                     Name = t.Name,
@@ -70,18 +67,19 @@ Para el subtipo **Book**:
             .ToTable("TelevisionsTpC");
     }
 }
-</pre>
+{% endcodeblock %}
 
  Para el subtipo **Shirt**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class ShirtsTpCConfiguration : EntityConfiguration&lt;Shirt&gt;
+{% codeblock lang:csharp %}
+public class ShirtsTpCConfiguration : EntityConfiguration<Shirt>
 {
     public ShirtsTpCConfiguration()
     {
         this
-            .HasKey(s =&gt; s.Id)
+            .HasKey(s => s.Id)
             .MapSingleType(
-                s =&gt; new
+                s => new
                 {
                     Id = s.Id,
                     Name = s.Name,
@@ -93,13 +91,14 @@ Para el subtipo **Book**:
             .ToTable("ShirtsTpC");
     }
 }
-</pre>
+{% endcodeblock %}
 
 Vemos que mediante la expresión **MapSingleType** cada clase mapea las **propiedades propias del subtipo y de la clase base.**
 
 Para crear las instancias a las que añadimos nuestros objetos utilizaremos una clase que herede de **ObjectContext.** En ella definimos sólo los subtipos:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class ModelTpCContext : ObjectContext
+{% codeblock lang:csharp %}
+public class ModelTpCContext : ObjectContext
 {
     public ModelTpCContext(EntityConnection connection)
         : base(connection)
@@ -107,30 +106,31 @@ Para crear las instancias a las que añadimos nuestros objetos utilizaremos una 
         DefaultContainerName = "ModelTpCContext";
     }
 
-    public IObjectSet&lt;Book&gt; Books
+    public IObjectSet<Book> Books
     {
-        get { return base.CreateObjectSet&lt;Book&gt;(); }
+        get { return base.CreateObjectSet<Book>(); }
     }
 
-    public IObjectSet&lt;Television&gt; Televisions
+    public IObjectSet<Television> Televisions
     {
-        get { return base.CreateObjectSet&lt;Television&gt;(); }
+        get { return base.CreateObjectSet<Television>(); }
     }
 
-    public IObjectSet&lt;Shirt&gt; Shirts
+    public IObjectSet<Shirt> Shirts
     {
-        get { return base.CreateObjectSet&lt;Shirt&gt;(); }
+        get { return base.CreateObjectSet<Shirt>(); }
     }
 }
-</pre>
+{% endcodeblock %}
 
  Y para terminar con el ejemplo, vemos el método que configura y persiste los 3 subtipos tratados:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public void AddProducts()
+{% codeblock lang:csharp %}
+public void AddProducts()
 {
     // crear la conexión a la BBDD y crear el contexto de EF
     SqlConnection conn = new SqlConnection("Data Source=(local);Initial Catalog=Serrate.CodeOnly;Integrated Security=True;MultipleActiveResultSets=True;");
-    var builder = new ContextBuilder&lt;ModelTpCContext&gt;();
+    var builder = new ContextBuilder<ModelTpCContext>();
     // debemos añadir las 3 configuraciones que equivalen a cada tabla
     builder.Configurations.Add(new BooksTpCConfiguration());
     builder.Configurations.Add(new TelevisionsTpCConfiguration());
@@ -170,5 +170,4 @@ Para crear las instancias a las que añadimos nuestros objetos utilizaremos una 
     // guardamos los cambios
     context.SaveChanges();
 }
-
-</pre>
+{% endcodeblock %}

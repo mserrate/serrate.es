@@ -1,11 +1,6 @@
 ---
-id: 147
 title: Introducción a Managed Extensibility Framework (MEF)
 date: 2010-09-19T21:10:17+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=147
-permalink: /2010/09/19/introduccion-a-managed-extensibility-framework-mef/
 categories:
   - Managed Extensibility Framework
 tags:
@@ -18,10 +13,8 @@ MEF es una tecnología que permite desarrollar aplicaciones extensibles. La gran
 
 Por extensible nos referimos a que nuestra aplicación puede estar en producción y de forma dinámica añadir, reemplazar, eliminar las extensiones que tenemos sin necesidad ni de recompilar ni reiniciar la aplicación.
 
-MEF viene con .NET Framework 4 en la librería: **System.ComponentModel.Composition.
+MEF viene con .NET Framework 4 en la librería: **System.ComponentModel.Composition.**
   
-** 
-
 ## MEF vs IoC Container
 
 Aunque pueda parecer que MEF e IoC  ofrecen la misma funcionalidad la diferencia consiste en que tratan de resolver problemas distintos.  
@@ -36,37 +29,39 @@ En cambio, en MEF, el principal objetivo es la **extensibilidad**: el desacoplam
 
 Primero declaramos en el ensamblado _Serrate.MEFDemo.HelloWorld.Interface_ el contrato que deben cumplir:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Serrate.MEFDemo.HelloWord.Interface
+{% codeblock lang:csharp %}
+namespace Serrate.MEFDemo.HelloWord.Interface
 {
-    /// &lt;summary&gt;
+    /// <summary>
     /// Contrato para extensiones
-    /// &lt;/summary&gt;
+    /// </summary>
     public interface IHelloWorld
     {
         string GetMessage();
     }
 }
-</pre>
+{% endcodeblock %}
 
 Posteriormente en nuestra aplicación de consola _Serrate.MEFDemo.HelloWorldApp_ tenemos la clase Consumer encargada de consumir, como no, las extensiones de terceros.
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Serrate.MEFDemo.HelloWorldApp
+{% codeblock lang:csharp %}
+namespace Serrate.MEFDemo.HelloWorldApp
 {
-    /// &lt;summary&gt;
+    /// <summary>
     /// Clase encargada de consumir nuestras extensiones
-    /// &lt;/summary&gt;
+    /// </summary>
     public class Consumer
     {
-        /// &lt;summary&gt;
+        /// <summary>
         /// Esta lista importará las extensiones que cumplan
         /// nuestros requisitos
-        /// &lt;/summary&gt;
+        /// </summary>
         [ImportMany]
-        public List&lt;IHelloWorld&gt; HelloWorldPlugins { get; set; }
+        public List<IHelloWorld> HelloWorldPlugins { get; set; }
 
-        /// &lt;summary&gt;
+        /// <summary>
         /// Lectura de nuestras extensiones
-        /// &lt;/summary&gt;
+        /// </summary>
         public void Read()
         {
             // Configuramos nuestro contenedor
@@ -98,62 +93,66 @@ Posteriormente en nuestra aplicación de consola _Serrate.MEFDemo.HelloWorldApp_
         }
     }
 }
-</pre>
+{% endcodeblock %}
 
 Como podemos tener varias extensiones cumpliendo el mismo contrato, en nuestra aplicación declaramos una lista de este contrato, y la decoramos con el atributo **[ImportMany]**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">/// &lt;summary&gt;
-        /// Esta lista importará las extensiones que cumplan
-        /// nuestros requisitos
-        /// &lt;/summary&gt;
-        [ImportMany]
-        public List&lt;IHelloWorld&gt; HelloWorldPlugins { get; set; }
-</pre>
+{% codeblock lang:csharp %}
+    /// <summary>
+    /// Esta lista importará las extensiones que cumplan
+    /// nuestros requisitos
+    /// </summary>
+    [ImportMany]
+    public List<IHelloWorld> HelloWorldPlugins { get; set; }
+{% endcodeblock %}
 
 Seguidamente podemos realizar la lectura de nuestras extensiones:
 
-<pre class="brush: csharp; title: ; notranslate" title="">/// &lt;summary&gt;
-        /// Lectura de nuestras extensiones
-        /// &lt;/summary&gt;
-        public void Read()
+{% codeblock lang:csharp %}
+    /// <summary>
+    /// Lectura de nuestras extensiones
+    /// </summary>
+    public void Read()
+    {
+        // Configuramos nuestro contenedor
+        this.Setup();
+
+        // Recorremos la lista de extensiones
+        foreach (var plugin in HelloWorldPlugins)
         {
-            // Configuramos nuestro contenedor
-            this.Setup();
-
-            // Recorremos la lista de extensiones
-            foreach (var plugin in HelloWorldPlugins)
-            {
-                Console.WriteLine(plugin.GetMessage());
-            }
-
-            Console.ReadLine();
+            Console.WriteLine(plugin.GetMessage());
         }
-</pre>
+
+        Console.ReadLine();
+    }
+{% endcodeblock %}
 
 En el método Setup indicamos el directorio de nuestras extensiones y realizamos la carga de éstas:
 
-<pre class="brush: csharp; title: ; notranslate" title="">private void Setup()
-        {
-            // a partir del directorio de la aplicación buscamos
-            // en una ruta relativa nuestro directorio de extensiones
-            string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            DirectoryInfo extensionsDirectory =
-                new DirectoryInfo(appDirectory + "..\\..\\..\\extensions");
+{% codeblock lang:csharp %}
+    private void Setup()
+    {
+        // a partir del directorio de la aplicación buscamos
+        // en una ruta relativa nuestro directorio de extensiones
+        string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        DirectoryInfo extensionsDirectory =
+            new DirectoryInfo(appDirectory + "..\\..\\..\\extensions");
 
-            // creamos el catálogo a partir del directorio
-            var catalog = new DirectoryCatalog(extensionsDirectory.FullName);
+        // creamos el catálogo a partir del directorio
+        var catalog = new DirectoryCatalog(extensionsDirectory.FullName);
 
-            // componemos las extensiones para poderlas usar
-            var compositionContainer = new CompositionContainer(catalog);
-            compositionContainer.ComposeParts(this);
-        }
-</pre>
+        // componemos las extensiones para poderlas usar
+        var compositionContainer = new CompositionContainer(catalog);
+        compositionContainer.ComposeParts(this);
+    }
+{% endcodeblock %}
 
 Finalmente, ya sólo nos hace falta crear nuestras extensiones que realizarán el trabajo duro. Indicaremos que las extensiones son exportables mediante el atributo **[Export]**
 
 Crearemos el ensamblado _Serrate.MEFDemo.Plugin.ES_ y allí tendremos nuestra clase que implementará el contrato:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Serrate.MEFDemo.Plugin.ES
+{% codeblock lang:csharp %}
+namespace Serrate.MEFDemo.Plugin.ES
 {
     [Export(typeof(IHelloWorld))]
     public class HolaMundo : IHelloWorld
@@ -164,11 +163,12 @@ Crearemos el ensamblado _Serrate.MEFDemo.Plugin.ES_ y allí tendremos nuestra cl
         }
     }
 }
-</pre>
+{% endcodeblock %}
 
 En otro ensamblado _Serrate.MEFDemo.Plugin.CA_ tendremos definida otra extensión:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Serrate.MEFDemo.Plugin.CA
+{% codeblock lang:csharp %}
+namespace Serrate.MEFDemo.Plugin.CA
 {
     [Export(typeof(IHelloWorld))]
     public class HolaMon : IHelloWorld
@@ -179,11 +179,11 @@ En otro ensamblado _Serrate.MEFDemo.Plugin.CA_ tendremos definida otra extensió
         }
     }
 }
-</pre>
+{% endcodeblock %}
 
 Si colocamos las librerías de nuestras extensiones en la carpeta que espera nuestra aplicación, al ejecutarla ya nos saldrá por pantalla el resultado esperado:
 
-<pre>&gt; Hola Mundo
-&gt; Hola Món</pre>
+<pre>> Hola Mundo
+> Hola Món</pre>
 
 En esta introducción hemos visto como utilizar MEF para que nuestra aplicación pueda ser extendida por nosotros mismos o por terceros de forma realmente sencilla.

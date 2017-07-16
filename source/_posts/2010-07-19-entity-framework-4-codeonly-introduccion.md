@@ -29,24 +29,24 @@ public class Student
 public class Group
 {
     public int Id { get; set; }
-    public ICollection&lt;Student&gt; Students { get; set; }
+    public ICollection<Student> Students { get; set; }
 }
 
-public class CodeOnlyConfiguration : EntityConfiguration&lt;Student&gt;
+public class CodeOnlyConfiguration : EntityConfiguration<Student>
 {
     public CodeOnlyConfiguration()
     {
         // indicamos la clave primária
-        HasKey(s =&gt; s.Id);
-        Property(s =&gt; s.Id).IsIdentity();
+        HasKey(s => s.Id);
+        Property(s => s.Id).IsIdentity();
         // indicamos que el nombre es requerido y long. max.
-        Property(s =&gt; s.Name).HasMaxLength(125).IsRequired();
+        Property(s => s.Name).HasMaxLength(125).IsRequired();
         // la relación con su constraint
-        Relationship(s =&gt; s.Group)
-            .FromProperty(g =&gt; g.Students)
-            .HasConstraint((s, g) =&gt; s.GroupId == g.Id);
+        Relationship(s => s.Group)
+            .FromProperty(g => g.Students)
+            .HasConstraint((s, g) => s.GroupId == g.Id);
         // mapeo con la tabla de la BBDD
-        MapSingleType(s =&gt;
+        MapSingleType(s =>
             new
             {
                 ID = s.Id,

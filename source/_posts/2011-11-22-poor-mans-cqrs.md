@@ -1,15 +1,6 @@
 ---
-id: 281
 title: Poor Man’s CQRS
 date: 2011-11-22T12:45:39+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=281
-permalink: /2011/11/22/poor-mans-cqrs/
-shareaholic_disable_share_buttons:
-  - "0"
-shareaholic_disable_open_graph_tags:
-  - "0"
 categories:
   - CQRS
 tags:

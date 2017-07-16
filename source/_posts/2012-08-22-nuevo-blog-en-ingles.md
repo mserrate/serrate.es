@@ -1,15 +1,6 @@
 ---
-id: 419
 title: Nuevo blog en inglés
 date: 2012-08-22T16:56:57+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=419
-permalink: /2012/08/22/nuevo-blog-en-ingles/
-shareaholic_disable_share_buttons:
-  - "0"
-shareaholic_disable_open_graph_tags:
-  - "0"
 categories:
   - Arquitectura
 ---

@@ -1,15 +1,6 @@
 ---
-id: 409
 title: 'IASA-Spain: Evento sobre Sistemas Distribuidos con NServiceBus en Madrid y Barcelona'
 date: 2012-04-18T12:06:42+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=409
-permalink: /2012/04/18/iasa-spain-evento-sobre-sistemas-distribuidos-con-nservicebus-en-madrid-y-barcelona/
-shareaholic_disable_share_buttons:
-  - "0"
-shareaholic_disable_open_graph_tags:
-  - "0"
 categories:
   - Arquitectura
   - SOA
@@ -18,7 +9,9 @@ tags:
   - NServiceBus
   - SOA
 ---
-[<img class="aligncenter size-full wp-image-412" title="IASA" src="http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1.jpg" alt="" width="357" height="90" srcset="http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1.jpg 357w, http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1-300x75.jpg 300w" sizes="(max-width: 357px) 100vw, 357px" />](http://www.serrate.es/wp-content/uploads/2012/04/1858042455-1.jpg) [<img class="aligncenter size-full wp-image-413" title="NServiceBus" src="http://www.serrate.es/wp-content/uploads/2012/04/image002.png" alt="" width="330" height="77" srcset="http://www.serrate.es/wp-content/uploads/2012/04/image002.png 330w, http://www.serrate.es/wp-content/uploads/2012/04/image002-300x70.png 300w" sizes="(max-width: 330px) 100vw, 330px" />](http://www.serrate.es/wp-content/uploads/2012/04/image002.png)
+{% img /uploads/2012/04/1858042455-1.jpg 357 90 '"IASA"' '"IASA"' %}
+
+{% img /uploads/2012/04/image002.png 330 77 '"NServiceBus"' '"NServiceBus"' %}
 
 El próximo jueves **26 de Abril a las 16h** se realizará un evento en Madrid sobre Sistemas distribuidos con **NServiceBus**.
   

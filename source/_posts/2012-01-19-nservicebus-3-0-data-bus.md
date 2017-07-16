@@ -1,15 +1,6 @@
 ---
-id: 368
-title: 'NServiceBus 3.0 &#8211; Data Bus'
+title: 'NServiceBus 3.0 - Data Bus'
 date: 2012-01-19T18:02:23+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=368
-permalink: /2012/01/19/nservicebus-3-0-data-bus/
-shareaholic_disable_share_buttons:
-  - "0"
-shareaholic_disable_open_graph_tags:
-  - "0"
 categories:
   - SOA
 tags:
@@ -30,20 +21,22 @@ En aquellos casos en los que se requiera un límite mayor ya sea porqué usamos 
 
 Al usar esta propiedad haremos saber a NServiceBus que en el momento de enviar el mensaje éste sea interceptado por un <a title="NServiceBus 3.0 – Message Mutators" href="http://www.serrate.es/2012/01/11/nservicebus-3-0-message-mutators/" target="_blank"><strong>MessageMutator</strong> – ver en el post anterior –</a> y la propiedad sea serializada y persistida en una carpeta compartida para que sea deserializada en el momento de ser obtenida por el servidor. Una imagen vale más que mil palabras:
 
-[<img class="aligncenter size-full wp-image-379" title="WF DataBus" src="http://www.serrate.es/wp-content/uploads/2012/01/DataBus_min.png" alt="WF DataBus" width="561" height="135" srcset="http://www.serrate.es/wp-content/uploads/2012/01/DataBus_min.png 561w, http://www.serrate.es/wp-content/uploads/2012/01/DataBus_min-300x72.png 300w" sizes="(max-width: 561px) 100vw, 561px" />](http://www.serrate.es/wp-content/uploads/2012/01/DataBus_min.png)
+{% img /uploads/2012/01/DataBus_min.png 561 135 '"WF DataBus"' '"WF DataBus"' %}
 
 Hacer uso del DataBus es muy simple, básicamente tenemos un mensaje con una propiedad de tipo **DataBusProperty<Image>**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class MessageWithImage : IMessage
+{% codeblock lang:csharp %}
+public class MessageWithImage : IMessage
 {
     public string MyProperty { get; set; }
     public DataBusProperty Image { get; set; }
 }
-</pre>
+{% endcodeblock %}
 
 Posteriormente definimos tanto en el cliente como en el servidor para que NServiceBus use la configuración **FileShareDataBus**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class Initialization : IWantCustomInitialization
+{% codeblock lang:csharp %}
+public class Initialization : IWantCustomInitialization
 {
     public void Init()
     {
@@ -54,11 +47,12 @@ Posteriormente definimos tanto en el cliente como en el servidor para que NServi
             .UnicastBus().DoNotAutoSubscribe();
     }
 }
-</pre>
+{% endcodeblock %}
 
 Enviamos el mensaje _et voilà_:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class Main : IWantToRunAtStartup
+{% codeblock lang:csharp %}
+public class Main : IWantToRunAtStartup
 {
     public IBus Bus { get; set; }
 
@@ -66,7 +60,7 @@ Enviamos el mensaje _et voilà_:
     {
         var img = Image.FromFile("..\\..\\img\\Tulips.png");
 
-        Bus.Send(m =&gt;
+        Bus.Send(m =>
         {
             m.MyProperty = "Message with image file ";
             m.Image = new DataBusProperty(img);
@@ -77,23 +71,24 @@ Enviamos el mensaje _et voilà_:
     {
     }
 }
-</pre>
+{% endcodeblock %}
 
 Tenemos el mensaje en la cola con la referencia al fichero de la carpeta compartida:
 
-<pre class="brush: xml; title: ; notranslate" title="">&lt;?xml version="1.0" ?&gt;
-&lt;Messages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.net/Messages"&gt;
-&lt;MessageWithImage&gt;
-&lt;MyProperty&gt;Message with image file &lt;/MyProperty&gt;
-&lt;Image&gt;
-&lt;Key&gt;2012-01-19_04\cf611fb6-8e31-4543-9db4-08bf51869710&lt;/Key&gt;
-&lt;HasValue&gt;true&lt;/HasValue&gt;
-&lt;/Image&gt;
-&lt;/MessageWithImage&gt;
-&lt;/Messages&gt;
-</pre>
-
-[<img class="aligncenter size-full wp-image-384" title="SharedFolder DataBus" src="http://www.serrate.es/wp-content/uploads/2012/01/DataBus_image.png" alt="SharedFolder DataBus" width="588" height="145" srcset="http://www.serrate.es/wp-content/uploads/2012/01/DataBus_image.png 588w, http://www.serrate.es/wp-content/uploads/2012/01/DataBus_image-300x73.png 300w" sizes="(max-width: 588px) 100vw, 588px" />](http://www.serrate.es/wp-content/uploads/2012/01/DataBus_image.png)
+{% codeblock lang:xml %}
+<?xml version="1.0" ?>
+<Messages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.net/Messages">
+<MessageWithImage>
+<MyProperty>Message with image file </MyProperty>
+<Image>
+<Key>2012-01-19_04\cf611fb6-8e31-4543-9db4-08bf51869710</Key>
+<HasValue>true</HasValue>
+</Image>
+</MessageWithImage>
+</Messages>
+{% endcodeblock %}
+<br />
+{% img /uploads/2012/01/DataBus_image.png 588 145 '"SharedFolder DataBus"' '"SharedFolder DataBus"' %}
 
 El ejemplo puede descargarse de: <a href="https://github.com/mserrate/NServiceBus.Samples" target="_blank">https://github.com/mserrate/NServiceBus.Samples</a>
 

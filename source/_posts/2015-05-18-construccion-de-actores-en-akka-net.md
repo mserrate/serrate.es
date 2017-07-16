@@ -1,11 +1,6 @@
 ---
-id: 448
 title: Construcción de actores en Akka.net
 date: 2015-05-18T12:46:39+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=448
-permalink: /2015/05/18/construccion-de-actores-en-akka-net/
 categories:
   - Actor Model
   - Arquitectura
@@ -22,7 +17,8 @@ Para empezar vamos a ver como se define un actor ya que tenemos 3 formas distint
 
 <!--more-->Para nuestro ejemplo definimos dos simples mensajes POCO:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class DoSomething
+{% codeblock lang:csharp %}
+public class DoSomething
 {
     public string MyName { get; set; }
 }
@@ -30,13 +26,14 @@ Para empezar vamos a ver como se define un actor ya que tenemos 3 formas distint
 public class  DoSomethingElse
 {
 }
-</pre>
+{% endcodeblock %}
 
 ### Untyped Actor
 
 Es la forma más básica para definir un actor y nos obliga a sobreescribir el método OnReceive. Al ser de más difícil lectura se recomienda la opción TypedActor o ReceiveActor.
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class MyUntypedActor : UntypedActor
+{% codeblock lang:csharp %}
+public class MyUntypedActor : UntypedActor
 {
     protected override void OnReceive(object message)
     {
@@ -50,15 +47,16 @@ Es la forma más básica para definir un actor y nos obliga a sobreescribir el m
         }
     }
 }
-</pre>
+{% endcodeblock %}
 
 ### TypedActor
 
 Con TypedActor se hace mucho más explícito el tipo de mensajes que un actor puede procesar y aumenta la legibilidad del código.
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class MyTypedActor : TypedActor,
-    IHandle&lt;DoSomething&gt;,
-    IHandle&lt;DoSomethingElse&gt;
+{% codeblock lang:csharp %}
+public class MyTypedActor : TypedActor,
+    IHandle<DoSomething>,
+    IHandle<DoSomethingElse>
 {
     public void Handle(DoSomething message)
     {
@@ -70,7 +68,7 @@ Con TypedActor se hace mucho más explícito el tipo de mensajes que un actor p
         Console.WriteLine("DoSomethingElse");
     }
 }
-</pre>
+{% endcodeblock %}
 
 ### ReceiveActor
 
@@ -78,19 +76,20 @@ ReceiveActor &#8211; que hereda de UntypedActor &#8211; nos proporciona la capa
 
 En este caso, le decimos que trate de forma distinta los mensajes de tipo _DoSomething_ en que el valor de la propiedad empieza por &#8220;Barcelona&#8221;. El orden en la declaración es importante!
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class MyReceiveActor : ReceiveActor
+{% codeblock lang:csharp %}
+public class MyReceiveActor : ReceiveActor
 {
     public MyReceiveActor()
     {
-        Receive&lt;DoSomething&gt;(
-            x =&gt; x.MyName.StartsWith("Barcelona"),
-            x =&gt; Console.WriteLine("DoSomething -- Barcelona"));
-        Receive&lt;DoSomething&gt;(
-            x =&gt; Console.WriteLine("DoSomething"));
-        Receive&lt;DoSomethingElse&gt;(
-            x =&gt; Console.WriteLine("DoSomethingElse"));
+        Receive<DoSomething>(
+            x => x.MyName.StartsWith("Barcelona"),
+            x => Console.WriteLine("DoSomething -- Barcelona"));
+        Receive<DoSomething>(
+            x => Console.WriteLine("DoSomething"));
+        Receive<DoSomethingElse>(
+            x => Console.WriteLine("DoSomethingElse"));
     }
 }
-</pre>
+{% endcodeblock %}
 
 Happy coding!

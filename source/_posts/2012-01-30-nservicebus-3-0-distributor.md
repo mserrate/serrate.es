@@ -1,17 +1,6 @@
 ---
-id: 392
-title: 'NServiceBus 3.0 &#8211; Distributor'
+title: 'NServiceBus 3.0 - Distributor'
 date: 2012-01-30T22:15:44+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=392
-permalink: /2012/01/30/nservicebus-3-0-distributor/
-shareaholic_disable_share_buttons:
-  - "0"
-shareaholic_disable_open_graph_tags:
-  - "0"
-dsq_thread_id:
-  - "573367122"
 categories:
   - SOA
 tags:
@@ -32,10 +21,10 @@ El funcionamiento o flujo de trabajo es el siguiente:
 
 Imaginemos el siguiente escenario, tenemos configurado un nodo como maestro y tres nodos como workers uno de los cuales no está disponible, los dos envían un mensaje al nodo maestro diciendo que están disponibles para procesar mensajes:
 
-[<img class="aligncenter size-full wp-image-396" title="Distributor1" src="http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png" alt="Distributor 1" width="547" height="352" srcset="http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png 547w, http://www.serrate.es/wp-content/uploads/2012/01/distributor1-300x193.png 300w" sizes="(max-width: 547px) 100vw, 547px" />](http://www.serrate.es/wp-content/uploads/2012/01/distributor1.png)
+{% img /uploads/2012/01/distributor1.png 547 352 '"Distributor 1"' '"Distributor 1"' %}
 
 Cuando se reciben mensajes, el nodo maestro reparte en los nodos disponibles existentes:
 
-[<img class="aligncenter size-full wp-image-400" title="Distributor2" src="http://www.serrate.es/wp-content/uploads/2012/01/distributor2.png" alt="Distributor 2" width="547" height="377" srcset="http://www.serrate.es/wp-content/uploads/2012/01/distributor2.png 547w, http://www.serrate.es/wp-content/uploads/2012/01/distributor2-300x206.png 300w" sizes="(max-width: 547px) 100vw, 547px" />](http://www.serrate.es/wp-content/uploads/2012/01/distributor2.png)
+{% img /uploads/2012/01/distributor2.png 547 377 '"Distributor 2"' '"Distributor 2"' %}
 
 Gracias al distributor podemos ofrecer de forma muy sencilla alta disponibilidad en los nodos de nuestra aplicación.

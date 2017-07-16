@@ -1,11 +1,6 @@
 ---
-id: 177
 title: 'NHibernate: Paginando con DetachedCriteria'
 date: 2011-01-16T14:52:50+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=177
-permalink: /2011/01/16/nhibernate-paginando-con-detachedcriteria/
 categories:
   - NHibernate
 tags:
@@ -22,8 +17,9 @@ Antes de nada… Que es DetachedCriteria? Pues no deja de ser un objeto criteria
 
 A continuación vemos una declaración típica para DetachedCriteria: 
 
-<pre class="brush: csharp; title: ; notranslate" title="">// Creamos el objeto DetachedCriteria
-var detachedCriteria = DetachedCriteria.For&lt;Customer&gt;("c");
+{% codeblock lang:csharp %}
+// Creamos el objeto DetachedCriteria
+var detachedCriteria = DetachedCriteria.For<Customer>("c");
 
 // Agregamos filtros a la consulta
 if (!string.IsNullOrEmpty(criteria.Name)
@@ -31,11 +27,12 @@ if (!string.IsNullOrEmpty(criteria.Name)
 {
     detachedCriteria.Add(Expression.Like("Name", criteria.Name, MatchMode.Anywhere));
 }
-</pre>
+{% endcodeblock %}
 
 Más adelante, en un contexto de ISession, tenemos el código para la paginación. Vemos los comentarios en cada línea: 
 
-<pre class="brush: csharp; title: ; notranslate" title="">public PagedList&lt;T&gt; FindPaged(DetachedCriteria criteria, int startIndex, int pageSize)
+{% codeblock lang:csharp %}
+public PagedList<T> FindPaged(DetachedCriteria criteria, int startIndex, int pageSize)
 {
     using (var session = GetSession())
     {
@@ -58,41 +55,43 @@ Más adelante, en un contexto de ISession, tenemos el código para la paginació
 
         // En posición 0 de la lista tenemos los elementos paginados
         IList pagedElementsUntyped = multiResult[0] as IList;
-        // Con la extensión Cast&lt;T&gt; obtenemos la lista genérica de resultados
-        IEnumerable&lt;T&gt; pagedElements = pagedElementsUntyped.Cast&lt;T&gt;();
+        // Con la extensión Cast<T> obtenemos la lista genérica de resultados
+        IEnumerable<T> pagedElements = pagedElementsUntyped.Cast<T>();
 
         // En posición 1 de la lista tenemos el total de elementos
         int totalCount = Convert.ToInt32(((IList)multiResult[1])[0]);
 
         // Finalmente devolvemos la clase PagedList que encapsula los dos resultados
-        return new PagedList&lt;T&gt;(pagedElements, totalCount);
+        return new PagedList<T>(pagedElements, totalCount);
     }
 }
-</pre>
+{% endcodeblock %}
 
 La clase **PagedList<T>** es simplemente un contenedor de los resultados: 
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class PagedList&lt;T&gt;
+{% codeblock lang:csharp %}
+public class PagedList<T>
 {
-    public IEnumerable&lt;T&gt; Items { get; protected set; }
+    public IEnumerable<T> Items { get; protected set; }
 
     public int TotalItems { get; protected set; }
 
-    public PagedList(IEnumerable&lt;T&gt; items, int totalItems)
+    public PagedList(IEnumerable<T> items, int totalItems)
     {
         this.Items = items;
         this.TotalItems = totalItems;
     }
 }
-</pre>
+{% endcodeblock %}
 
   
 
 A continuación mostramos como se termina haciendo la consulta a la base de datos meditante SQL Profiler: 
 
-<pre class="brush: sql; title: ; notranslate" title="">exec sp_executesql N'SELECT top 5 this_.Id as CU1_0_0_, this_.Name as CU2_0_0_ FROM Customers this_ WHERE this_.Name like @p0;
+{% codeblock lang:sql %}
+exec sp_executesql N'SELECT top 5 this_.Id as CU1_0_0_, this_.Name as CU2_0_0_ FROM Customers this_ WHERE this_.Name like @p0;
 SELECT count(*) as y0_ FROM Customers this_ WHERE this_.Name like @p1;
 ',N'@p0 nvarchar(6),@p1 nvarchar(6)',@p0=N'%name%',@p1=N'%name%' 
-</pre>
+{% endcodeblock %}
 
 En este pequeño post hemos visto como con IMultiCriteria y NHibernate podemos hacer paginaciones optimizadas en servidor para que nuestros controles de presentación no tengan que hacer los cálculos en memoria obteniendo todos los datos de la base de datos en cada petición.

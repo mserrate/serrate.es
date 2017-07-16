@@ -1,11 +1,6 @@
 ---
-id: 235
 title: 'NServiceBus: Introducción y ejemplo One-Way'
 date: 2011-03-25T13:06:13+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=235
-permalink: /2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/
 categories:
   - SOA
 tags:
@@ -28,17 +23,18 @@ En este ejemplo veremos la comunicación asíncrona punto a punto. Aunque parezc
 
 Primero vamos a crear el proyecto **Messages** (Class library) con una referencia a la librería NServiceBus.dll. A continuación definiremos nuestro mensaje:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Messages
+{% codeblock lang:csharp %}
+namespace Messages
 {
-    /// &lt;summary&gt;
+    /// <summary>
     /// Esta clase será enviada por NServiceBus
-    /// &lt;/summary&gt;
+    /// </summary>
     public class MyMessage : IMessage
     {
         public string SomeString { get; set; }
     }
 }
-</pre>
+{% endcodeblock %}
 
 La interface **IMessage** no obliga a implementar ningún método, simplemente se usa como marcador para NServiceBus.
 
@@ -48,16 +44,17 @@ A continuación crearemos el proyecto **Client** (Class library) con referencias
 
 En éste proyecto crearemos una clase de nombre **EndpointConfig**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Client
+{% codeblock lang:csharp %}
+namespace Client
 {
-    /// &lt;summary&gt;
+    /// <summary>
     /// Configuramos el endpoint como cliente
-    /// &lt;/summary&gt;
+    /// </summary>
     public class EndpointConfig : IConfigureThisEndpoint, AsA_Client
     {
     }
 }
-</pre>
+{% endcodeblock %}
 
 Tenemos dos interfaces más que actúan como marcadores:
 
@@ -66,16 +63,17 @@ Tenemos dos interfaces más que actúan como marcadores:
 
 Creamos ahora una clase llamada **ClientEndpoint**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Client
+{% codeblock lang:csharp %}
+namespace Client
 {
-    /// &lt;summary&gt;
+    /// <summary>
     /// Clase que se ejecuta al inicio
-    /// &lt;/summary&gt;
+    /// </summary>
     public class ClientEndpoint : IWantToRunAtStartup
     {
-        /// &lt;summary&gt;
+        /// <summary>
         /// Inyectado por defecto mediante Spring
-        /// &lt;/summary&gt;
+        /// </summary>
         public IBus Bus { get; set; }
 
         public void Run()
@@ -88,7 +86,7 @@ Creamos ahora una clase llamada **ClientEndpoint**:
             while (mensaje != "exit")
             {
                 // enviamos el mensaje
-                Bus.Send&lt;MyMessage&gt;(m =&gt; { m.SomeString = mensaje; });
+                Bus.Send<MyMessage>(m => { m.SomeString = mensaje; });
 
                 mensaje = Console.ReadLine();
             }
@@ -99,7 +97,7 @@ Creamos ahora una clase llamada **ClientEndpoint**:
         }
     }
 }
-</pre>
+{% endcodeblock %}
 
 Con la interfaz **IWantToRunAtStartup** indicamos que la clase se ejecuta al inicio, y en el método Run() realizamos el envío del mensaje mediante Bus.Send<IMessage>(Action<IMessage>)
 
@@ -107,28 +105,29 @@ Podemos ver que la propiedad IBus se inyecta mediante el contenedor Spring que u
 
 Finalmente, creamos en nuestro fichero **App.config** las configuraciones siguientes:
 
-<pre class="brush: xml; title: ; notranslate" title="">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;configuration&gt;
-  &lt;configSections&gt;
-    &lt;section name="MsmqTransportConfig" type="NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core" /&gt;
-    &lt;section name="UnicastBusConfig" type="NServiceBus.Config.UnicastBusConfig, NServiceBus.Core" /&gt;
-  &lt;/configSections&gt;
+{% codeblock lang:xml %}
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="MsmqTransportConfig" type="NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core" />
+    <section name="UnicastBusConfig" type="NServiceBus.Config.UnicastBusConfig, NServiceBus.Core" />
+  </configSections>
 
-  &lt;MsmqTransportConfig
+  <MsmqTransportConfig
     InputQueue="SerrateSendingQueue"
     ErrorQueue="SerrateError"
     NumberOfWorkerThreads="1"
     MaxRetries="5"
-  /&gt;
+  />
 
-  &lt;UnicastBusConfig&gt;
-    &lt;MessageEndpointMappings&gt;
-      &lt;add Messages="Messages" Endpoint="SerrateReceivingQueue" /&gt;
-    &lt;/MessageEndpointMappings&gt;
-  &lt;/UnicastBusConfig&gt;
+  <UnicastBusConfig>
+    <MessageEndpointMappings>
+      <add Messages="Messages" Endpoint="SerrateReceivingQueue" />
+    </MessageEndpointMappings>
+  </UnicastBusConfig>
 
-&lt;/configuration&gt;
-</pre>
+</configuration>
+{% endcodeblock %}
 
 En las **configSections** definimos las dos secciones que utilizamos más abajo.
 
@@ -140,27 +139,29 @@ Para la parte de servidor, creamos el proyecto **Server** (Class library) con re
 
 De la misma manera, crearemos una clase de nombre **EndpointConfig**:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Server
+{% codeblock lang:csharp %}
+namespace Server
 {
-    /// &lt;summary&gt;
+    /// <summary>
     /// Configuramos el endpoint como servidor
-    /// &lt;/summary&gt;
+    /// </summary>
     public class EndpointConfig : IConfigureThisEndpoint, AsA_Server
     {
     }
 }
-</pre>
+{% endcodeblock %}
 
 Esta vez, utilizamos la interface **AsA_Server** para indicar que el endpoint es de tipo servidor.
 
 Posteriormente, creamos una clase **MyMessageHandler** para procesar los mensajes recibidos:
 
-<pre class="brush: csharp; title: ; notranslate" title="">namespace Server
+{% codeblock lang:csharp %}
+namespace Server
 {
-    /// &lt;summary&gt;
+    /// <summary>
     /// Procesa los mensajes recibidos
-    /// &lt;/summary&gt;
-    public class MyMessageHandler : IHandleMessages&lt;MyMessage&gt;
+    /// </summary>
+    public class MyMessageHandler : IHandleMessages<MyMessage>
     {
         public void Handle(MyMessage message)
         {
@@ -173,44 +174,45 @@ Posteriormente, creamos una clase **MyMessageHandler** para procesar los mensaje
         }
     }
 }
-</pre>
+{% endcodeblock %}
 
 Finalmente, la configuración será parecida a la parte cliente exceptuando la parte de UnicastBusConfig:
 
-<pre class="brush: xml; title: ; notranslate" title="">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;configuration&gt;
-  &lt;configSections&gt;
-    &lt;section name="MsmqTransportConfig" type="NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core" /&gt;
-    &lt;section name="UnicastBusConfig" type="NServiceBus.Config.UnicastBusConfig, NServiceBus.Core" /&gt;
-  &lt;/configSections&gt;
+{% codeblock lang:xml %}
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="MsmqTransportConfig" type="NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core" />
+    <section name="UnicastBusConfig" type="NServiceBus.Config.UnicastBusConfig, NServiceBus.Core" />
+  </configSections>
 
-  &lt;MsmqTransportConfig
+  <MsmqTransportConfig
     InputQueue="SerrateReceivingQueue"
     ErrorQueue="SerrateError"
     NumberOfWorkerThreads="1"
     MaxRetries="5"
-  /&gt;
+  />
 
-  &lt;UnicastBusConfig&gt;
-    &lt;MessageEndpointMappings&gt;
-    &lt;/MessageEndpointMappings&gt;
-  &lt;/UnicastBusConfig&gt;
-&lt;/configuration&gt;
-</pre>
+  <UnicastBusConfig>
+    <MessageEndpointMappings>
+    </MessageEndpointMappings>
+  </UnicastBusConfig>
+</configuration>
+{% endcodeblock %}
 
 ## Ejecución del ejemplo
 
 Como los proyectos Client y Server son de tipo class library para ejecutarlos deberemos seleccionar la pestaña Debug de la configuración del proyecto y en “Start External Program” seleccionar NServiceBus.Host.exe.
 
-[<img class="aligncenter size-full wp-image-245" title="projectConfig" src="http://www.serrate.es/wp-content/uploads/2011/03/projectConfig.png" alt="" width="547" height="129" />](http://www.serrate.es/wp-content/uploads/2011/03/projectConfig.png)
+{% img /uploads/2011/03/projectConfig.png 547 129 %}
 
 A continuación ejecutamos el servidor y el cliente y al enviar un mensaje veremos como el servidor lo recibe sin problema:
 
-[<img class="aligncenter size-full wp-image-243" title="consola" src="http://www.serrate.es/wp-content/uploads/2011/03/consola.png" alt="" width="502" height="401" />](http://www.serrate.es/wp-content/uploads/2011/03/consola.png)
+{% img /uploads/2011/03/consola.png 502 401 '"consola"' '"consola"' %}
 
 Posteriormente podemos hacer la prueba de parar el servidor y al enviar un mensaje, ésta quedará encolada en MSMQ de la siguiente forma:
 
-[<img class="aligncenter size-full wp-image-244" title="no available" src="http://www.serrate.es/wp-content/uploads/2011/03/no-available.png" alt="" width="363" height="84" srcset="http://www.serrate.es/wp-content/uploads/2011/03/no-available.png 363w, http://www.serrate.es/wp-content/uploads/2011/03/no-available-300x69.png 300w" sizes="(max-width: 363px) 100vw, 363px" />](http://www.serrate.es/wp-content/uploads/2011/03/no-available.png)
+{% img /uploads/2011/03/no-available.png 502 401 '"no available"' '"no available"' %}
 
 Posteriormente, si abrimos el servidor, el mensaje será entregado sin problema alguno.
 

@@ -1,11 +1,6 @@
 ---
-id: 265
 title: 'ASP.NET MVC 3: Evento CatDotNet'
 date: 2011-06-29T16:46:28+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=265
-permalink: /2011/06/29/asp-net-mvc-3-evento-catdotnet/
 categories:
   - ASP.NET MVC
 tags:
@@ -29,5 +24,5 @@ Os podéis registrar en el siguiente enlance:  ﻿﻿
 <a href="https://msevents.microsoft.com/CUI/EventDetail.aspx?EventID=1032489264&Culture=es-ES" target="_blank">https://msevents.microsoft.com/CUI/EventDetail.aspx?EventID=1032489264&Culture=es-ES</a>
 
 <p style="text-align: center;">
-  <a title="CatDotNet" href="http://www.catdotnet.net/" target="_blank"><img class="aligncenter size-full wp-image-267" title="CatDotNet" src="http://www.serrate.es/wp-content/uploads/2011/06/logo_super_peq.gif" alt="" width="350" height="70" srcset="http://www.serrate.es/wp-content/uploads/2011/06/logo_super_peq.gif 350w, http://www.serrate.es/wp-content/uploads/2011/06/logo_super_peq-300x60.gif 300w" sizes="(max-width: 350px) 100vw, 350px" /></a>
+  {% img /uploads/2011/06/logo_super_peq.gif 350 70 '"CatDotNet"' '"CatDotNet"' %}
 </p>

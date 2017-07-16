@@ -1,15 +1,6 @@
 ---
-id: 290
-title: 'Poor Man&#8217;s CQRS &#8211; Domain Layer'
+title: Poor Man's CQRS - Domain Layer
 date: 2011-11-24T17:22:10+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=290
-permalink: /2011/11/24/poor-mans-cqrs-domain-layer/
-shareaholic_disable_share_buttons:
-  - "0"
-shareaholic_disable_open_graph_tags:
-  - "0"
 categories:
   - CQRS
 tags:
@@ -39,7 +30,8 @@ Además, es fundamental tener en cuenta la **encapsulación** y no crear **acopl
 
 Vamos a ver el ejemplo con el agregado raíz Project (versión reducida). Como veis, la clase no tiene propiedades públicas ni constructor público por defecto. Además las reglas de negocio están encapsuladas en la clase por lo que no necesitamos que accedan al estado de la clase desde el exterior. En el método para desactivar el proyecto, en caso de que el proyecto esté cerrado (_IsProjectClosed_) no se podrá desactivar por lo que lanzamos una excepción de negocio (_ProjectIsClosedException_).
 
-<pre class="brush: csharp; title: ; notranslate" title="">public class Project : AggregateRoot
+{% codeblock lang:csharp %}
+public class Project : AggregateRoot
 {
 	private Guid _id;
 	private string _code;
@@ -81,13 +73,14 @@ Vamos a ver el ejemplo con el agregado raíz Project (versión reducida). Como v
 			throw new ProjectIsClosedException("The action could not be processed because the project is closed");
 	}
 }
-</pre>
+{% endcodeblock %}
 
 <a href="https://github.com/mserrate/PoorMansCQRS/blob/master/PoorMansCQRS.Domain/Project.cs" target="_blank">(Ver la clase entera Project</a>)
 
 A continuación presentamos la clase base para los agregados raíz: AggregateRoot que es muy sencilla y la única particularidad es la del método ApplyEvent que nos sirve para lanzar un evento cada vez que ocurre una acción en el agregado:
 
-<pre class="brush: csharp; title: ; notranslate" title="">public abstract class AggregateRoot : IEntity
+{% codeblock lang:csharp %}
+public abstract class AggregateRoot : IEntity
 {
 	public abstract Guid Id { get; }
 
@@ -102,6 +95,6 @@ public interface IEntity
 {
 	Guid Id { get; }
 }
-</pre>
+{% endcodeblock %}
 
 Para lanzar los eventos utilizamos el concepto de Domain Events de Udi Dahan: <a href="http://www.udidahan.com/2009/06/14/domain-events-salvation/" target="_blank">http://www.udidahan.com/2009/06/14/domain-events-salvation/</a>

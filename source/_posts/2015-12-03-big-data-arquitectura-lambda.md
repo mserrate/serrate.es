@@ -1,11 +1,6 @@
 ---
-id: 461
 title: 'Big Data: arquitectura lambda'
 date: 2015-12-03T23:51:16+00:00
-author: Marçal
-layout: post
-guid: http://www.serrate.es/?p=461
-permalink: /2015/12/03/big-data-arquitectura-lambda/
 categories:
   - Big Data
 tags:
@@ -25,9 +20,7 @@ Ahí es donde entra en juego lo que muchos llaman <a href="http://nathanmarz.com
 
 <!--more-->Lo que nos ofrece esta arquitectura es el concepto de procesar la mayoría de nuestros datos en lotes (batch) y que, mientras dura este proceso, podamos procesar los datos que continúan entrando (stream) en el sistema:
 
-&nbsp;
-
-[<img class="aligncenter size-full wp-image-466" src="http://www.serrate.es/wp-content/uploads/2015/12/Lambda-3.png" alt="Arquitectura lambda" width="483" height="223" srcset="http://www.serrate.es/wp-content/uploads/2015/12/Lambda-3.png 483w, http://www.serrate.es/wp-content/uploads/2015/12/Lambda-3-300x139.png 300w" sizes="(max-width: 483px) 100vw, 483px" />](http://www.serrate.es/wp-content/uploads/2015/12/Lambda-3.png)
+{% img /uploads/2015/12/Lambda-3.png 483 223 '"Arquitectura lambda"' '"Arquitectura lambda"' %}
 
 Podemos decir que:
 
