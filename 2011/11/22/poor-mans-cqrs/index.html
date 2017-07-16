@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Poor Man’s CQRS - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[Url del proyecto: https://github.com/mserrate/PoorMansCQRS] Muchas veces cuando se habla de Command-Query Responsibility Segregation (CQRS) empiezan a surgir conceptos tales como: Event Sourcing, 2-P">
+<meta name="keywords" content="CQRS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Poor Man’s CQRS">
+<meta property="og:url" content="http://serrate.es/2011/11/22/poor-mans-cqrs/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="[Url del proyecto: https://github.com/mserrate/PoorMansCQRS] Muchas veces cuando se habla de Command-Query Responsibility Segregation (CQRS) empiezan a surgir conceptos tales como: Event Sourcing, 2-P">
+<meta property="og:updated_time" content="2017-07-16T16:12:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Poor Man’s CQRS">
+<meta name="twitter:description" content="[Url del proyecto: https://github.com/mserrate/PoorMansCQRS] Muchas veces cuando se habla de Command-Query Responsibility Segregation (CQRS) empiezan a surgir conceptos tales como: Event Sourcing, 2-P">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-poor-mans-cqrs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Poor Man’s CQRS
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/11/22/poor-mans-cqrs/" class="article-date">
+  <time datetime="2011-11-22T11:45:39.000Z" itemprop="datePublished">2011-11-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CQRS/">CQRS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[Url del proyecto: <a href="https://github.com/mserrate/PoorMansCQRS" target="_blank">https://github.com/mserrate/PoorMansCQRS</a>]</p>
+<p>Muchas veces cuando se habla de Command-Query Responsibility Segregation (CQRS) empiezan a surgir conceptos tales como: <strong>Event Sourcing</strong>, <strong>2-Phase Commit</strong>, <strong>Snapshots</strong>, <strong>mensajería asíncrona</strong>, <strong>eventual consistency</strong> y multitud más que hacen que mucha gente piense que CQRS es una arquitectura compleja y que solo se puede utilizar para desarrollar aplicaciones tipo Amazon, Twitter y Facebook (vamos, los proyectos que nos surgen cada día&#8230;).</p>
+<p>Por el contrario, soy de la opinión de que el uso de este patrón nos permite implementar de forma exitosa una aplicación basada en <strong>Domain-Driven Design</strong> (DDD). Y es que <strong>no se entiende CQRS sin DDD</strong>.</p>
+<p>Es decir, no hace falta implementar Amazon para utilizar DDD y CQRS pero tampoco vayamos a implementarlo en la web de la panadería de nuestro cuñado en Villaconejo del Monte.<a id="more"></a></p>
+<p>Antes de nada, aviso para navegantes: <strong>Para una explicación de que es CQRS</strong> y que conceptos vienen ligados al patrón podéis mirar el siguiente webcast que un servidor grabó para SecondNug en Mayo &#8217;11:</p>
+<p><a href="https://msevents.microsoft.com/CUI/EventDetail.aspx?culture=es-ES&amp;EventID=1032486026&amp;CountryCode=ES" target="_blank" rel="external">https://msevents.microsoft.com/CUI/EventDetail.aspx?culture=es-ES&amp;EventID=1032486026&amp;CountryCode=ES</a></p>
+<p>En él veréis teoría y un ejemplo completo del uso de Event Sourcing, Snapshots, Task Based UI, etc. Recomiendo su visionado para entender cómo desarrollar aplicaciones altamente escalables vía CQRS y, de la misma forma, leer los artículos de los pioneros en esta clase de arquitecturas: <strong>Greg Young</strong> y <strong>Udi Dahan</strong>.</p>
+<p>La motivación de este proyecto es básicamente el contrario, <strong>acercar CQRS</strong> y ver las ventajas que conlleva su uso sin necesidad de incorporar conceptos más complejos y con tecnologías ya conocidas:</p>
+<ul>
+<li>ASP.NET MVC 3</li>
+<li>NHibernate y Fluent NHibernate</li>
+<li>Castle Windsor</li>
+<li>MSpec</li>
+</ul>
+<p>Por eso mismo, la ejecución de la aplicación es totalmente <strong>síncrona</strong> (por lo tanto, <strong>no escalable</strong>), sin la existencia de eventos externos ni colas, y una sola base de datos tanto para lecturas y escrituras. Al utilizar contratos para la implementación se podría migrar sin mucha dificultad a una implementación más &#8220;estándar&#8221; de CQRS pero para ello ya existen varios ejemplos por internet. Pero bueno, por esa razón el título de Poor Man’s CQRS 😉</p>
+<h2 id="Solucion"><a href="#Solucion" class="headerlink" title="Solución"></a>Solución</h2><p>La solución está compuesta por los siguientes proyectos que iré explicando en siguientes posts:</p>
+<ul>
+<li>PoorMansCQRS.Web</li>
+<li>PoorMansCQRS.ReadModel</li>
+<li>PoorMansCQRS.Commands</li>
+<li>PoorMansCQRS.CommandHandlers</li>
+<li>PoorMansCQRS.Domain</li>
+<li>PoorMansCQRS.Data</li>
+<li>PoorMansCQRS.Infrastructure</li>
+<li>PoorMansCQRS.Testing</li>
+</ul>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CQRS/">CQRS</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/11/24/poor-mans-cqrs-domain-layer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Poor Man&#39;s CQRS - Domain Layer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/11/15/enrutamiento-con-wcf-4-y-routing-service/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Enrutamiento con WCF 4 y Routing Service&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2011/11/22/poor-mans-cqrs/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

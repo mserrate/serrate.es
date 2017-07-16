@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Construcción de actores en Akka.net - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="El modelo de actores se caracteriza por establecer un modelo de computación basado en el Reactive Manifesto que nos permite construir:  Sistemas altamente concurrentes Sistemas escalables tanto horizo">
+<meta name="keywords" content="AkkaDotNet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Construcción de actores en Akka.net">
+<meta property="og:url" content="http://serrate.es/2015/05/18/construccion-de-actores-en-akka-net/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="El modelo de actores se caracteriza por establecer un modelo de computación basado en el Reactive Manifesto que nos permite construir:  Sistemas altamente concurrentes Sistemas escalables tanto horizo">
+<meta property="og:updated_time" content="2017-07-16T16:37:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Construcción de actores en Akka.net">
+<meta name="twitter:description" content="El modelo de actores se caracteriza por establecer un modelo de computación basado en el Reactive Manifesto que nos permite construir:  Sistemas altamente concurrentes Sistemas escalables tanto horizo">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-construccion-de-actores-en-akka-net" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Construcción de actores en Akka.net
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/05/18/construccion-de-actores-en-akka-net/" class="article-date">
+  <time datetime="2015-05-18T10:46:39.000Z" itemprop="datePublished">2015-05-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Actor-Model/">Actor Model</a><span>></span><a class="article-category-link" href="/categories/Actor-Model/Arquitectura/">Arquitectura</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>El modelo de actores se caracteriza por establecer un modelo de computación basado en el <a href="http://www.reactivemanifesto.org/" target="_blank">Reactive Manifesto</a> que nos permite construir:</p>
+<ul>
+<li>Sistemas altamente concurrentes</li>
+<li>Sistemas escalables tanto horizontalmente como verticalmente</li>
+<li>Sistemas fiables y tolerantes a errores</li>
+</ul>
+<p>Para empezar vamos a ver como se define un actor ya que tenemos 3 formas distintas dependiendo de nuestras necesidades. Los actores en Akka.net hacen un uso extensivo de <em>pattern matching</em> para seleccionar cómo se van a gestionar los mensajes dependiendo de su tipo o valor.</p>
+<a id="more"></a>Para nuestro ejemplo definimos dos simples mensajes POCO:<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DoSomething</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">string</span> MyName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span>  <span class="title">DoSomethingElse</span></div><div class="line">&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Untyped-Actor"><a href="#Untyped-Actor" class="headerlink" title="Untyped Actor"></a>Untyped Actor</h3><p>Es la forma más básica para definir un actor y nos obliga a sobreescribir el método OnReceive. Al ser de más difícil lectura se recomienda la opción TypedActor o ReceiveActor.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyUntypedActor</span> : <span class="title">UntypedActor</span></div><div class="line">&#123;</div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnReceive</span>(<span class="params"><span class="keyword">object</span> message</span>)</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (message <span class="keyword">is</span> DoSomething)</div><div class="line">        &#123;</div><div class="line">            Console.WriteLine(<span class="string">"DoSomething"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (message <span class="keyword">is</span> DoSomethingElse)</div><div class="line">        &#123;</div><div class="line">            Console.WriteLine(<span class="string">"DoSomethingElse"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="TypedActor"><a href="#TypedActor" class="headerlink" title="TypedActor"></a>TypedActor</h3><p>Con TypedActor se hace mucho más explícito el tipo de mensajes que un actor puede procesar y aumenta la legibilidad del código.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class MyTypedActor : TypedActor,</div><div class="line">    IHandle&lt;DoSomething&gt;,</div><div class="line">    IHandle&lt;DoSomethingElse&gt;</div><div class="line">&#123;</div><div class="line">    public void Handle(DoSomething message)</div><div class="line">    &#123;</div><div class="line">        Console.WriteLine("DoSomething");</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void Handle(DoSomethingElse message)</div><div class="line">    &#123;</div><div class="line">        Console.WriteLine("DoSomethingElse");</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ReceiveActor"><a href="#ReceiveActor" class="headerlink" title="ReceiveActor"></a>ReceiveActor</h3><p>ReceiveActor &#8211; que hereda de UntypedActor &#8211; nos proporciona la capacidad de seleccionar cómo gestionar los mensajes de forma más sofisticada.</p>
+<p>En este caso, le decimos que trate de forma distinta los mensajes de tipo <em>DoSomething</em> en que el valor de la propiedad empieza por &#8220;Barcelona&#8221;. El orden en la declaración es importante!</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyReceiveActor</span> : <span class="title">ReceiveActor</span></div><div class="line">&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyReceiveActor</span>(<span class="params"></span>)</span></div><div class="line">    &#123;</div><div class="line">        Receive&lt;DoSomething&gt;(</div><div class="line">            x =&gt; x.MyName.StartsWith(<span class="string">"Barcelona"</span>),</div><div class="line">            x =&gt; Console.WriteLine(<span class="string">"DoSomething -- Barcelona"</span>));</div><div class="line">        Receive&lt;DoSomething&gt;(</div><div class="line">            x =&gt; Console.WriteLine(<span class="string">"DoSomething"</span>));</div><div class="line">        Receive&lt;DoSomethingElse&gt;(</div><div class="line">            x =&gt; Console.WriteLine(<span class="string">"DoSomethingElse"</span>));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Happy coding!</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AkkaDotNet/">AkkaDotNet</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/03/big-data-arquitectura-lambda/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Big Data: arquitectura lambda
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/02/18/sesion-en-la-dotnetspain-conference/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Sesión en la dotNetSpain Conference&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2015/05/18/construccion-de-actores-en-akka-net/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

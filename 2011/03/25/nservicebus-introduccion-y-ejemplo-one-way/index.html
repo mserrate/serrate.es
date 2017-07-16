@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>NServiceBus: Introducción y ejemplo One-Way - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="A raíz de algunos proyectos e inmersión en los mundos de Service Oriented Architecture (SOA) y Event-Driven Architecture (EDA) he conocido este producto creado por Udi Dahan y que podemos encontrar en">
+<meta name="keywords" content="NServiceBus,SOA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NServiceBus: Introducción y ejemplo One-Way">
+<meta property="og:url" content="http://serrate.es/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="A raíz de algunos proyectos e inmersión en los mundos de Service Oriented Architecture (SOA) y Event-Driven Architecture (EDA) he conocido este producto creado por Udi Dahan y que podemos encontrar en">
+<meta property="og:image" content="http://serrate.es/uploads/2011/03/projectConfig.png">
+<meta property="og:image" content="http://serrate.es/uploads/2011/03/consola.png">
+<meta property="og:image" content="http://serrate.es/uploads/2011/03/no-available.png">
+<meta property="og:updated_time" content="2017-07-16T15:59:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NServiceBus: Introducción y ejemplo One-Way">
+<meta name="twitter:description" content="A raíz de algunos proyectos e inmersión en los mundos de Service Oriented Architecture (SOA) y Event-Driven Architecture (EDA) he conocido este producto creado por Udi Dahan y que podemos encontrar en">
+<meta name="twitter:image" content="http://serrate.es/uploads/2011/03/projectConfig.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-nservicebus-introduccion-y-ejemplo-one-way" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NServiceBus: Introducción y ejemplo One-Way
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/" class="article-date">
+  <time datetime="2011-03-25T12:06:13.000Z" itemprop="datePublished">2011-03-25</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.serrate.es/wp-content/uploads/2011/03/consola.png" target="_blank" rel="external"></a>A raíz de algunos proyectos e inmersión en los mundos de <a href="http://en.wikipedia.org/wiki/Service-oriented_architecture" target="_blank">Service Oriented Architecture </a>(SOA) y <a href="http://en.wikipedia.org/wiki/Event-driven_architecture" target="_blank">Event-Driven Architecture</a> (EDA) he conocido este producto creado por <a href="http://www.udidahan.com/" target="_blank">Udi Dahan </a>y que podemos encontrar en: <a href="http://www.nservicebus.com/" target="_blank">http://www.nservicebus.com/</a></p>
+<p><strong>NServiceBus</strong> es una implementación de Enterprise Service Bus (ESB) para .NET y que se apoya en Microsoft Message Queue Server (MSMQ) como transporte y persistencia de colas.</p>
+<p>Enterprise Service Bus es una arquitectura que nos permite el intercambio de mensajes entre aplicaciones y servicios de manera desacoplada entre los mismos proporcionando la fiabilidad y manejo de errores que éste tipo de aplicaciones requiere.</p>
+<p>Las diferencias entre Enterprise Service Bus y Enterprise Application Integration (EAI) como BizTalk y cuando usar uno u otro daría lugar a muchas discusiones y está fuera del alcance de éste humilde artículo.</p>
+<p>NServiceBus proporciona varios patrones de mensajería OOB como <strong>One-Way</strong>, <strong>Request/Response</strong> y <strong>Publish/Subscribe</strong> aunque nos permite extenderlo según nuestras necesidades.</p>
+<h2 id="Ejemplo-con-mensajeria-One-Way"><a href="#Ejemplo-con-mensajeria-One-Way" class="headerlink" title="Ejemplo con mensajería One-Way"></a>Ejemplo con mensajería One-Way</h2><p>En este ejemplo veremos la comunicación asíncrona punto a punto. Aunque parezca a priori que podríamos conseguir los mismos resultados con netMsmqBinding y WCF, y en cierta manera así es, la verdad es que NServiceBus nos abstrae de muchas configuraciones que deberíamos realizar a mano: creación de las colas en MSMQ, habilitar permisos necesarios, etc.</p>
+<p>Primero vamos a crear el proyecto <strong>Messages</strong> (Class library) con una referencia a la librería NServiceBus.dll. A continuación definiremos nuestro mensaje:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">Messages</span></div><div class="line">&#123;</div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line">    <span class="comment"><span class="doctag">///</span> Esta clase será enviada por NServiceBus</span></div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyMessage</span> : <span class="title">IMessage</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">public</span> <span class="keyword">string</span> SomeString &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>La interface <strong>IMessage</strong> no obliga a implementar ningún método, simplemente se usa como marcador para NServiceBus.</p>
+<a id="more"></a>
+<p>A continuación crearemos el proyecto <strong>Client</strong> (Class library) con referencias a NServiceBus.dll, NServiceBus.Core.dll, NServiceBus.Host.exe, log4net.dll y a nuestro proyecto <strong>Messages</strong>.</p>
+<p>En éste proyecto crearemos una clase de nombre <strong>EndpointConfig</strong>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">namespace Client</div><div class="line">&#123;</div><div class="line">    /// &lt;summary&gt;</div><div class="line">    /// Configuramos el endpoint como cliente</div><div class="line">    /// &lt;/summary&gt;</div><div class="line">    public class EndpointConfig : IConfigureThisEndpoint, AsA_Client</div><div class="line">    &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Tenemos dos interfaces más que actúan como marcadores:</p>
+<ul>
+<li><strong>IConfigureThisEndpoint</strong> El proceso NServiceBus.Host.exe buscará en el directorio de ejecución la clase que implementa ésta interface para saber qué tipo de endpoint es.</li>
+<li><strong>AsA_Client</strong> indica al mismo proceso que el endpoint será de tipo cliente.</li>
+</ul>
+<p>Creamos ahora una clase llamada <strong>ClientEndpoint</strong>:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">Client</span></div><div class="line">&#123;</div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line">    <span class="comment"><span class="doctag">///</span> Clase que se ejecuta al inicio</span></div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClientEndpoint</span> : <span class="title">IWantToRunAtStartup</span></div><div class="line">    &#123;</div><div class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line">        <span class="comment"><span class="doctag">///</span> Inyectado por defecto mediante Spring</span></div><div class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">        <span class="keyword">public</span> IBus Bus &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Run</span>(<span class="params"></span>)</span></div><div class="line">        &#123;</div><div class="line">            Console.WriteLine(<span class="string">"--- Escribe \"exit\" para salir de la aplicación. ---"</span>);</div><div class="line">            Console.WriteLine(<span class="string">"--- Pulsa ENTER para enviar el mensaje. ---"</span>);</div><div class="line"></div><div class="line">            <span class="keyword">var</span> mensaje = Console.ReadLine();</div><div class="line"></div><div class="line">            <span class="keyword">while</span> (mensaje != <span class="string">"exit"</span>)</div><div class="line">            &#123;</div><div class="line">                <span class="comment">// enviamos el mensaje</span></div><div class="line">                Bus.Send&lt;MyMessage&gt;(m =&gt; &#123; m.SomeString = mensaje; &#125;);</div><div class="line"></div><div class="line">                mensaje = Console.ReadLine();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Stop</span>(<span class="params"></span>)</span></div><div class="line">        &#123;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Con la interfaz <strong>IWantToRunAtStartup</strong> indicamos que la clase se ejecuta al inicio, y en el método Run() realizamos el envío del mensaje mediante Bus.Send<imessage>(Action<imessage>)</imessage></imessage></p>
+<p>Podemos ver que la propiedad IBus se inyecta mediante el contenedor Spring que utiliza por defecto NServiceBus, aunque también podemos configurar y usar el framework que más nos guste (Unity, Castle, etc).</p>
+<p>Finalmente, creamos en nuestro fichero <strong>App.config</strong> las configuraciones siguientes:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">configSections</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">name</span>=<span class="string">"MsmqTransportConfig"</span> <span class="attr">type</span>=<span class="string">"NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">name</span>=<span class="string">"UnicastBusConfig"</span> <span class="attr">type</span>=<span class="string">"NServiceBus.Config.UnicastBusConfig, NServiceBus.Core"</span> /&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">configSections</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">MsmqTransportConfig</span></span></div><div class="line">    <span class="attr">InputQueue</span>=<span class="string">"SerrateSendingQueue"</span></div><div class="line">    <span class="attr">ErrorQueue</span>=<span class="string">"SerrateError"</span></div><div class="line">    <span class="attr">NumberOfWorkerThreads</span>=<span class="string">"1"</span></div><div class="line">    <span class="attr">MaxRetries</span>=<span class="string">"5"</span></div><div class="line">  /&gt;</div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">UnicastBusConfig</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">MessageEndpointMappings</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">add</span> <span class="attr">Messages</span>=<span class="string">"Messages"</span> <span class="attr">Endpoint</span>=<span class="string">"SerrateReceivingQueue"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">MessageEndpointMappings</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">UnicastBusConfig</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>En las <strong>configSections</strong> definimos las dos secciones que utilizamos más abajo.</p>
+<p>En <strong>MsmqTransportConfig</strong> configuramos las colas de entrada y error respectivamente. También configuramos el número máximo de reintentos cuando exista cualquier excepción en el envío antes de enviar el mensaje a la cola de error.</p>
+<p>En <strong>UnicastBusConfig</strong> configuramos el ensamblado donde se encuentra las clases que implementan IMessage y el endpoint del servidor.</p>
+<p>Para la parte de servidor, creamos el proyecto <strong>Server</strong> (Class library) con referencias a NServiceBus.dll, NServiceBus.Core.dll, NServiceBus.Host.exe, log4net.dll y a nuestro proyecto <strong>Messages</strong>.</p>
+<p>De la misma manera, crearemos una clase de nombre <strong>EndpointConfig</strong>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">namespace Server</div><div class="line">&#123;</div><div class="line">    /// &lt;summary&gt;</div><div class="line">    /// Configuramos el endpoint como servidor</div><div class="line">    /// &lt;/summary&gt;</div><div class="line">    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server</div><div class="line">    &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Esta vez, utilizamos la interface <strong>AsA_Server</strong> para indicar que el endpoint es de tipo servidor.</p>
+<p>Posteriormente, creamos una clase <strong>MyMessageHandler</strong> para procesar los mensajes recibidos:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">namespace Server</div><div class="line">&#123;</div><div class="line">    /// &lt;summary&gt;</div><div class="line">    /// Procesa los mensajes recibidos</div><div class="line">    /// &lt;/summary&gt;</div><div class="line">    public class MyMessageHandler : IHandleMessages&lt;MyMessage&gt;</div><div class="line">    &#123;</div><div class="line">        public void Handle(MyMessage message)</div><div class="line">        &#123;</div><div class="line">            if (message.SomeString == "error")</div><div class="line">            &#123;</div><div class="line">                throw new Exception("error grave");</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            Console.WriteLine(string.Format("Se ha recibido el siguiente mensaje: &#123;0&#125;", message.SomeString));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Finalmente, la configuración será parecida a la parte cliente exceptuando la parte de UnicastBusConfig:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">configSections</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">name</span>=<span class="string">"MsmqTransportConfig"</span> <span class="attr">type</span>=<span class="string">"NServiceBus.Config.MsmqTransportConfig, NServiceBus.Core"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">section</span> <span class="attr">name</span>=<span class="string">"UnicastBusConfig"</span> <span class="attr">type</span>=<span class="string">"NServiceBus.Config.UnicastBusConfig, NServiceBus.Core"</span> /&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">configSections</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">MsmqTransportConfig</span></span></div><div class="line">    <span class="attr">InputQueue</span>=<span class="string">"SerrateReceivingQueue"</span></div><div class="line">    <span class="attr">ErrorQueue</span>=<span class="string">"SerrateError"</span></div><div class="line">    <span class="attr">NumberOfWorkerThreads</span>=<span class="string">"1"</span></div><div class="line">    <span class="attr">MaxRetries</span>=<span class="string">"5"</span></div><div class="line">  /&gt;</div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">UnicastBusConfig</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">MessageEndpointMappings</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">MessageEndpointMappings</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">UnicastBusConfig</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="Ejecucion-del-ejemplo"><a href="#Ejecucion-del-ejemplo" class="headerlink" title="Ejecución del ejemplo"></a>Ejecución del ejemplo</h2><p>Como los proyectos Client y Server son de tipo class library para ejecutarlos deberemos seleccionar la pestaña Debug de la configuración del proyecto y en “Start External Program” seleccionar NServiceBus.Host.exe.</p>
+<img src="/uploads/2011/03/projectConfig.png" width="547" height="129">
+<p>A continuación ejecutamos el servidor y el cliente y al enviar un mensaje veremos como el servidor lo recibe sin problema:</p>
+<img src="/uploads/2011/03/consola.png" width="502" height="401" title="consola" alt="consola">
+<p>Posteriormente podemos hacer la prueba de parar el servidor y al enviar un mensaje, ésta quedará encolada en MSMQ de la siguiente forma:</p>
+<img src="/uploads/2011/03/no-available.png" width="502" height="401" title="no available" alt="no available">
+<p>Posteriormente, si abrimos el servidor, el mensaje será entregado sin problema alguno.</p>
+<p>Si en el servidor se produce una excepción, después de los 5 intentos establecidos, el mensaje pasará a la cola de error. Ahí se deberá de hacer la acción requerida para establecer el servicio y desencolar el mensaje de la cola de error.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/05/05/cqrs-evento-en-secondnug/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          CQRS: Evento en SecondNug
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ASP.NET MVC: Componente Autocomplete de jQuery&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

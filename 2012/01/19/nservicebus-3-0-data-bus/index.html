@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>NServiceBus 3.0 - Data Bus - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Siempre que usemos algún sistema de mensajería tenemos que adaptarnos al límite de tamaño del mensaje que el sistema es capaz de enviar. Este límite varía dependiendo de la tecnología usada. En la may">
+<meta name="keywords" content="NServiceBus,SOA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NServiceBus 3.0 - Data Bus">
+<meta property="og:url" content="http://serrate.es/2012/01/19/nservicebus-3-0-data-bus/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="Siempre que usemos algún sistema de mensajería tenemos que adaptarnos al límite de tamaño del mensaje que el sistema es capaz de enviar. Este límite varía dependiendo de la tecnología usada. En la may">
+<meta property="og:image" content="http://serrate.es/uploads/2012/01/DataBus_min.png">
+<meta property="og:image" content="http://serrate.es/uploads/2012/01/DataBus_image.png">
+<meta property="og:updated_time" content="2017-07-16T16:26:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NServiceBus 3.0 - Data Bus">
+<meta name="twitter:description" content="Siempre que usemos algún sistema de mensajería tenemos que adaptarnos al límite de tamaño del mensaje que el sistema es capaz de enviar. Este límite varía dependiendo de la tecnología usada. En la may">
+<meta name="twitter:image" content="http://serrate.es/uploads/2012/01/DataBus_min.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-nservicebus-3-0-data-bus" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NServiceBus 3.0 - Data Bus
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2012/01/19/nservicebus-3-0-data-bus/" class="article-date">
+  <time datetime="2012-01-19T17:02:23.000Z" itemprop="datePublished">2012-01-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SOA/">SOA</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Siempre que usemos algún sistema de mensajería tenemos que adaptarnos al límite de tamaño del mensaje que el sistema es capaz de enviar. Este límite varía dependiendo de la tecnología usada.</p>
+<p>En la mayoría de sistemas <em>on-premise</em> no hay mucho problema ya que el tamaño acostumbra a ser suficiente para la mayoría de casos. Por ejemplo, en MSMQ &#8211; el transporte por defecto en NServiceBus – el límite es de <strong>4MB</strong>.</p>
+<p>En sistemas en la nube este límite es notablemente inferior. Algunos ejemplos:</p>
+<ul>
+<li>Azure Queues: 8KB</li>
+<li>Azure Service Bus Queues: 64KB</li>
+<li>Amazon SQS: 64KB</li>
+</ul>
+<p>En aquellos casos en los que se requiera un límite mayor ya sea porqué usamos <strong>NServiceBus en Azure</strong> o bien porqué queremos enviar algún dato de gran tamaño como una imagen o video, podemos hacer uso de la propiedad <strong>DataBusProperty<t></t></strong>.<a id="more"></a></p>
+<p>Al usar esta propiedad haremos saber a NServiceBus que en el momento de enviar el mensaje éste sea interceptado por un <a title="NServiceBus 3.0 – Message Mutators" href="http://www.serrate.es/2012/01/11/nservicebus-3-0-message-mutators/" target="_blank"><strong>MessageMutator</strong> – ver en el post anterior –</a> y la propiedad sea serializada y persistida en una carpeta compartida para que sea deserializada en el momento de ser obtenida por el servidor. Una imagen vale más que mil palabras:</p>
+<img src="/uploads/2012/01/DataBus_min.png" width="561" height="135" title="WF DataBus" alt="WF DataBus">
+<p>Hacer uso del DataBus es muy simple, básicamente tenemos un mensaje con una propiedad de tipo <strong>DataBusProperty<image></image></strong>:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MessageWithImage</span> : <span class="title">IMessage</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">string</span> MyProperty &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> DataBusProperty Image &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Posteriormente definimos tanto en el cliente como en el servidor para que NServiceBus use la configuración <strong>FileShareDataBus</strong>:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Initialization</span> : <span class="title">IWantCustomInitialization</span></div><div class="line">&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Init</span>(<span class="params"></span>)</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">string</span> basePath = ConfigurationManager.AppSettings[<span class="string">"SharedFolder"</span>];</div><div class="line"></div><div class="line">        Configure.Instance</div><div class="line">            .FileShareDataBus(basePath)</div><div class="line">            .UnicastBus().DoNotAutoSubscribe();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Enviamos el mensaje <em>et voilà</em>:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Main</span> : <span class="title">IWantToRunAtStartup</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> IBus Bus &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Run</span>(<span class="params"></span>)</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">var</span> img = Image.FromFile(<span class="string">"..\\..\\img\\Tulips.png"</span>);</div><div class="line"></div><div class="line">        Bus.Send(m =&gt;</div><div class="line">        &#123;</div><div class="line">            m.MyProperty = <span class="string">"Message with image file "</span>;</div><div class="line">            m.Image = <span class="keyword">new</span> DataBusProperty(img);</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Stop</span>(<span class="params"></span>)</span></div><div class="line">    &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Tenemos el mensaje en la cola con la referencia al fichero de la carpeta compartida:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" ?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">Messages</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:xsd</span>=<span class="string">"http://www.w3.org/2001/XMLSchema"</span> <span class="attr">xmlns</span>=<span class="string">"http://tempuri.net/Messages"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">MessageWithImage</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">MyProperty</span>&gt;</span>Message with image file <span class="tag">&lt;/<span class="name">MyProperty</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">Image</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">Key</span>&gt;</span>2012-01-19_04\cf611fb6-8e31-4543-9db4-08bf51869710<span class="tag">&lt;/<span class="name">Key</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">HasValue</span>&gt;</span>true<span class="tag">&lt;/<span class="name">HasValue</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">Image</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">MessageWithImage</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">Messages</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><br><br><img src="/uploads/2012/01/DataBus_image.png" width="588" height="145" title="SharedFolder DataBus" alt="SharedFolder DataBus"></p>
+<p>El ejemplo puede descargarse de: <a href="https://github.com/mserrate/NServiceBus.Samples" target="_blank">https://github.com/mserrate/NServiceBus.Samples</a></p>
+<p><strong><span style="text-decoration: underline;">Nota</span>: Quiero insistir en que dado el tamaño del que disponemos en sistemas de mensajería <em>on-premise</em> la necesidad de usar el DataBus fuera de casos extraordinarios puede significar que no estamos diseñando correctamente los mensajes.</strong></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NServiceBus/">NServiceBus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOA/">SOA</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2012/01/30/nservicebus-3-0-distributor/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          NServiceBus 3.0 - Distributor
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2012/01/11/nservicebus-3-0-message-mutators/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NServiceBus 3.0 - Message Mutators&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2012/01/19/nservicebus-3-0-data-bus/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

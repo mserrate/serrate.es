@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Introducción a Managed Extensibility Framework (MEF) - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Qué es MEF y que te aportaMEF es una tecnología que permite desarrollar aplicaciones extensibles. La gran ventaja que nos ofrece MEF es que no necesitamos diseñar la aplicación conociendo qué extensio">
+<meta name="keywords" content="IoC,Managed Extensibility Framework">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introducción a Managed Extensibility Framework (MEF)">
+<meta property="og:url" content="http://serrate.es/2010/09/19/introduccion-a-managed-extensibility-framework-mef/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="Qué es MEF y que te aportaMEF es una tecnología que permite desarrollar aplicaciones extensibles. La gran ventaja que nos ofrece MEF es que no necesitamos diseñar la aplicación conociendo qué extensio">
+<meta property="og:updated_time" content="2017-07-16T12:57:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Introducción a Managed Extensibility Framework (MEF)">
+<meta name="twitter:description" content="Qué es MEF y que te aportaMEF es una tecnología que permite desarrollar aplicaciones extensibles. La gran ventaja que nos ofrece MEF es que no necesitamos diseñar la aplicación conociendo qué extensio">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-introduccion-a-managed-extensibility-framework-mef" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Introducción a Managed Extensibility Framework (MEF)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" class="article-date">
+  <time datetime="2010-09-19T19:10:17.000Z" itemprop="datePublished">2010-09-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Managed-Extensibility-Framework/">Managed Extensibility Framework</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Que-es-MEF-y-que-te-aporta"><a href="#Que-es-MEF-y-que-te-aporta" class="headerlink" title="Qué es MEF y que te aporta"></a>Qué es MEF y que te aporta</h2><p>MEF es una tecnología que permite desarrollar aplicaciones extensibles. La gran ventaja que nos ofrece MEF es que no necesitamos diseñar la aplicación conociendo qué extensiones formaran parte de ella ni la implementación interna de las propias extensiones.</p>
+<p>Por extensible nos referimos a que nuestra aplicación puede estar en producción y de forma dinámica añadir, reemplazar, eliminar las extensiones que tenemos sin necesidad ni de recompilar ni reiniciar la aplicación.</p>
+<p>MEF viene con .NET Framework 4 en la librería: <strong>System.ComponentModel.Composition.</strong></p>
+<h2 id="MEF-vs-IoC-Container"><a href="#MEF-vs-IoC-Container" class="headerlink" title="MEF vs IoC Container"></a>MEF vs IoC Container</h2><p>Aunque pueda parecer que MEF e IoC  ofrecen la misma funcionalidad la diferencia consiste en que tratan de resolver problemas distintos.  </p>
+<p>El objetivo básico de un framework de IoC es el de ofrecer <strong>desacoplamiento</strong> entre componentes y nos resuelve dependencias que <span style="text-decoration: underline;">conocemos</span>. Esto nos permite que nuestra aplicación sea modular y testeable.</p>
+<p>En cambio, en MEF, el principal objetivo es la <strong>extensibilidad</strong>: el desacoplamiento es una consecuencia. Sabemos que las extensiones que se vayan a implementar cumplirán un contrato pero no sabremos si sólo habrá una extensión, muchas o ninguna.</p>
+<h2 id="Ejemplo-Extension-IHelloWorld"><a href="#Ejemplo-Extension-IHelloWorld" class="headerlink" title="Ejemplo: Extensión IHelloWorld"></a>Ejemplo: Extensión IHelloWorld</h2><a id="more"></a>Vamos a ver un ejemplo de cómo consumir nuestras extensiones con MEF. El ejemplo es muy sencillo y únicamente tenemos una aplicación de consola que consumirá extensiones que nos devuelven el mensaje Hola Mundo en el idioma definido en la extensión.<br><br>Primero declaramos en el ensamblado <em>Serrate.MEFDemo.HelloWorld.Interface</em> el contrato que deben cumplir:<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">Serrate.MEFDemo.HelloWord.Interface</span></div><div class="line">&#123;</div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line">    <span class="comment"><span class="doctag">///</span> Contrato para extensiones</span></div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IHelloWorld</span></div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">string</span> <span class="title">GetMessage</span>(<span class="params"></span>)</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Posteriormente en nuestra aplicación de consola <em>Serrate.MEFDemo.HelloWorldApp</em> tenemos la clase Consumer encargada de consumir, como no, las extensiones de terceros.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">Serrate.MEFDemo.HelloWorldApp</span></div><div class="line">&#123;</div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line">    <span class="comment"><span class="doctag">///</span> Clase encargada de consumir nuestras extensiones</span></div><div class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Consumer</span></div><div class="line">    &#123;</div><div class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line">        <span class="comment"><span class="doctag">///</span> Esta lista importará las extensiones que cumplan</span></div><div class="line">        <span class="comment"><span class="doctag">///</span> nuestros requisitos</span></div><div class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">        [<span class="meta">ImportMany</span>]</div><div class="line">        <span class="keyword">public</span> List&lt;IHelloWorld&gt; HelloWorldPlugins &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div><div class="line"></div><div class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line">        <span class="comment"><span class="doctag">///</span> Lectura de nuestras extensiones</span></div><div class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Read</span>(<span class="params"></span>)</span></div><div class="line">        &#123;</div><div class="line">            <span class="comment">// Configuramos nuestro contenedor</span></div><div class="line">            <span class="keyword">this</span>.Setup();</div><div class="line"></div><div class="line">            <span class="comment">// Recorremos la lista de extensiones</span></div><div class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> plugin <span class="keyword">in</span> HelloWorldPlugins)</div><div class="line">            &#123;</div><div class="line">                Console.WriteLine(plugin.GetMessage());</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            Console.ReadLine();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Setup</span>(<span class="params"></span>)</span></div><div class="line">        &#123;</div><div class="line">            <span class="comment">// a partir del directorio de la aplicación buscamos</span></div><div class="line">            <span class="comment">// en una ruta relativa nuestro directorio de extensiones</span></div><div class="line">            <span class="keyword">string</span> appDirectory = AppDomain.CurrentDomain.BaseDirectory;</div><div class="line">            DirectoryInfo extensionsDirectory =</div><div class="line">                <span class="keyword">new</span> DirectoryInfo(appDirectory + <span class="string">"..\\..\\..\\extensions"</span>);</div><div class="line"></div><div class="line">            <span class="comment">// creamos el catálogo a partir del directorio</span></div><div class="line">            <span class="keyword">var</span> catalog = <span class="keyword">new</span> DirectoryCatalog(extensionsDirectory.FullName);</div><div class="line"></div><div class="line">            <span class="comment">// componemos las extensiones para poderlas usar</span></div><div class="line">            <span class="keyword">var</span> compositionContainer = <span class="keyword">new</span> CompositionContainer(catalog);</div><div class="line">            compositionContainer.ComposeParts(<span class="keyword">this</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Como podemos tener varias extensiones cumpliendo el mismo contrato, en nuestra aplicación declaramos una lista de este contrato, y la decoramos con el atributo <strong>[ImportMany]</strong>:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line"><span class="comment"><span class="doctag">///</span> Esta lista importará las extensiones que cumplan</span></div><div class="line"><span class="comment"><span class="doctag">///</span> nuestros requisitos</span></div><div class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line">[<span class="meta">ImportMany</span>]</div><div class="line"><span class="keyword">public</span> List&lt;IHelloWorld&gt; HelloWorldPlugins &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</div></pre></td></tr></table></figure>
+<p>Seguidamente podemos realizar la lectura de nuestras extensiones:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></div><div class="line"><span class="comment"><span class="doctag">///</span> Lectura de nuestras extensiones</span></div><div class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Read</span>(<span class="params"></span>)</span></div><div class="line">&#123;</div><div class="line">    <span class="comment">// Configuramos nuestro contenedor</span></div><div class="line">    <span class="keyword">this</span>.Setup();</div><div class="line"></div><div class="line">    <span class="comment">// Recorremos la lista de extensiones</span></div><div class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> plugin <span class="keyword">in</span> HelloWorldPlugins)</div><div class="line">    &#123;</div><div class="line">        Console.WriteLine(plugin.GetMessage());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Console.ReadLine();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>En el método Setup indicamos el directorio de nuestras extensiones y realizamos la carga de éstas:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Setup</span>(<span class="params"></span>)</span></div><div class="line">&#123;</div><div class="line">    <span class="comment">// a partir del directorio de la aplicación buscamos</span></div><div class="line">    <span class="comment">// en una ruta relativa nuestro directorio de extensiones</span></div><div class="line">    <span class="keyword">string</span> appDirectory = AppDomain.CurrentDomain.BaseDirectory;</div><div class="line">    DirectoryInfo extensionsDirectory =</div><div class="line">        <span class="keyword">new</span> DirectoryInfo(appDirectory + <span class="string">"..\\..\\..\\extensions"</span>);</div><div class="line"></div><div class="line">    <span class="comment">// creamos el catálogo a partir del directorio</span></div><div class="line">    <span class="keyword">var</span> catalog = <span class="keyword">new</span> DirectoryCatalog(extensionsDirectory.FullName);</div><div class="line"></div><div class="line">    <span class="comment">// componemos las extensiones para poderlas usar</span></div><div class="line">    <span class="keyword">var</span> compositionContainer = <span class="keyword">new</span> CompositionContainer(catalog);</div><div class="line">    compositionContainer.ComposeParts(<span class="keyword">this</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Finalmente, ya sólo nos hace falta crear nuestras extensiones que realizarán el trabajo duro. Indicaremos que las extensiones son exportables mediante el atributo <strong>[Export]</strong></p>
+<p>Crearemos el ensamblado <em>Serrate.MEFDemo.Plugin.ES</em> y allí tendremos nuestra clase que implementará el contrato:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">Serrate.MEFDemo.Plugin.ES</span></div><div class="line">&#123;</div><div class="line">    [<span class="meta">Export(typeof(IHelloWorld))</span>]</div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HolaMundo</span> : <span class="title">IHelloWorld</span></div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetMessage</span>(<span class="params"></span>)</span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Hola Mundo"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>En otro ensamblado <em>Serrate.MEFDemo.Plugin.CA</em> tendremos definida otra extensión:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">namespace</span> <span class="title">Serrate.MEFDemo.Plugin.CA</span></div><div class="line">&#123;</div><div class="line">    [<span class="meta">Export(typeof(IHelloWorld))</span>]</div><div class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HolaMon</span> : <span class="title">IHelloWorld</span></div><div class="line">    &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetMessage</span>(<span class="params"></span>)</span></div><div class="line">        &#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Hola Món"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Si colocamos las librerías de nuestras extensiones en la carpeta que espera nuestra aplicación, al ejecutarla ya nos saldrá por pantalla el resultado esperado:</p>
+<pre>> Hola Mundo
+> Hola Món</pre>
+
+<p>En esta introducción hemos visto como utilizar MEF para que nuestra aplicación pueda ser extendida por nosotros mismos o por terceros de forma realmente sencilla.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IoC/">IoC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Managed-Extensibility-Framework/">Managed Extensibility Framework</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/01/16/nhibernate-paginando-con-detachedcriteria/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          NHibernate: Paginando con DetachedCriteria
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Entity Framework 4 CodeOnly - Table per concrete Class (TPC)&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2010/09/19/introduccion-a-managed-extensibility-framework-mef/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

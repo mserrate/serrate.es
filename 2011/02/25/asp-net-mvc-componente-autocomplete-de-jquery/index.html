@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ASP.NET MVC: Componente Autocomplete de jQuery - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="En el artículo de hoy vamos a ver qué fácil es alimentar mediante Ajax y objetos JSON componentes jQuery desde ASP.NET MVC. Para empezar, vamos a usar la CDN de google para importar las librerías que">
+<meta name="keywords" content="ASP.NET MVC,jQuery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASP.NET MVC: Componente Autocomplete de jQuery">
+<meta property="og:url" content="http://serrate.es/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="En el artículo de hoy vamos a ver qué fácil es alimentar mediante Ajax y objetos JSON componentes jQuery desde ASP.NET MVC. Para empezar, vamos a usar la CDN de google para importar las librerías que">
+<meta property="og:updated_time" content="2017-07-16T16:01:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ASP.NET MVC: Componente Autocomplete de jQuery">
+<meta name="twitter:description" content="En el artículo de hoy vamos a ver qué fácil es alimentar mediante Ajax y objetos JSON componentes jQuery desde ASP.NET MVC. Para empezar, vamos a usar la CDN de google para importar las librerías que">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-asp-net-mvc-componente-autocomplete-de-jquery" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ASP.NET MVC: Componente Autocomplete de jQuery
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/" class="article-date">
+  <time datetime="2011-02-25T13:21:17.000Z" itemprop="datePublished">2011-02-25</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ASP-NET-MVC/">ASP.NET MVC</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>En el artículo de hoy vamos a ver qué fácil es alimentar mediante Ajax y objetos <strong>JSON</strong> componentes jQuery desde <strong>ASP.NET MVC</strong>.</p>
+<p>Para empezar, vamos a usar la CDN de google para importar las librerías que necesitamos: jQuery y jQuery UI más los ficheros de estilos para jQuery UI:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js</div><div class="line">http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js</div><div class="line">http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css</div></pre></td></tr></table></figure>
+<p>Seguidamente definimos en nuestra vista un label y una caja de texto:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"txtTitulos"</span>&gt;</span>Titulos: <span class="tag">&lt;/<span class="name">label</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"txtTitulos"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<p>El código cliente para enlazar la extensión de <strong>jQuery</strong> a la caja de texto es la siguiente:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">    $(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        $(<span class="string">"#txtTitulos"</span>).autocomplete(&#123;</div><div class="line">            <span class="attr">minLength</span>: <span class="number">3</span>,</div><div class="line">            <span class="attr">source</span>: getData</div><div class="line">        &#125;);</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params">request, response</span>) </span>&#123;</div><div class="line">        $.ajax(&#123;</div><div class="line">            <span class="attr">url</span>: <span class="string">'/Home/GetData'</span>,</div><div class="line">            <span class="attr">type</span>: <span class="string">'GET'</span>,</div><div class="line">            <span class="attr">dataType</span>: <span class="string">'json'</span>,</div><div class="line">            <span class="attr">data</span>: &#123; <span class="attr">words</span>: request.term &#125;,</div><div class="line">            <span class="attr">success</span>: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</div><div class="line">                response(data);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<p>Como podemos ver, inicializamos la opción source con nuestro propio callback getData. En que realizamos la consulta a la action GetData del controller Home. Para más opciones y eventos del componente autocomplete mirad la documentación en la página de <a href="http://jqueryui.com/demos/autocomplete/" target="_blank">jQuery UI</a>.</p>
+<p>Finalmente nuestra action GetData queda de la siguiente manera:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">GetData</span>(<span class="params"><span class="keyword">string</span> words</span>)</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">var</span> mySource = GetData();</div><div class="line"></div><div class="line">    <span class="keyword">var</span> result = <span class="keyword">from</span> s <span class="keyword">in</span> mySource</div><div class="line">                    <span class="keyword">where</span> s.Title.Text.Contains(words)</div><div class="line">                    <span class="keyword">select</span> s.Title.Text;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> Json(result, JsonRequestBehavior.AllowGet);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Si os fijáis en el segundo parámetro de Json, indicamos que admitimos peticiones de tipo GET. Esto se debe indicar para evitar problemas de seguridad. Para más información consultad este post de <a href="http://haacked.com/archive/2009/06/25/json-hijacking.aspx" target="_blank">Phil Haack</a>.</p>
+<p>Los datos de ejemplo los he sacado del rss de la página de ASP.NET. Os dejo el código para que no es creáis que miento:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> IEnumerable&lt;SyndicationItem&gt; <span class="title">GetData</span>(<span class="params"></span>)</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">string</span> feed = <span class="string">"http://www.asp.net/rss/news"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> req = WebRequest.Create(feed);</div><div class="line"></div><div class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> reader = XmlReader.Create(req.GetResponse().GetResponseStream()))</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">var</span> rssData = SyndicationFeed.Load(reader);</div><div class="line">        <span class="keyword">return</span> rssData.Items;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ASP-NET-MVC/">ASP.NET MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/03/25/nservicebus-introduccion-y-ejemplo-one-way/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          NServiceBus: Introducción y ejemplo One-Way
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ASP.NET MVC: Múltiples botones en el mismo formulario&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2011/02/25/asp-net-mvc-componente-autocomplete-de-jquery/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

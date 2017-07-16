@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>NHibernate: Paginando con DetachedCriteria - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="El propósito de este post es ver cómo podemos paginar de forma óptima en servidor mediante el objeto DetachedCriteria. El objetivo es evitar que nuestros controles de presentación hagan el trabajo suc">
+<meta name="keywords" content="NHibernate,ORM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NHibernate: Paginando con DetachedCriteria">
+<meta property="og:url" content="http://serrate.es/2011/01/16/nhibernate-paginando-con-detachedcriteria/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="El propósito de este post es ver cómo podemos paginar de forma óptima en servidor mediante el objeto DetachedCriteria. El objetivo es evitar que nuestros controles de presentación hagan el trabajo suc">
+<meta property="og:updated_time" content="2017-07-16T12:53:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NHibernate: Paginando con DetachedCriteria">
+<meta name="twitter:description" content="El propósito de este post es ver cómo podemos paginar de forma óptima en servidor mediante el objeto DetachedCriteria. El objetivo es evitar que nuestros controles de presentación hagan el trabajo suc">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-nhibernate-paginando-con-detachedcriteria" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NHibernate: Paginando con DetachedCriteria
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/01/16/nhibernate-paginando-con-detachedcriteria/" class="article-date">
+  <time datetime="2011-01-16T13:52:50.000Z" itemprop="datePublished">2011-01-16</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/NHibernate/">NHibernate</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>El propósito de este post es ver cómo podemos paginar de forma óptima en servidor mediante el objeto <strong>DetachedCriteria</strong>. El objetivo es evitar que nuestros controles de presentación hagan el trabajo sucio paginando en memoria los resultados al obtener todos los elementos de la base de datos en cada petición.</p>
+<p>Por trivial que parezca, para poder mostrar los resultados de forma amigable al usuario en, por ejemplo un grid, la consulta debe devolver los elementos de la página en cuestión y el número total de elementos. Para ello se requieren dos consultas, una para los elementos y otra para el total, pero no suena muy práctico realizar dos consultas separadamente no? La gracia aquí está en agrupar las dos consultas en una y así optimizar el rendimiento. </p>
+<p><strong>Nota</strong>: En caso de utilizar directamente un objeto de tipo ICriteria podríamos hacer uso directamente de las clausulas Future<t>  y FutureValue<t> que hacen internamente hacen uso de Multi Queries como haremos aquí. Más información en éste <a href="http://ayende.com/Blog/archive/2009/04/27/nhibernate-futures.aspx" target="_blank">post</a> de Ayende. </t></t></p>
+<p>Antes de nada… Que es DetachedCriteria? Pues no deja de ser un objeto criteria que definimos sin tener acceso a ISession. Esto nos permite definir nuestras consultas y poderlas ejecutar más tarde en cualquier otra parte dentro de un contexto de ISession. </p>
+<p>A continuación vemos una declaración típica para DetachedCriteria: </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Creamos el objeto DetachedCriteria</span></div><div class="line"><span class="keyword">var</span> detachedCriteria = DetachedCriteria.For&lt;Customer&gt;(<span class="string">"c"</span>);</div><div class="line"></div><div class="line"><span class="comment">// Agregamos filtros a la consulta</span></div><div class="line"><span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrEmpty(criteria.Name)</div><div class="line">    &amp;&amp; !<span class="keyword">string</span>.IsNullOrWhiteSpace(criteria.Name))</div><div class="line">&#123;</div><div class="line">    detachedCriteria.Add(Expression.Like(<span class="string">"Name"</span>, criteria.Name, MatchMode.Anywhere));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Más adelante, en un contexto de ISession, tenemos el código para la paginación. Vemos los comentarios en cada línea: </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> PagedList&lt;T&gt; <span class="title">FindPaged</span>(<span class="params">DetachedCriteria criteria, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> pageSize</span>)</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> session = GetSession())</div><div class="line">    &#123;</div><div class="line">        <span class="comment">// Clonamos nuestro DetachedCriteria</span></div><div class="line">        DetachedCriteria itemsCriteria = CriteriaTransformer.Clone(criteria);</div><div class="line">        <span class="comment">// Especificamos los parámetros de paginación:</span></div><div class="line">        <span class="comment">// 1) El índice del primer elemento a obtener</span></div><div class="line">        itemsCriteria.SetFirstResult(startIndex * pageSize);</div><div class="line">        <span class="comment">// 2) El número máximo de resultados</span></div><div class="line">        itemsCriteria.SetMaxResults(pageSize);</div><div class="line"></div><div class="line">        <span class="comment">// Transformamos nuestra consulta original para que nos devuelva el número de elementos</span></div><div class="line">        DetachedCriteria countCriteria = CriteriaTransformer.TransformToRowCount(criteria);</div><div class="line"></div><div class="line">        <span class="comment">// Creamos un objeto MultiCriteria para agrupar las dos consultas</span></div><div class="line">        IMultiCriteria multiCriteria = session.CreateMultiCriteria();</div><div class="line">        multiCriteria.Add(itemsCriteria);</div><div class="line">        multiCriteria.Add(countCriteria);</div><div class="line">        IList multiResult = multiCriteria.List();</div><div class="line"></div><div class="line">        <span class="comment">// En posición 0 de la lista tenemos los elementos paginados</span></div><div class="line">        IList pagedElementsUntyped = multiResult[<span class="number">0</span>] <span class="keyword">as</span> IList;</div><div class="line">        <span class="comment">// Con la extensión Cast&lt;T&gt; obtenemos la lista genérica de resultados</span></div><div class="line">        IEnumerable&lt;T&gt; pagedElements = pagedElementsUntyped.Cast&lt;T&gt;();</div><div class="line"></div><div class="line">        <span class="comment">// En posición 1 de la lista tenemos el total de elementos</span></div><div class="line">        <span class="keyword">int</span> totalCount = Convert.ToInt32(((IList)multiResult[<span class="number">1</span>])[<span class="number">0</span>]);</div><div class="line"></div><div class="line">        <span class="comment">// Finalmente devolvemos la clase PagedList que encapsula los dos resultados</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PagedList&lt;T&gt;(pagedElements, totalCount);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>La clase <strong>PagedList<t></t></strong> es simplemente un contenedor de los resultados: </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class PagedList&lt;T&gt;</div><div class="line">&#123;</div><div class="line">    public IEnumerable&lt;T&gt; Items &#123; get; protected set; &#125;</div><div class="line"></div><div class="line">    public int TotalItems &#123; get; protected set; &#125;</div><div class="line"></div><div class="line">    public PagedList(IEnumerable&lt;T&gt; items, int totalItems)</div><div class="line">    &#123;</div><div class="line">        this.Items = items;</div><div class="line">        this.TotalItems = totalItems;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>A continuación mostramos como se termina haciendo la consulta a la base de datos meditante SQL Profiler: </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">exec sp_executesql N'<span class="keyword">SELECT</span> top <span class="number">5</span> this_.Id <span class="keyword">as</span> CU1_0_0_, this_.Name <span class="keyword">as</span> CU2_0_0_ <span class="keyword">FROM</span> Customers this_ <span class="keyword">WHERE</span> this_.Name <span class="keyword">like</span> @p0;</div><div class="line"><span class="keyword">SELECT</span> <span class="keyword">count</span>(*) <span class="keyword">as</span> y0_ <span class="keyword">FROM</span> Customers this_ <span class="keyword">WHERE</span> this_.Name <span class="keyword">like</span> @p1;</div><div class="line">',N'@p0 nvarchar(6),@p1 nvarchar(6)',@p0=N'%name%',@p1=N'%name%' </div></pre></td></tr></table></figure>
+<p>En este pequeño post hemos visto como con IMultiCriteria y NHibernate podemos hacer paginaciones optimizadas en servidor para que nuestros controles de presentación no tengan que hacer los cálculos en memoria obteniendo todos los datos de la base de datos en cada petición.</p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NHibernate/">NHibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ORM/">ORM</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/01/21/asp-net-mvc-multiples-botones-en-el-mismo-formulario/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          ASP.NET MVC: Múltiples botones en el mismo formulario
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Introducción a Managed Extensibility Framework (MEF)&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2011/01/16/nhibernate-paginando-con-detachedcriteria/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

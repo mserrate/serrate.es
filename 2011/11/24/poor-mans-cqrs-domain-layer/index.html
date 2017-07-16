@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Poor Man&#39;s CQRS - Domain Layer - Marçal Serrate | El caso frontera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="El artículo forma parte de una serie de artículos: [http://www.serrate.es/2011/11/22/poor-mans-cqrs/] Empezaremos detallando la parte principal de la aplicación: la capa de dominio. Aunque el ejemplo">
+<meta name="keywords" content="CQRS,DDD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Poor Man&#39;s CQRS - Domain Layer">
+<meta property="og:url" content="http://serrate.es/2011/11/24/poor-mans-cqrs-domain-layer/index.html">
+<meta property="og:site_name" content="Marçal Serrate | El caso frontera">
+<meta property="og:description" content="El artículo forma parte de una serie de artículos: [http://www.serrate.es/2011/11/22/poor-mans-cqrs/] Empezaremos detallando la parte principal de la aplicación: la capa de dominio. Aunque el ejemplo">
+<meta property="og:updated_time" content="2017-07-16T16:15:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Poor Man&#39;s CQRS - Domain Layer">
+<meta name="twitter:description" content="El artículo forma parte de una serie de artículos: [http://www.serrate.es/2011/11/22/poor-mans-cqrs/] Empezaremos detallando la parte principal de la aplicación: la capa de dominio. Aunque el ejemplo">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-17568891-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+      <a id="logo" class="logo logo-text" href="/">serrate.es</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://serrate.es"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-poor-mans-cqrs-domain-layer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Poor Man&#39;s CQRS - Domain Layer
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2011/11/24/poor-mans-cqrs-domain-layer/" class="article-date">
+  <time datetime="2011-11-24T16:22:10.000Z" itemprop="datePublished">2011-11-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CQRS/">CQRS</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.serrate.es/2011/11/22/poor-mans-cqrs/" target="_blank" rel="external">El artículo forma parte de una serie de artículos: [http://www.serrate.es/2011/11/22/poor-mans-cqrs/]</a></p>
+<p>Empezaremos detallando la parte principal de la aplicación: la capa de <strong>dominio</strong>. Aunque el ejemplo que nos ocupa consta simplemente de dos míseras clases, es importante que interioricemos algunos conceptos.</p>
+<p>Diseñar un modelo de dominio es una tarea altamente compleja: definir las entidades que formaran parte de los <strong>agregados</strong>, el <strong>límite</strong> de éstos, qué entidad será el <strong>agregado raíz</strong>, distinguir <strong>value objects</strong>, etc. y, curiosamente, es la parte que menor relación tiene con CQRS.</p>
+<p>Como siempre, la recomendación principal que puedo dar es la de leerse y empaparse del libro <a href="http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215" target="_blank">Domain-Driven Design</a> de <strong>Eric Evans</strong>.</p>
+<a id="more"></a>Un pequeño listado a la hora de definir correctamente los agregados:<br><br>  <em> Los objetos externos únicamente podrán referenciar al agregado raíz. Si se necesita acceder a una entidad interna será siempre a través del agregado raíz.
+  </em> Los agregados deben ser <strong>límites consistentes</strong> para transacciones, distribuciones y concurrencia.<br>  <em> En general, la regla de <em>eliminar en cascada</em> puede sernos útil para saber si un grupo de entidades/VO formaran parte de un agregado. Pero nunca tomarlo como verdad absoluta.<br><br>Por el contrario hay varias formas de modelar los agregados de forma <span style="text-decoration: underline;">incorrecta</span>:
+
+  </em> Caer en la trampa de realizar el diseño por conveniencia composicional y que los agregados sean demasiado grandes.<br>  <em> Por el contrario, diseñar los agregados demasiado granulares perdiendo de esta manera la protección de los invariantes. Ningún extremo es bueno 🙂<br><br>Además, es fundamental tener en cuenta la <strong>encapsulación</strong> y no crear <strong>acoplamiento innecesario</strong> en el diseño de entidades en DDD, esto es, <em>*no tener un constructor público por defecto</em></em> y <span style="text-decoration: underline;"><strong>no escribir getters y setters</strong></span>. Nunca debemos publicar el estado de nuestras entidades al exterior!!<br><br>Vamos a ver el ejemplo con el agregado raíz Project (versión reducida). Como veis, la clase no tiene propiedades públicas ni constructor público por defecto. Además las reglas de negocio están encapsuladas en la clase por lo que no necesitamos que accedan al estado de la clase desde el exterior. En el método para desactivar el proyecto, en caso de que el proyecto esté cerrado (<em>IsProjectClosed</em>) no se podrá desactivar por lo que lanzamos una excepción de negocio (<em>ProjectIsClosedException</em>).<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Project</span> : <span class="title">AggregateRoot</span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">private</span> Guid _id;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">string</span> _code;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">string</span> _name;</div><div class="line">	<span class="keyword">private</span> DateTime _deliveryDate;</div><div class="line">	<span class="keyword">private</span> ProjectStatus _status;</div><div class="line">	<span class="keyword">private</span> IList _tasks;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Project</span>(<span class="params"></span>)</span></div><div class="line">	&#123; &#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Project</span>(<span class="params"><span class="keyword">string</span> code, <span class="keyword">string</span> name, DateTime deliveryDate</span>)</span></div><div class="line">	&#123;</div><div class="line">		_id = Guid.NewGuid();</div><div class="line">		_code = code;</div><div class="line">		_name = name;</div><div class="line">		_status = ProjectStatus.Active;</div><div class="line">		IsValidDeliveryDate(deliveryDate);</div><div class="line">		_deliveryDate = deliveryDate;</div><div class="line">		_tasks = <span class="keyword">new</span> List();</div><div class="line"></div><div class="line">		ApplyEvent(<span class="keyword">new</span> ProjectAddedEvent(_id, _code, _name, _deliveryDate));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Deactivate</span>(<span class="params"></span>)</span></div><div class="line">	&#123;</div><div class="line">		IsProjectClosed();</div><div class="line"></div><div class="line">		<span class="keyword">if</span> (_status != ProjectStatus.Inactive)</div><div class="line">		&#123;</div><div class="line">			_status = ProjectStatus.Inactive;</div><div class="line">			ApplyEvent(<span class="keyword">new</span> ProjectDeactivatedEvent(_id));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">IsProjectClosed</span>(<span class="params"></span>)</span></div><div class="line">	&#123;</div><div class="line">		<span class="keyword">if</span> (_status == ProjectStatus.Closed)</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> ProjectIsClosedException(<span class="string">"The action could not be processed because the project is closed"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/mserrate/PoorMansCQRS/blob/master/PoorMansCQRS.Domain/Project.cs" target="_blank">(Ver la clase entera Project</a>)</p>
+<p>A continuación presentamos la clase base para los agregados raíz: AggregateRoot que es muy sencilla y la única particularidad es la del método ApplyEvent que nos sirve para lanzar un evento cada vez que ocurre una acción en el agregado:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">AggregateRoot</span> : <span class="title">IEntity</span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">abstract</span> Guid Id &#123; <span class="keyword">get</span>; &#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">internal</span> <span class="keyword">void</span> <span class="title">ApplyEvent</span>(<span class="params">T args</span>)</span></div><div class="line">		<span class="keyword">where</span> T : IEvent</div><div class="line">	&#123;</div><div class="line">		DomainEvents.DomainEvents.Raise(args);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IEntity</span></div><div class="line">&#123;</div><div class="line">	Guid Id &#123; <span class="keyword">get</span>; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Para lanzar los eventos utilizamos el concepto de Domain Events de Udi Dahan: <a href="http://www.udidahan.com/2009/06/14/domain-events-salvation/" target="_blank">http://www.udidahan.com/2009/06/14/domain-events-salvation/</a></p>
+
+      
+    </div>
+    
+    
+      <footer class="article-footer">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CQRS/">CQRS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DDD/">DDD</a></li></ul>
+
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2011/12/01/poor-mans-cqrs-bdd-con-mspec/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          Poor Man&#39;s CQRS - BDD con MSpec
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/11/22/poor-mans-cqrs/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Poor Man’s CQRS&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Marçal Serrate&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+<script>
+  var disqus_shortname = 'serrate-es';
+  
+  var disqus_url = 'http://serrate.es/2011/11/24/poor-mans-cqrs-domain-layer/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+  </div>
+</body>
+</html>

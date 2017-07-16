@@ -62,7 +62,7 @@ ga('send', 'pageview');
   </div>
 </header>
     <section id="main" class="outer">
-      <article id="post-/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-introduccion-a-managed-extensibility-framework-mef" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -70,14 +70,14 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2010/09/19/2010/09/19/introduccion-a-managed-extensibility-framework-mef/">Introducción a Managed Extensibility Framework (MEF)</a>
+      <a class="article-title" href="/2010/09/19/introduccion-a-managed-extensibility-framework-mef/">Introducción a Managed Extensibility Framework (MEF)</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/2010/09/19/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" class="article-date">
+      <a href="/2010/09/19/introduccion-a-managed-extensibility-framework-mef/" class="article-date">
   <time datetime="2010-09-19T19:10:17.000Z" itemprop="datePublished">2010-09-19</time>
 </a>
       
@@ -91,15 +91,14 @@ ga('send', 'pageview');
       
         <h2 id="Que-es-MEF-y-que-te-aporta"><a href="#Que-es-MEF-y-que-te-aporta" class="headerlink" title="Qué es MEF y que te aporta"></a>Qué es MEF y que te aporta</h2><p>MEF es una tecnología que permite desarrollar aplicaciones extensibles. La gran ventaja que nos ofrece MEF es que no necesitamos diseñar la aplicación conociendo qué extensiones formaran parte de ella ni la implementación interna de las propias extensiones.</p>
 <p>Por extensible nos referimos a que nuestra aplicación puede estar en producción y de forma dinámica añadir, reemplazar, eliminar las extensiones que tenemos sin necesidad ni de recompilar ni reiniciar la aplicación.</p>
-<p>MEF viene con .NET Framework 4 en la librería: **System.ComponentModel.Composition.</p>
-<p>** </p>
+<p>MEF viene con .NET Framework 4 en la librería: <strong>System.ComponentModel.Composition.</strong></p>
 <h2 id="MEF-vs-IoC-Container"><a href="#MEF-vs-IoC-Container" class="headerlink" title="MEF vs IoC Container"></a>MEF vs IoC Container</h2><p>Aunque pueda parecer que MEF e IoC  ofrecen la misma funcionalidad la diferencia consiste en que tratan de resolver problemas distintos.  </p>
 <p>El objetivo básico de un framework de IoC es el de ofrecer <strong>desacoplamiento</strong> entre componentes y nos resuelve dependencias que <span style="text-decoration: underline;">conocemos</span>. Esto nos permite que nuestra aplicación sea modular y testeable.</p>
 <p>En cambio, en MEF, el principal objetivo es la <strong>extensibilidad</strong>: el desacoplamiento es una consecuencia. Sabemos que las extensiones que se vayan a implementar cumplirán un contrato pero no sabremos si sólo habrá una extensión, muchas o ninguna.</p>
-<h2 id="Ejemplo-Extension-IHelloWorld"><a href="#Ejemplo-Extension-IHelloWorld" class="headerlink" title="Ejemplo: Extensión IHelloWorld"></a>Ejemplo: Extensión IHelloWorld</h2><p>
+<h2 id="Ejemplo-Extension-IHelloWorld"><a href="#Ejemplo-Extension-IHelloWorld" class="headerlink" title="Ejemplo: Extensión IHelloWorld"></a>Ejemplo: Extensión IHelloWorld</h2>
         
           <p class="article-more-link">
-            <a href="/2010/09/19/2010/09/19/introduccion-a-managed-extensibility-framework-mef/#more">Ver Más</a>
+            <a href="/2010/09/19/introduccion-a-managed-extensibility-framework-mef/#more">Ver Más</a>
           </p>
         
       
@@ -124,7 +123,7 @@ ga('send', 'pageview');
 
 
     
-      <article id="post-/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-entity-framework-4-codeonly-tabler-per-concrete-class-tpc" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -132,14 +131,14 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/">Entity Framework 4 CodeOnly &amp;#8211; Table per concrete Class (TPC)</a>
+      <a class="article-title" href="/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/">Entity Framework 4 CodeOnly - Table per concrete Class (TPC)</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" class="article-date">
+      <a href="/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/" class="article-date">
   <time datetime="2010-08-04T16:40:12.000Z" itemprop="datePublished">2010-08-04</time>
 </a>
       
@@ -154,34 +153,13 @@ ga('send', 'pageview');
         <p>En el último post acerca de le herencia en Entity Framework 4 y Code Only, vamos a ver la estrategia de <strong>Table per concrete Class</strong> (TPC).</p>
 <p>La diferencia con las estrategias de los ejemplos anteriores: <a href="http://www.serrate.es/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" target="_self">Table per Hierarchy</a> y <a href="/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" target="_self">Table per Type</a> es que, en este caso, la clase base no tiene ningún tipo de representación en las base de datos y sólo tiene sentido a nivel de clases del modelo.</p>
 <p>A continuación vemos como tenemos definido una tabla por subtipo:</p>
-<p><a href="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png" target="_blank" rel="external"><img class="aligncenter size-full wp-image-139" title="TablaTpC" src="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png" alt="TablaTpC" width="450" height="259" srcset="http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC.png 450w, http://www.serrate.es/wp-content/uploads/2010/08/TablaTpC-300x172.png 300w" sizes="(max-width: 450px) 100vw, 450px"></a></p>
+  <img src="/uploads/2010/08/TablaTpC.png" width="450" height="259" title="TablaTpC" alt="TablaTpC">
 <p>Ahora vamos a definir los mapeos de la base de datos con nuestras clases.  </p>
 <p>Para el subtipo <strong>Book</strong>:</p>
-<pre class="brush: csharp; title: ; notranslate" title="">public class BooksTpCConfiguration : EntityConfiguration&lt;Book&gt;
-{
-    public BooksTpCConfiguration()
-    {
-        this
-            .HasKey(b =&gt; b.Id)
-            .MapSingleType(
-                b =&gt; new
-                {
-                    Id = b.Id,
-                    Name = b.Name,
-                    Price = b.Price,
-                    Pages = b.PageNumber,
-                    Author = b.Author
-                }
-            )
-            .ToTable("BooksTpC");
-    }
-}
-</pre>
-
-<p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class BooksTpCConfiguration : EntityConfiguration&lt;Book&gt;</div><div class="line">&#123;</div><div class="line">    public BooksTpCConfiguration()</div><div class="line">    &#123;</div><div class="line">        this</div><div class="line">            .HasKey(b =&gt; b.Id)</div><div class="line">            .MapSingleType(</div><div class="line">                b =&gt; new</div><div class="line">                &#123;</div><div class="line">                    Id = b.Id,</div><div class="line">                    Name = b.Name,</div><div class="line">                    Price = b.Price,</div><div class="line">                    Pages = b.PageNumber,</div><div class="line">                    Author = b.Author</div><div class="line">                &#125;</div><div class="line">            )</div><div class="line">            .ToTable("BooksTpC");</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
         
           <p class="article-more-link">
-            <a href="/2010/08/04/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/#more">Ver Más</a>
+            <a href="/2010/08/04/entity-framework-4-codeonly-tabler-per-concrete-class-tpc/#more">Ver Más</a>
           </p>
         
       
@@ -206,7 +184,7 @@ ga('send', 'pageview');
 
 
     
-      <article id="post-/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-entity-framework-4-codeonly-table-per-type-tpt" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -214,14 +192,14 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2010/07/21/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/">Entity Framework 4 CodeOnly – Table per Type (TPT)</a>
+      <a class="article-title" href="/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/">Entity Framework 4 CodeOnly – Table per Type (TPT)</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/2010/07/21/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" class="article-date">
+      <a href="/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/" class="article-date">
   <time datetime="2010-07-20T22:17:03.000Z" itemprop="datePublished">2010-07-21</time>
 </a>
       
@@ -236,33 +214,14 @@ ga('send', 'pageview');
         <p>En el <a href="/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" target="_self">post anterior</a> vimos el tipo de herencia Table per Hierarchy (TPH).  </p>
 <p>Ahora vamos a ver el tipo de herencia en que el tipo base se guarda en una tabla compartida, es lo que llamamos <strong>Table per Type</strong> (TPT).  </p>
 <p>En el ejemplo que estamos siguiendo (<a href="/2010/07/19/entity-framework-4-codeonly-introduccion/" target="_self">intro</a>), nuestra clase base Product se guardará en la tabla ProductsTpT que tiene las propiedades de la propia clase base y luego tendremos una tabla por cada subtipo: ShirtsTpT, BooksTpT y TelevisionsTpT como podemos ver a continuación:  </p>
-<p style="text-align: center;"><br>  <a href="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT.png" target="_blank" rel="external"><img class="size-full wp-image-114 aligncenter" title="TablaTpT" src="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT.png" alt="TablaTpT" width="450" height="177" srcset="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT.png 450w, http://www.serrate.es/wp-content/uploads/2010/07/TablaTpT-300x118.png 300w" sizes="(max-width: 450px) 100vw, 450px"></a><br></p>
+<p style="text-align: center;"><br>  <img src="/uploads/2010/07/TablaTpT.png" width="450" height="177" title="TablaTpT" alt="TablaTpT"><br></p>
 
 <p>Ahora vamos a definir los mapeos de la base de datos con nuestras clases.  </p>
 <p>Para la <strong>clase base</strong> Product:  </p>
-<pre class="brush: csharp; title: ; notranslate" title="">public class ProductsTpTConfiguration : EntityConfiguration&lt;Product&gt;
-{
-    public ProductsTpTConfiguration()
-    {
-        this
-
-            .HasKey(p =&gt; p.Id)
-            .MapHierarchy(
-                p =&gt; new
-                {
-                    ProductId = p.Id,
-                    ProductName = p.Name,
-                    ProductPrice = p.Price
-                }
-            )
-            .ToTable("ProductsTpT");
-    }
-}
-
-</pre>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ProductsTpTConfiguration : EntityConfiguration&lt;Product&gt;</div><div class="line">&#123;</div><div class="line">    public ProductsTpTConfiguration()</div><div class="line">    &#123;</div><div class="line">        this</div><div class="line"></div><div class="line">            .HasKey(p =&gt; p.Id)</div><div class="line">            .MapHierarchy(</div><div class="line">                p =&gt; new</div><div class="line">                &#123;</div><div class="line">                    ProductId = p.Id,</div><div class="line">                    ProductName = p.Name,</div><div class="line">                    ProductPrice = p.Price</div><div class="line">                &#125;</div><div class="line">            )</div><div class="line">            .ToTable("ProductsTpT");</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
         
           <p class="article-more-link">
-            <a href="/2010/07/21/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/#more">Ver Más</a>
+            <a href="/2010/07/21/entity-framework-4-codeonly-table-per-type-tpt/#more">Ver Más</a>
           </p>
         
       
@@ -287,7 +246,7 @@ ga('send', 'pageview');
 
 
     
-      <article id="post-/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-entity-framework-4-codeonly-table-per-hierarchy-tph" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
@@ -295,14 +254,14 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2010/07/19/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/">Entity Framework 4 CodeOnly &amp;#8211; Table per Hierarchy (TPH)</a>
+      <a class="article-title" href="/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/">Entity Framework 4 CodeOnly &amp;#8211; Table per Hierarchy (TPH)</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/2010/07/19/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" class="article-date">
+      <a href="/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/" class="article-date">
   <time datetime="2010-07-19T16:21:07.000Z" itemprop="datePublished">2010-07-19</time>
 </a>
       
@@ -317,14 +276,12 @@ ga('send', 'pageview');
         <p>En mi <a href="/2010/07/19/entity-framework-4-codeonly-introduccion/" target="_self">post anterior</a> hice una introducción a EF4 CodeOnly. A continuación entraremos en detalle con el tipo de herencia de TPH:</p>
 <p>En TPH, utilizamos una tabla para guardar todos los datos de la jerarquía y mediante una columna que actúa como discriminador determinamos el tipo concreto de la fila y que columnas debemos leer.</p>
 <p>La tabla de la base de datos es la siguiente:</p>
-<p style="text-align: center;"><br>  <a href="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH.png" target="_blank" rel="external"><img class="size-full wp-image-116 aligncenter" title="TablaTpH" src="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH.png" alt="TablaTpH" width="310" height="270" srcset="http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH.png 310w, http://www.serrate.es/wp-content/uploads/2010/07/TablaTpH-300x261.png 300w" sizes="(max-width: 310px) 100vw, 310px"></a><br></p>
+<p style="text-align: center;"><br>    <img src="/uploads/2010/07/TablaTpH.png" width="310" height="270" title="TablaTpH" alt="TablaTpH"><br></p>
 
 <p style="text-align: left;"><br>  La columna que actúa como <strong>discriminador</strong> es ProductType y será ‘S’ para el tipo Shirt, ‘T’ para Television y ‘B’ para Book.<br></p>
-
-<p>
         
           <p class="article-more-link">
-            <a href="/2010/07/19/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/#more">Ver Más</a>
+            <a href="/2010/07/19/entity-framework-4-codeonly-table-per-hierarchy-tph/#more">Ver Más</a>
           </p>
         
       
